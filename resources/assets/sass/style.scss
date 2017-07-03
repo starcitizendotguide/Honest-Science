@@ -1,0 +1,30 @@
+// Colours
+.task-released {
+    background-color: $task-completed;
+    border-color: $task-completed;
+}
+
+.task-partially-released {
+    background-color: $task-compromised;
+    border-color: $task-compromised;
+}
+
+.task-in-progress {
+    background-color: $task-in-alpha;
+    border-color: $task-in-alpha;
+}
+
+.task-stagnant {
+    background-color: $task-not-implemented;
+    border-color: $task-not-implemented;
+}
+
+.task-broken {
+    background-color: $task-stagnant;
+    border-color: $task-stagnant;
+}
+
+.task-cut {
+    background-color: $task-broken;
+    border-color: $task-broken;
+}

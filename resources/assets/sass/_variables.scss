@@ -36,3 +36,11 @@ $input-color-placeholder: lighten($text-color, 30%);
 
 // Panels
 $panel-default-heading-bg: #fff;
+
+// Task Colors
+$task-completed: #5CB85C;
+$task-compromised: #A6B5BF;
+$task-in-alpha: #5BC0DE;
+$task-not-implemented: #F0AD4E;
+$task-stagnant: #E86D35;
+$task-broken: #C9302C;
