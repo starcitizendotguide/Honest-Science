@@ -3175,7 +3175,7 @@ th {
 }
 
 html {
-  background-color: #fff;
+  background-color: whitesmoke;
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -5081,7 +5081,7 @@ input[type="submit"].button {
   position: relative;
   vertical-align: top;
   background-color: white;
-  border-color: #ccd0d2;
+  border-color: #dbdbdb;
   color: #363636;
   -webkit-box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
           box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
@@ -5320,7 +5320,7 @@ input[type="submit"].button {
   position: relative;
   vertical-align: top;
   background-color: white;
-  border-color: #ccd0d2;
+  border-color: #dbdbdb;
   color: #363636;
   cursor: pointer;
   display: block;
@@ -13047,6 +13047,16 @@ table tr:hover {
   background-color: inherit;
 }
 
+.card {
+  background-color: white;
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  color: #4a4a4a;
+  max-width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
 .m-t-5 {
   margin-top: 5px !important;
 }
@@ -13431,6 +13441,19 @@ table tr:hover {
   padding-right: 100px !important;
 }
 
+.fix-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.seperator {
+  margin: 2px 0;
+  width: 100%;
+  border-top: 1px solid #ccc;
+}
+
 .task-released {
   background-color: #5CB85C;
   border-color: #5CB85C;
@@ -13442,8 +13465,8 @@ table tr:hover {
 }
 
 .task-in-progress {
-  background-color: #5BC0DE;
   border-color: #5BC0DE;
+  background-color: #5BC0DE;
 }
 
 .task-stagnant {
@@ -13452,12 +13475,30 @@ table tr:hover {
 }
 
 .task-broken {
-  background-color: #E86D35;
-  border-color: #E86D35;
-}
-
-.task-cut {
   background-color: #C9302C;
   border-color: #C9302C;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.account-verified {
+  background-color: #5CB85C;
+}
+
+.account-queued {
+  background-color: #F0AD4E;
+}
+
+.account-suspended {
+  background-color: #C9302C;
 }
 

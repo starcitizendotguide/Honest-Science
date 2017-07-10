@@ -1,30 +1,44 @@
 // Colours
 .task-released {
-    background-color: $task-completed;
-    border-color: $task-completed;
+    background-color: $task-released;
+    border-color: $task-released;
 }
 
 .task-partially-released {
-    background-color: $task-compromised;
-    border-color: $task-compromised;
+    background-color: $task-partially-released;
+    border-color: $task-partially-released;
 }
 
 .task-in-progress {
-    background-color: $task-in-alpha;
-    border-color: $task-in-alpha;
+    border-color: $task-in-progress;
+    background-color: $task-in-progress;
 }
 
 .task-stagnant {
-    background-color: $task-not-implemented;
-    border-color: $task-not-implemented;
-}
-
-.task-broken {
     background-color: $task-stagnant;
     border-color: $task-stagnant;
 }
 
-.task-cut {
+.task-broken {
     background-color: $task-broken;
     border-color: $task-broken;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0
+}
+
+.account-verified {
+    background-color: $account-verified;
+}
+
+.account-queued {
+    background-color: $account-queued;
+}
+
+.account-suspended {
+    background-color: $account-suspended;
 }

@@ -1,4 +1,4 @@
-<footer class="footer">
+<footer class="footer fix-footer">
     <div class="container">
         <div class="content has-text-centered">
             <p>

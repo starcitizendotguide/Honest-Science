@@ -781,8 +781,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_buefy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_buefy__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_filters__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_filters___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue2_filters__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Example_vue__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Example_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Example_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue__);
 
 __webpack_require__(29);
 
@@ -796,10 +796,13 @@ window.Vue = __webpack_require__(39);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue2_filters___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_buefy___default.a);
 
-Vue.component('example-item', __WEBPACK_IMPORTED_MODULE_2__components_Example_vue___default.a);
+Vue.component('task-list-item', __WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue___default.a);
 
 new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    navigation: {}
+  }
 });
 
 /***/ }),
@@ -1756,6 +1759,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     /**
@@ -1780,36 +1801,69 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     5: false
                 }
             },
-            users: [{
-                name: 'Mission Givers',
-                description: 'Mission Givers are the plethora of human, alien, kiosk, or any number of avenues where one might obtain details to begin a mission. Although some Mission Givers may be static in their location and/or prerequisites for being obtained, some Mission Givers may seem somewhat mundane or obscure, like that discarded piece of trash you absentmindedly kicked as you were heading to a rendezvous point. A message in a bottle just might net your crew their next month’s salary.',
-                status: 0
+            tasks: [{
+                name: 'Lorem ipsum',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                status: 1,
+                progress: 0.1806, //TODO Computed... just demo data here
+                collapsed: false,
+                children: [{
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 2,
+                    type: 0,
+                    progress: 0.3178
+                }, {
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 0,
+                    type: 0,
+                    progress: 0.0433
+                }]
             }, {
-                name: 'Derelict Ships',
-                description: 'Derelict Ships, and space stations alike, are entities throughout the ‘Verse that may contain a wealth of supplies and information, or be ground zero for a ravaging epidemic. Regardless of the contents, a series of scans would go a long way to help decide whether to make the detour to check its content or radio back to a scavenging team.',
-                status: 1
+                name: 'Lorem ipsum',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                status: 2,
+                progress: 0.3178,
+                collapsed: false,
+                children: [{
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 3,
+                    type: 0,
+                    progress: 0.3178
+                }]
             }, {
-                name: 'Entity Owner Manager',
-                description: 'The Entity Owner Manager will track entities that are moved around the universe, making sure we spawn and despawn them at the correct time.',
-                status: 2
-            }, {
-                name: 'Render to Texture',
-                description: 'Render-to Texture will have many uses going forwards, but our focus for now is to improve UI rendering and to introduce live rendering of video communications. We’re aiming to improve rendering performance by rendering as much of the UI ahead of a frame. For video communications, this will mean that we don’t have to pre-render the comms to store those files on the hard drive (as is the case with most games). This will allow us to maintain fidelity as well as save hard drive space.',
-                status: 3
-            }, {
-                name: 'Debris Fields',
-                description: 'Debris Fields are large masses of flotsam with the potential for lucrative rewards. Was it the site of an ancient battle containing unheard of technology or materials? Maybe it was a hauler of precious minerals that taxed its engines a little too hard before they blew. Regardless of the origin, staying around too long might draw unwanted attention.',
-                status: 4
-            }, {
-                name: 'Netowrk Bind-Unbind',
-                description: '"Network Binding and Unbinding eliminates network updates for entities far away from clients. This should greatly reduce the amount of work the netcode must do, helping improve server performance. A greater proportion of client bandwidth will be spent on entities closest to the client.',
-                status: 5
-            }],
-            columns: ['name', 'description', 'Source']
+                name: 'Lorem ipsum',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                status: 3,
+                progress: 0.1666,
+                collapsed: false,
+                children: [{
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 0,
+                    type: 0,
+                    progress: 0.3178
+                }, {
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 3,
+                    type: 0,
+                    progress: 0.1457
+                }, {
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                    status: 2,
+                    type: 0,
+                    progress: 0.0362
+                }]
+            }]
         };
     },
     methods: {
         statusToClass: function statusToClass(status) {
+
             switch (status) {
 
                 //@TODO Fix CSS. Hovering over the TR in a table looks, well..., 'okay'
@@ -1836,6 +1890,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         resetMeta: function resetMeta() {
 
+            //--- Reset Collapse
+            this.tasks.map(function (v) {
+                return v.collapsed = false;
+            });
+
             //--- Reset search value
             this.meta.search = '';
 
@@ -1843,14 +1902,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var i = 0; i < Object.keys(this.meta.categories).length; i++) {
                 this.meta.categories[i] = false;
             }
-
-            console.log(JSON.stringify(this.meta));
+        },
+        toFixed: function toFixed(value, digits) {
+            return value.toFixed(digits);
         }
     },
     computed: {
         filteredItems: function filteredItems() {
 
-            var _tmp = this.users,
+            var _tmp = this.tasks,
                 search = this.meta.search,
                 categories = this.meta.categories;
 
@@ -19679,9 +19739,9 @@ var Component = __webpack_require__(36)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "F:\\web\\sites\\StarCitizen Wiki\\Tracker\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "F:\\web\\sites\\StarCitizen Wiki\\Tracker\\resources\\assets\\js\\components\\TaskListItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] TaskListItem.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -19690,9 +19750,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8c200c4c", Component.options)
+    hotAPI.createRecord("data-v-49387936", Component.options)
   } else {
-    hotAPI.reload("data-v-8c200c4c", Component.options)
+    hotAPI.reload("data-v-49387936", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -19892,44 +19952,64 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.meta.categories[4] = !_vm.meta.categories[4]
       }
     }
-  }, [_vm._m(4), _vm._v(" "), _c('span', [_vm._v("Broken")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-cut",
-    class: {
-      'is-active': _vm.isCategoryActive(5)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[5] = !_vm.meta.categories[5]
-      }
-    }
-  }, [_vm._m(5), _vm._v(" "), _c('span', [_vm._v("Cut")])])])]), _vm._v(" "), _c('p', {
+  }, [_vm._m(4), _vm._v(" "), _c('span', [_vm._v("Cut/Broken")])])])]), _vm._v(" "), _c('p', {
     staticClass: "control is-pulled-right"
   }, [_c('a', {
     staticClass: "button",
     on: {
       "click": _vm.resetMeta
     }
-  }, [_vm._m(6), _vm._v(" "), _c('span', [_vm._v("Reset")])])])]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c('table', {
-    staticClass: "table table-striped"
-  }, [_c('thead', [_c('tr', _vm._l((_vm.columns), function(column) {
-    return _c('th', [_c('p', [_vm._v(_vm._s(_vm._f("capitalize")(column)))])])
-  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.filteredItems), function(user) {
-    return _c('tr', {
-      class: _vm.statusToClass(user.status)
-    }, [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_c('p', [_vm._v(_vm._s(user.description))])]), _vm._v(" "), _c('td', [_c('b-tooltip', {
-      attrs: {
-        "label": "Tooltip large multilined, because it's really long to be on a medium size. Did I tell you it's really long? Yes, it is — I asure you!",
-        "position": "is-bottom",
-        "multilined": "",
-        "animated": "",
-        "size": "is-large"
+  }, [_vm._m(5), _vm._v(" "), _c('span', [_vm._v("Reset")])])])]), _vm._v(" "), _vm._l((_vm.filteredItems), function(task) {
+    return _c('div', {
+      staticClass: "box"
+    }, [_c('article', {
+      staticClass: "media"
+    }, [_vm._m(6, true), _vm._v(" "), _c('div', {
+      staticClass: "media-content"
+    }, [_c('div', {
+      staticClass: "content"
+    }, [_c('p', [_c('strong', [_vm._v(_vm._s(task.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(task.status))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(task.progress * 100, 2)) + "%")]), _vm._v(" "), _c('span', [_c('i', {
+      staticClass: "fa is-focused is-pulled-right",
+      class: {
+        'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed
+      },
+      on: {
+        "click": function($event) {
+          task.collapsed = !task.collapsed
+        }
       }
-    }, [_c('span', [_c('i', {
-      staticClass: "fa fa-quote-right"
-    })])])], 1)])
-  }))])])
+    })]), _vm._v(" "), _c('br'), _vm._v("\n                        " + _vm._s(task.description) + "\n                        "), _c('br'), _vm._v(" "), _c('progress', {
+      staticClass: "progress",
+      attrs: {
+        "value": task.progress,
+        "max": "1"
+      }
+    }, [_vm._v(_vm._s(_vm.toFixed(task.progress * 100, 2)) + "%")])]), _vm._v(" "), _c('transition', {
+      attrs: {
+        "name": "fade"
+      }
+    }, [(task.collapsed) ? _c('div', _vm._l((task.children), function(child) {
+      return _c('div', {
+        staticClass: "box",
+        class: _vm.statusToClass(child.status)
+      }, [_c('article', {
+        staticClass: "media"
+      }, [_c('div', {
+        staticClass: "media-left"
+      }, [_c('figure', {
+        staticClass: "image is-64x64"
+      }, [_c('img', {
+        attrs: {
+          "src": "http://bulma.io/images/placeholders/128x128.png",
+          "alt": "Image"
+        }
+      })])]), _vm._v(" "), _c('div', {
+        staticClass: "media-content"
+      }, [_c('div', {
+        staticClass: "content"
+      }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                            " + _vm._s(child.description) + "\n                                            "), _c('br')])])])])
+    })) : _vm._e()])], 1)])])])
+  })], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small"
@@ -19964,167 +20044,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('span', {
     staticClass: "icon is-small"
   }, [_c('i', {
-    staticClass: "fa fa-scissors"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
     staticClass: "fa fa-undo"
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "field has-addons"
-  }, [_c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
+    staticClass: "media-left"
+  }, [_c('figure', {
+    staticClass: "image is-64x64"
+  }, [_c('img', {
     attrs: {
-      "href": "#"
+      "src": "http://bulma.io/images/placeholders/128x128.png",
+      "alt": "Image"
     }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-rocket"
-  })]), _c('span', [_vm._v("Example")])])])])
+  })])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-8c200c4c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-49387936", module.exports)
   }
 }
 

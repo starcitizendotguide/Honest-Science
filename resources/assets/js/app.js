@@ -6,13 +6,16 @@ window.Vue = require('vue');
 import Buefy from 'buefy';
 import Vue2Filters from 'vue2-filters'
 
-import Example from './components/Example.vue';
+import TaskListItem from './components/TaskListItem.vue';
 
 Vue.use(Vue2Filters)
 Vue.use(Buefy);
 
-Vue.component('example-item', Example);
+Vue.component('task-list-item', TaskListItem);
 
 new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+      navigation: {}
+  }
 });

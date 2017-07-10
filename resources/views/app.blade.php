@@ -12,14 +12,12 @@
 
     </head>
     <body>
+        <div id="app">
+            @include('includes.navigation')
 
-        @include('includes.navigation')
-
-        <div class="m-t-10">
             @yield('content')
         </div>
         <script src="{{ mix('assets/js/app.js') }}" ></script>
-
     </body>
     @include('includes.footer')
 </html>

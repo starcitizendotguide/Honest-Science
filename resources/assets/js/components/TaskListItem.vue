@@ -32,13 +32,7 @@
                 <p class="control">
                     <a v-on:click="meta.categories[4] = !meta.categories[4]" v-bind:class="{ 'is-active': isCategoryActive(4) }" class="button task-broken">
                         <span class="icon is-small"><i class="fa fa-chain-broken"></i></span>
-                        <span>Broken</span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a v-on:click="meta.categories[5] = !meta.categories[5]" v-bind:class="{ 'is-active': isCategoryActive(5) }" class="button task-cut">
-                        <span class="icon is-small"><i class="fa fa-scissors"></i></span>
-                        <span>Cut</span>
+                        <span>Cut/Broken</span>
                     </a>
                 </p>
             </div>
@@ -49,7 +43,7 @@
                 </a>
             </p>
         </div>
-        <div class="field has-addons">
+        <!--<div class="field has-addons">
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
@@ -63,33 +57,57 @@
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
             <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th v-for="column in columns">
-                        <p>{{ column | capitalize }}</p>
-                    </th>
-                </tr>
-            </thead>
+        </div>-->
 
-            <tbody>
-                <tr v-for="user in filteredItems" v-bind:class="statusToClass(user.status)">
-                    <td>{{ user.name }}</td>
-                    <td><p>{{ user.description }}</p></td>
-                    <td>
-                        <b-tooltip
-                            label="Tooltip large multilined, because it's really long to be on a medium size. Did I tell you it's really long? Yes, it is — I asure you!"
-                            position="is-bottom"
-                            multilined
-                            animated
-                            size="is-large">
-                            <span><i class="fa fa-quote-right"></i></span>
-                        </b-tooltip>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+        <div class="box" v-for="task in filteredItems">
+            <article class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{ task.name }}</strong>
+                            <small>{{ task.status }}</small>
+                            <small>{{ toFixed(task.progress * 100, 2) }}%</small>
+                            <span><i v-on:click="task.collapsed = !task.collapsed" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
+                            <br />
+                            {{ task.description }}
+                            <br />
+                            <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+                        </p>
+                        <transition name="fade">
+                            <div v-if="task.collapsed">
+
+                                <div class="box" v-bind:class="statusToClass(child.status)" v-for="child in task.children">
+                                    <article class="media">
+                                        <div class="media-left">
+                                            <figure class="image is-64x64">
+                                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                                            </figure>
+                                        </div>
+                                        <div class="media-content">
+                                            <div class="content">
+                                                <strong>{{ child.name }}</strong>
+                                                <small>{{ child.status }}</small>
+                                                <small>{{ toFixed(child.progress * 100, 2) }}%</small>
+                                                <br />
+                                                {{ child.description }}
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+
+                            </div>
+                        </transition>
+                    </div>
+                </div>
+            </article>
+        </div>
     </div>
 </template>
 
@@ -118,47 +136,82 @@ export default {
                     5: false
                 }
             },
-            users: [
+            tasks: [
                 {
-                    name: 'Mission Givers',
-                    description: 'Mission Givers are the plethora of human, alien, kiosk, or any number of avenues where one might obtain details to begin a mission. Although some Mission Givers may be static in their location and/or prerequisites for being obtained, some Mission Givers may seem somewhat mundane or obscure, like that discarded piece of trash you absentmindedly kicked as you were heading to a rendezvous point. A message in a bottle just might net your crew their next month’s salary.',
-                    status: 0
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                    status: 1,
+                    progress: 0.1806, //TODO Computed... just demo data here
+                    collapsed: false,
+                    children: [
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 2,
+                            type: 0,
+                            progress: 0.3178
+                        },
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 0,
+                            type: 0,
+                            progress: 0.0433
+                        },
+                    ]
                 },
                 {
-                    name: 'Derelict Ships',
-                    description: 'Derelict Ships, and space stations alike, are entities throughout the ‘Verse that may contain a wealth of supplies and information, or be ground zero for a ravaging epidemic. Regardless of the contents, a series of scans would go a long way to help decide whether to make the detour to check its content or radio back to a scavenging team.',
-                    status: 1
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                    status: 2,
+                    progress: 0.3178,
+                    collapsed: false,
+                    children: [
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 3,
+                            type: 0,
+                            progress: 0.3178
+                        },
+                    ]
                 },
                 {
-                    name: 'Entity Owner Manager',
-                    description: 'The Entity Owner Manager will track entities that are moved around the universe, making sure we spawn and despawn them at the correct time.',
-                    status: 2
-                },
-                {
-                    name: 'Render to Texture',
-                    description: 'Render-to Texture will have many uses going forwards, but our focus for now is to improve UI rendering and to introduce live rendering of video communications. We’re aiming to improve rendering performance by rendering as much of the UI ahead of a frame. For video communications, this will mean that we don’t have to pre-render the comms to store those files on the hard drive (as is the case with most games). This will allow us to maintain fidelity as well as save hard drive space.',
-                    status: 3
-                },
-                {
-                    name: 'Debris Fields',
-                    description: 'Debris Fields are large masses of flotsam with the potential for lucrative rewards. Was it the site of an ancient battle containing unheard of technology or materials? Maybe it was a hauler of precious minerals that taxed its engines a little too hard before they blew. Regardless of the origin, staying around too long might draw unwanted attention.',
-                    status: 4
-                },
-                {
-                    name: 'Netowrk Bind-Unbind',
-                    description: '"Network Binding and Unbinding eliminates network updates for entities far away from clients. This should greatly reduce the amount of work the netcode must do, helping improve server performance. A greater proportion of client bandwidth will be spent on entities closest to the client.',
-                    status: 5
+                    name: 'Lorem ipsum',
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                    status: 3,
+                    progress: 0.1666,
+                    collapsed: false,
+                    children: [
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 0,
+                            type: 0,
+                            progress: 0.3178
+                        },
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 3,
+                            type: 0,
+                            progress: 0.1457
+                        },
+                        {
+                            name: 'Lorem ipsum',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                            status: 2,
+                            type: 0,
+                            progress: 0.0362
+                        },
+                    ]
                 },
             ],
-            columns: [
-                'name',
-                'description',
-                'Source'
-            ]
         };
     },
     methods: {
         statusToClass: function(status) {
+
             switch (status) {
 
                 //@TODO Fix CSS. Hovering over the TR in a table looks, well..., 'okay'
@@ -178,6 +231,9 @@ export default {
         },
         resetMeta: function() {
 
+            //--- Reset Collapse
+            this.tasks.map(v => v.collapsed = false);
+
             //--- Reset search value
             this.meta.search = '';
 
@@ -186,14 +242,16 @@ export default {
                 this.meta.categories[i] = false;
             }
 
-            console.log(JSON.stringify(this.meta));
 
+        },
+        toFixed(value, digits) {
+            return value.toFixed(digits);
         }
     },
     computed: {
         filteredItems: function () {
 
-            var _tmp = this.users,
+            var _tmp = this.tasks,
                 search = this.meta.search,
                 categories = this.meta.categories;
 
@@ -221,7 +279,7 @@ export default {
                 ){
                     return item;
                 }
-            })
+            });
 
             return _tmp;
         }

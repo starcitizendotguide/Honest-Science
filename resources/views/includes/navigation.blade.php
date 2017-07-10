@@ -4,41 +4,40 @@
             <a href="{{ route('home') }}" class="nav-item">
                 <img src="{{ asset('assets/img/logo.jpg') }}" alt="Logo">
             </a>
-            <a href="#" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
+            <a href="{{ route('home') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">About</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">FAQ</a>
         </div>
 
         <div class="nav-right" style="overflow: visible;">
             @if (Auth::guest())
-                <a href="#" class="nav-item is-tab">Login</a>
-                <a href="#" class="nav-item is-tab">Sign Up</a>
+                <a href="{{ route('login') }}" class="nav-item is-tab">Login</a>
+                <a href="{{ route('register') }}" class="nav-item is-tab">Sign Up</a>
             @else
-                <!--<button >
-                    Hey Bacon <span v-show="active" class="icon"><i class="fa fa-caret-down"></i></span>
+                <b-dropdown v-model="navigation" position="is-bottom-left" class="dropdown nav-item is-tab">
+                    <a class="nav-item" slot="trigger">
+                        <span class="m-r-5">{{ Auth::user()->name }}</span>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </a>
 
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="#">Management</a></li>
-                        <li class="seperator"></li>
-                        <li><a href="">Logout</a></li>
-                    </ul>
-                </button>-->
-                <b-dropdown id="menu-dropdown" class="dropdown nav-item is-tab">
-                    <button class="button" slot="trigger">
-                        <span>Hey Bacon <span v-show="active" class="icon"><i class="fa fa-caret-down"></i></span></span>
-                    </button>
+                    <b-dropdown-option class="account-verified">
+                        <span class="icon is-clearfix"><p>Verified</p> <i class="column is-one-third fa fa-check-square"></i></span>
+                    </b-dropdown-option>
+                    <div class="seperator"></div>
+                    <b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
+                    <b-dropdown-option class="has-text-centered"><a href="#">Settings</a></b-dropdown-option>
+                    <b-dropdown-option class="has-text-centered"><a href="#">Management</a></b-dropdown-option>
+                    <div class="seperator"></div>
+                    <b-dropdown-option class="has-text-centered">
+                        <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
 
-                    <div class="dropdown-menu">
-                        <b-dropdown-option><a href="#">Profile</a></b-dropdown-option>
-                        <b-dropdown-option><a href="#">Settings</a></b-dropdown-option>
-                        <b-dropdown-option><a href="#">Management</a></b-dropdown-option>
-                        <b-dropdown-option class="seperator"></b-dropdown-option>
-                        <b-dropdown-option><a href="#"><a href="">Logout</a></a></b-dropdown-option>
-                    </div>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </b-dropdown-option>
                 </b-dropdown>
             @endif
         </div>
+
     </div>
 </nav>
