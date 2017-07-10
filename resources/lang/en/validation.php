@@ -100,8 +100,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'rsi_handle' => 'Please provide a valid RSI handle.',
         ],
     ],
 
