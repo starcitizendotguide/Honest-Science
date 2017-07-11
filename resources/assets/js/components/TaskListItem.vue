@@ -138,21 +138,21 @@ export default {
             },
             tasks: [
                 {
-                    name: 'Lorem ipsum',
+                    name: 'Alpha',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
                     status: 1,
                     progress: 0.1806, //TODO Computed... just demo data here
                     collapsed: false,
                     children: [
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Beta',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 2,
                             type: 0,
                             progress: 0.3178
                         },
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Gamma',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 0,
                             type: 0,
@@ -161,14 +161,14 @@ export default {
                     ]
                 },
                 {
-                    name: 'Lorem ipsum',
+                    name: 'Delta',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
                     status: 2,
                     progress: 0.3178,
                     collapsed: false,
                     children: [
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Epsilon',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 3,
                             type: 0,
@@ -177,28 +177,28 @@ export default {
                     ]
                 },
                 {
-                    name: 'Lorem ipsum',
+                    name: 'Zeta',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
                     status: 3,
                     progress: 0.1666,
                     collapsed: false,
                     children: [
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Eta',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 0,
                             type: 0,
                             progress: 0.3178
                         },
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Theta',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 3,
                             type: 0,
                             progress: 0.1457
                         },
                         {
-                            name: 'Lorem ipsum',
+                            name: 'Iota',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                             status: 2,
                             type: 0,
@@ -263,7 +263,9 @@ export default {
                 }
             }
 
+            console.log(1);
             if(!search && !categoryMode){
+                console.log(2);
                 return _tmp;
             }
 
@@ -271,7 +273,7 @@ export default {
 
             _tmp = _tmp.filter(function(item){
                 if(
-                    categories[item.status] === true &&
+                    (categories[item.status] === true || !categoryMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1
