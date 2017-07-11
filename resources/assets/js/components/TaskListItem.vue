@@ -263,9 +263,7 @@ export default {
                 }
             }
 
-            console.log(1);
             if(!search && !categoryMode){
-                console.log(2);
                 return _tmp;
             }
 
