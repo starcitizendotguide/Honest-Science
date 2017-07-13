@@ -1,10 +1,10 @@
 <nav class="nav has-shadow">
     <div class="container">
         <div class="nav-left">
-            <a href="{{ route('home') }}" class="nav-item">
+            <a href="{{ route('home.index') }}" class="nav-item">
                 <img src="{{ asset('assets/img/logo.jpg') }}" alt="Logo">
             </a>
-            <a href="{{ route('home') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
+            <a href="{{ route('home.index') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">About</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">FAQ</a>
         </div>
@@ -25,7 +25,7 @@
                     </b-dropdown-option>
                     <div class="seperator"></div>
                     <b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
-                    <b-dropdown-option class="has-text-centered"><a href="#">Settings</a></b-dropdown-option>
+                    <b-dropdown-option class="has-text-centered"><a href="{{ route('settings.index') }}">Settings</a></b-dropdown-option>
                     <b-dropdown-option class="has-text-centered"><a href="#">Management</a></b-dropdown-option>
                     <div class="seperator"></div>
                     <b-dropdown-option class="has-text-centered">

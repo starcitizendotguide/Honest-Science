@@ -25,3 +25,11 @@ $sides: (top, bottom, left, right); // Leave this variable alone
       width: 100%;
       border-top: 1px solid #ccc;
 }
+
+.is-muted {
+    color: lightgray;
+
+    &:hover {
+        color: gray;
+    }
+}
