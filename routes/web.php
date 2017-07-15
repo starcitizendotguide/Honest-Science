@@ -15,4 +15,12 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home.index');
-Route::get('/settings', 'SettingsController@index')->name('settings.index');
+Route::get('settings', 'SettingsController@index')->name('settings.index');
+
+Route::prefix('manage')
+    ->middleware('role:superadministrator|administrator|editor|author|contributor')
+    ->group(function() {
+
+    Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
+
+});

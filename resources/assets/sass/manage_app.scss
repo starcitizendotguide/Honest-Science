@@ -1,0 +1,9 @@
+/*
+ * So, basically we want all the CSS and JS features we have on the front-end,
+ * but we may end up adding additional stuff to the management pages that require
+ * additionals assets which are not (!) required for the front-end user.
+ */
+
+@import "app";
+
+@import "manage";

@@ -6,14 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel</title>
+        <title>{{ config('app.name') }} - CONTENT</title>
 
-        <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('assets/css/manage_app.css') }}">
 
     </head>
     <body>
         <div id="app">
             @include('includes.navigation')
+            @include('includes.manage.navigation')
 
             @yield('content')
         </div>
