@@ -22,7 +22,6 @@ class CreateTasksTable extends Migration
             $table->text('description');
 
             $table->smallInteger('status_id');
-            $table->double('progress');
 
             $table->timestamps();
 
