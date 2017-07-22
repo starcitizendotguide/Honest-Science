@@ -1806,65 +1806,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     4: false,
                     5: false
                 }
-            },
-            tasks: [{
-                name: 'Alpha',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                status: 1,
-                progress: 0.1806, //TODO Computed... just demo data here
-                collapsed: false,
-                children: [{
-                    name: 'Beta',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 2,
-                    type: 0,
-                    progress: 0.3178
-                }, {
-                    name: 'Gamma',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 0,
-                    type: 0,
-                    progress: 0.0433
-                }]
-            }, {
-                name: 'Delta',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                status: 2,
-                progress: 0.3178,
-                collapsed: false,
-                children: [{
-                    name: 'Epsilon',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 3,
-                    type: 0,
-                    progress: 0.3178
-                }]
-            }, {
-                name: 'Zeta',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                status: 3,
-                progress: 0.1666,
-                collapsed: false,
-                children: [{
-                    name: 'Eta',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 0,
-                    type: 0,
-                    progress: 0.3178
-                }, {
-                    name: 'Theta',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 3,
-                    type: 0,
-                    progress: 0.1457
-                }, {
-                    name: 'Iota',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                    status: 2,
-                    type: 0,
-                    progress: 0.0362
-                }]
-            }]
+            }
+
         };
     },
     methods: {

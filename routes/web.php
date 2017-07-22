@@ -20,7 +20,13 @@ Route::get('settings', 'SettingsController@index')->name('settings.index');
 Route::prefix('manage')
     ->middleware('role:superadministrator|administrator|editor|author|contributor')
     ->group(function() {
+        Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
+    }
+);
 
-    Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
+Route::group(['prefix' => 'api/v1'], function() {
 
-});
+        Route::resource('tasks',  'TasksController');
+
+    }
+);

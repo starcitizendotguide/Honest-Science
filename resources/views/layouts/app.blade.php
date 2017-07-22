@@ -14,10 +14,10 @@
     <body>
         <div id="app">
             @include('includes.navigation')
-
             @yield('content')
         </div>
-        <script src="{{ mix('assets/js/app.js') }}" ></script>
+        <script src="{{ mix('assets/js/app.js') }}"></script>
+        @yield('elixir')
     </body>
     @include('includes.footer')
 </html>
