@@ -18,7 +18,6 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
                         'status' => 1,
                         'progress' => 0.1806, //TODO Computed... just demo data here
-                        'collapsed' => false,
                         'children' => [
                             [
                                 'name' => 'Beta',
@@ -99,8 +98,8 @@ class TasksSeeder extends Seeder
             ]);
 
             foreach ($parent['children'] as $child) {
-                DB::table('tasks_children')->insert([
-                    'parent_id'     => $id,
+                DB::table('task_children')->insert([
+                    'task_id'       => $id,
                     'name'          => $child['name'],
                     'description'   => $child['description'],
                     'status_id'     => $child['status'],

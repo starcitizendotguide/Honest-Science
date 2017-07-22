@@ -13,11 +13,11 @@ class CreateTasksChildrenTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks_children', function(Blueprint $table) {
+        Schema::create('task_children', function(Blueprint $table) {
 
             //--- Types
             $table->increments('id');
-            $table->integer('parent_id');
+            $table->integer('task_id');
 
             $table->string('name');
             $table->text('description');
@@ -42,6 +42,6 @@ class CreateTasksChildrenTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tasks_children');
+        Schema::drop('task_children');
     }
 }
