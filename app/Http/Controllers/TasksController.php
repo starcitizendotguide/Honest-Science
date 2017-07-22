@@ -10,7 +10,7 @@ use App\TaskChild;
 class TasksController extends Controller
 {
 
-    public function show()
+    public function index()
     {
 
         //--- Build data
@@ -19,7 +19,7 @@ class TasksController extends Controller
         $tasks = Task::all();
         foreach ($tasks as $task) {
 
-            $data[$task['id']] = [
+            $tmp = [
                 'id'            => $task['id'],
                 'name'          => $task['name'],
                 'description'   => $task['description'],
@@ -31,9 +31,9 @@ class TasksController extends Controller
 
             //--- Append Children
             $children = $task->children()->get();
-
+            $childrenArray = [];
             foreach ($children as $child) {
-                $data[$task['id']]['children'][] = [
+                $childrenArray[] = [
                     'id'            => $child['id'],
                     'name'          => $child['name'],
                     'description'   => $child['description'],
@@ -42,10 +42,12 @@ class TasksController extends Controller
                     'type'          => $child['type']
                 ];
             }
+            $tmp['children'] = $childrenArray;
 
+            $data[] = $tmp;
         }
 
-        return response()->json($data);
+        return $data;
     }
 
 }

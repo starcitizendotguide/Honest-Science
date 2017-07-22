@@ -14,8 +14,5 @@ Vue.use(Buefy);
 Vue.component('task-list-item', TaskListItem);
 
 new Vue({
-  el: '#app',
-  data: {
-      navigation: {},
-  }
+  el: '#app'
 });

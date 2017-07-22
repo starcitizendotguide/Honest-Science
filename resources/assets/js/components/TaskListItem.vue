@@ -124,7 +124,9 @@ export default {
 
     */
     data: function() {
+
         return {
+            tasks: [],
             meta: {
                 search: '',
                 categories: {
@@ -213,6 +215,10 @@ export default {
 
             return _tmp;
         }
-    }
+    },
+    mounted: function() {
+        axios.get('/api/v1/tasks')
+            .then(response => (this.tasks = response.data));
+    },
 }
 </script>

@@ -799,10 +799,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_buefy___default.a);
 Vue.component('task-list-item', __WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue___default.a);
 
 new Vue({
-  el: '#app',
-  data: {
-    navigation: {}
-  }
+  el: '#app'
 });
 
 /***/ }),
@@ -1795,7 +1792,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         5 -> Cut
      */
     data: function data() {
+
         return {
+            tasks: [],
             meta: {
                 search: '',
                 categories: {
@@ -1885,6 +1884,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return _tmp;
         }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        axios.get('/api/v1/tasks').then(function (response) {
+            return _this.tasks = response.data;
+        });
     }
 };
 
