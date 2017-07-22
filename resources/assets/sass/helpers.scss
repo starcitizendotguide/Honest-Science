@@ -14,7 +14,7 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 }
 
 .fix-footer {
-    position: absolute;
+    position: relative;
     width: 100%;
     bottom: 0;
     overflow:hidden;
