@@ -15,6 +15,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => -1,
                 'name'  => 'Unknown',
+                'weight'=> 0,
                 'css'   => [
                             'class' => '',
                             'icon'  => ''
@@ -23,6 +24,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => 0,
                 'name'  => 'Released',
+                'weight'=> 1,
                 'css'   => 'task-released',
                 'css'   => [
                             'class' => 'button task-released',
@@ -32,6 +34,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => 1,
                 'name'  => 'Partially Released',
+                'weight'=> 1,
                 'css'   => [
                             'class' => 'button task-partially-released',
                             'icon'  => 'fa fa-battery-3'
@@ -40,6 +43,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => 2,
                 'name'  => 'In-Progress',
+                'weight'=> 0,
                 'css'   => [
                             'class' => 'button task-in-progress',
                             'icon'  => 'fa fa-battery-2'
@@ -48,6 +52,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => 3,
                 'name'  => 'Stagnant',
+                'weight'=> 0,
                 'css'   => [
                             'class' => 'button task-stagnant',
                             'icon'  => 'fa fa-battery-1'
@@ -56,6 +61,7 @@ class TaskStatusSeeder extends Seeder
             [
                 'id'    => 4,
                 'name'  => 'Cut/Broken',
+                'weight'=> 0,
                 'css'   => [
                             'class' => 'button task-broken',
                             'icon'  => 'fa fa-chain-broken'
@@ -67,6 +73,7 @@ class TaskStatusSeeder extends Seeder
             $tmp = new App\TaskStatus;
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
+            $tmp->weight = $status['weight'];
             $tmp->css_class = $status['css']['class'];
             $tmp->css_icon = $status['css']['icon'];
             $tmp->save();
