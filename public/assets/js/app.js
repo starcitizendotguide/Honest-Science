@@ -1761,16 +1761,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tasks: [],
             meta: {
                 search: '',
-                categories: [],
                 statuses: []
             }
-
         };
     },
     methods: {
-        isCategoryActive: function isCategoryActive(category) {
-            return this.meta.categories[category];
-        },
         resetMeta: function resetMeta() {
 
             //--- Reset Collapse
@@ -1782,22 +1777,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.meta.search = '';
 
             //--- Reset categories
-            for (var i = 0; i < this.meta.categories.length; i++) {
-                this.meta.categories[i] = false;
+            for (var i = 0; i < this.meta.statuses.length; i++) {
+                this.meta.statuses[i].css.button_classes['is-active'] = false;
             }
         },
         toFixed: function toFixed(value, digits) {
             return value.toFixed(digits);
         },
-        getButtonClass: function getButtonClass(id) {
-            var classes = {
-                'is-active': this.meta.categories[id]
-            };
-            classes[this.meta.statuses[id].css.button_class] = true;
-            return classes;
-        },
         categoryOnClick: function categoryOnClick(id) {
-            this.meta.categories[id] = !this.meta.categories[id];
+            this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
         }
     },
     computed: {
@@ -1805,24 +1793,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var _tmp = this.tasks,
                 search = this.meta.search,
-                categories = this.meta.categories;
+                statuses = this.meta.statuses;
 
-            var categoryMode = false;
-
-            for (var i = 1; i < categories.length; i++) {
-                if (categories[i] === true) {
-                    categoryMode = true;
+            //--- Going through all "status buttons" to decide whether or not, we
+            // have to include this in our search.
+            var statusMode = false;
+            for (var i = 0; i < statuses.length; i++) {
+                if (statuses[i].css.button_classes['is-active'] === true) {
+                    statusMode = true;
                 }
             }
 
-            if (!search && !categoryMode) {
+            console.log("statusMode: " + statusMode);
+
+            if (!search && !statusMode) {
                 return _tmp;
             }
 
             search = search.trim().toLowerCase();
 
             _tmp = _tmp.filter(function (item) {
-                if ((categories[item.status.id] === true || !categoryMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
+                if ((statuses[item.status.id].css.button_classes['is-active'] === true || !statusMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
                     return item;
                 }
             });
@@ -1844,18 +1835,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return;
                 }
 
-                //--- If the categories are "enabled/disabled" for search
-                $this.meta.categories[e.id] = false;
-
                 //--- Add to buttons
-                $this.meta.statuses.push({
+                var tmp = {
                     id: e.id,
                     name: e.name,
                     css: {
-                        button_class: e.css_class,
+                        button_classes: {
+                            'is-active': false
+                        },
                         icon: e.css_icon
                     }
-                });
+                };
+                tmp.css.button_classes[e.css_class] = true;
+                $this.meta.statuses.push(tmp);
             });
         });
 
@@ -19828,7 +19820,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('p', {
       staticClass: "control"
     }, [_c('a', {
-      class: _vm.getButtonClass(status.id),
+      class: status.css.button_classes,
       on: {
         "click": function($event) {
           _vm.categoryOnClick(status.id)

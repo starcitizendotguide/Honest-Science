@@ -6,7 +6,7 @@
             </p>
             <div class="field has-addons control">
                 <p class="control" v-for="status in meta.statuses">
-                    <a v-on:click="categoryOnClick(status.id)" v-bind:class="getButtonClass(status.id)" >
+                    <a v-on:click="categoryOnClick(status.id)" v-bind:class="status.css.button_classes" >
                        <span class="icon is-small"><i :class="status.css.icon"></i></span>
                        <span>{{ status.name }}</span>
                    </a>
@@ -94,16 +94,11 @@ export default {
             tasks: [],
             meta: {
                 search: '',
-                categories: [],
                 statuses: [],
             },
-
         };
     },
     methods: {
-        isCategoryActive: function(category) {
-            return this.meta.categories[category];
-        },
         resetMeta: function() {
 
             //--- Reset Collapse
@@ -113,23 +108,16 @@ export default {
             this.meta.search = '';
 
             //--- Reset categories
-            for(var i = 0; i < this.meta.categories.length; i++) {
-                this.meta.categories[i] = false;
+            for(var i = 0; i < this.meta.statuses.length; i++) {
+                this.meta.statuses[i].css.button_classes['is-active'] = false;
             }
 
         },
         toFixed(value, digits) {
             return value.toFixed(digits);
         },
-        getButtonClass(id) {
-            var classes = {
-                'is-active': this.meta.categories[id],
-            };
-            classes[this.meta.statuses[id].css.button_class] = true;
-            return classes;
-        },
         categoryOnClick(id) {
-            this.meta.categories[id] = !this.meta.categories[id];
+            this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
         }
     },
     computed: {
@@ -137,17 +125,20 @@ export default {
 
             var _tmp = this.tasks,
                 search = this.meta.search,
-                categories = this.meta.categories;
+                statuses = this.meta.statuses;
 
-            var categoryMode = false;
-
-            for(var i = 1; i < categories.length; i++) {
-                if(categories[i] === true) {
-                    categoryMode = true;
+            //--- Going through all "status buttons" to decide whether or not, we
+            // have to include this in our search.
+            var statusMode = false;
+            for(var i = 0; i < statuses.length; i++) {
+                if(statuses[i].css.button_classes['is-active'] === true) {
+                    statusMode = true;
                 }
             }
 
-            if(!search && !categoryMode){
+            console.log("statusMode: " + statusMode);
+
+            if(!search && !statusMode){
                 return _tmp;
             }
 
@@ -155,7 +146,7 @@ export default {
 
             _tmp = _tmp.filter(function(item){
                 if(
-                    (categories[item.status.id] === true || !categoryMode) &&
+                    (statuses[item.status.id].css.button_classes['is-active'] === true || !statusMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1
@@ -181,18 +172,19 @@ export default {
                         return;
                     }
 
-                    //--- If the categories are "enabled/disabled" for search
-                    $this.meta.categories[e.id] = false;
-
                     //--- Add to buttons
-                    $this.meta.statuses.push({
+                    var tmp = {
                         id: e.id,
                         name: e.name,
                         css: {
-                            button_class: e.css_class,
+                            button_classes: {
+                                'is-active': false,
+                            },
                             icon: e.css_icon
-                        }
-                    });
+                        },
+                    };
+                    tmp.css.button_classes[e.css_class] = true;
+                    $this.meta.statuses.push(tmp);
 
                 });
 
