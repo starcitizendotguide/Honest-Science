@@ -19818,6 +19818,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('p', {
       staticClass: "control"
     }, [_c('a', {
+      staticClass: "button",
       class: status.css.button_classes,
       on: {
         "click": function($event) {
@@ -19868,7 +19869,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [(task.collapsed) ? _c('div', _vm._l((task.children), function(child) {
       return _c('div', {
         staticClass: "box",
-        class: child.status.css
+        class: child.status.css_class
       }, [_c('article', {
         staticClass: "media"
       }, [_c('div', {

@@ -44,8 +44,8 @@ class Task extends Model
             }
         });
         $table = collect($table);
+        $table = $table->sort();
 
-        // @TODO Needs some work, because it doesn't work always.
         // @Note The idea behind this is that the 'rating' field of TaskStatus
         // describes how 'good', in terms of progress, each state is; the higher
         // the value, the higher the impact on a positive progess.
@@ -53,7 +53,6 @@ class Task extends Model
         // the highest impact. - The idea behind this is that a task doesn't get flagged
         // as e.g. 'released' just because it has the same amount of items than a
         // worse group.
-        $table->sort()->reverse();
         return TaskStatus::byId($table->keys()->first())->first();
     }
 

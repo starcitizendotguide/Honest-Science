@@ -6,7 +6,7 @@
             </p>
             <div class="field has-addons control">
                 <p class="control" v-for="status in meta.statuses">
-                    <a v-on:click="categoryOnClick(status.id)" v-bind:class="status.css.button_classes" >
+                    <a v-on:click="categoryOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
                        <span class="icon is-small"><i :class="status.css.icon"></i></span>
                        <span>{{ status.name }}</span>
                    </a>
@@ -58,7 +58,7 @@
                         <transition name="fade">
                             <div v-if="task.collapsed">
 
-                                <div class="box" v-bind:class="child.status.css" v-for="child in task.children">
+                                <div class="box" v-bind:class="child.status.css_class" v-for="child in task.children">
                                     <article class="media">
                                         <div class="media-left">
                                             <figure class="image is-64x64">
