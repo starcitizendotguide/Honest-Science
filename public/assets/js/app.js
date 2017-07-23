@@ -1804,8 +1804,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
 
-            console.log("statusMode: " + statusMode);
-
             if (!search && !statusMode) {
                 return _tmp;
             }

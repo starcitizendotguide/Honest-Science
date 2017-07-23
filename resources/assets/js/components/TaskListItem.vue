@@ -136,8 +136,6 @@ export default {
                 }
             }
 
-            console.log("statusMode: " + statusMode);
-
             if(!search && !statusMode){
                 return _tmp;
             }

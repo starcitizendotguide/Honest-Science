@@ -10,7 +10,7 @@ class TaskStatus extends Model
     protected $fillable = [
         'id',
         'name',
-        'weight',
+        'rating',
         'css_class',
         'css_icon'
     ];
