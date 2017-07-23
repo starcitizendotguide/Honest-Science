@@ -14,11 +14,18 @@
     <body>
         <div id="app">
             @include('includes.navigation')
-            @include('includes.manage.navigation')
 
-            @yield('content')
+            <div class="columns">
+                <div class="column is-1">
+                    @include('includes.manage.navigation')
+                </div>
+                <div class="column is-11 content">
+                    @yield('content')
+                </div>
+            </div>
+
         </div>
         <script src="{{ mix('assets/js/app.js') }}" ></script>
+        @yield('elixir')
     </body>
-    @include('includes.footer')
 </html>

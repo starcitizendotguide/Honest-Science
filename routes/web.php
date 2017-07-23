@@ -21,6 +21,11 @@ Route::prefix('manage')
     ->middleware('permission:read-managment')
     ->group(function() {
         Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
+
+        Route::prefix('content')
+            ->group(function() {
+                Route::get('tasks', 'ManageContentController@tasks')->name('manage.content.tasks');
+            });
     }
 );
 

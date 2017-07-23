@@ -26,7 +26,10 @@ class TasksController extends Controller
                 'description'   => $task->description,
                 'status'        => $task->status(),
                 'progress'      => 0,
-                'children'      => []
+                'children'      => [],
+
+                'created_at'    => $task->created_at,
+                'updated_at'    => $task->updated_at
             ];
 
             //--- Append Children
@@ -48,7 +51,10 @@ class TasksController extends Controller
                     'description'   => $child->description,
                     'status'        => $child->status(),
                     'progress'      => $child->progress,
-                    'type'          => $child->type
+                    'type'          => $child->type,
+
+                    'created_at'    => $child->created_at,
+                    'updated_at'    => $child->updated_at
                 ];
 
                 $progress += $child['progress'];
@@ -92,6 +98,8 @@ class TasksController extends Controller
         $data['name']           = $task->name;
         $data['description']    = $task->description;
         $data['status']         = $task->status();
+        $data['created_at']     = $task->created_at;
+        $data['updated_at']     = $task->updated_at;
 
         //--- Append Children
         $children = $task->children();
@@ -112,7 +120,10 @@ class TasksController extends Controller
                 'description'   => $child->description,
                 'status'        => $child->status(),
                 'progress'      => $child->progress,
-                'type'          => $child->type
+                'type'          => $child->type,
+
+                'created_at'    => $child->created_at,
+                'updated_at'    => $child->updated_at
             ];
 
             $progress += $child['progress'];

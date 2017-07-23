@@ -1,9 +1,5 @@
 @extends('layouts.manage')
 
 @section('content')
-
-    <div>
-        <p>Hallo</p>
-    </div>
-
+<manage-tasks-item></manage-tasks-item>
 @endsection
