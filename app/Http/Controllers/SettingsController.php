@@ -20,12 +20,7 @@ class SettingsController extends Controller
         $user = Auth::user();
 
         return view('settings', [
-            'settings' => [
-                'rsi-handle'    => $user->name,
-                'email'         => $user->email,
-                'updated_at'    => $user->updated_at,
-                'created_at'    => $user->created_at
-            ]
+            'user' => $user
         ]);
     }
 

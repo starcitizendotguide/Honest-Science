@@ -14,10 +14,11 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 }
 
 .fix-footer {
-    position: relative;
+    position: absolute;
     width: 100%;
+    height: 100px;
     bottom: 0;
-    overflow:hidden;
+    left: 0;
 }
 
 .seperator {

@@ -24,14 +24,21 @@ class TasksController extends Controller
                 'name'          => $task['name'],
                 'description'   => $task['description'],
                 'status'        => $task['status'],
-                
+
                 'progress'      => 0,
                 'collapsed'     => false,
                 'children'      => []
             ];
 
             //--- Append Children
-            $children = $task->children()->get();
+            $children = $task->children();
+
+            if(!($children->exists())) {
+                continue;
+            }
+
+            $children = $children->get();
+
             $childrenArray = [];
             $progress = 0;
 
@@ -60,4 +67,65 @@ class TasksController extends Controller
         return $data;
     }
 
+    public function show($id)
+    {
+
+        $data = [
+            'id'            => null,
+            'name'          => null,
+            'description'   => null,
+            'status'        => null,
+
+            'progress'      => 0,
+            'children'      => []
+        ];
+
+        $task = Task::where('id', '=', $id);
+
+        if(!($task->exists()))
+        {
+            return $data;
+        }
+
+        $task = $task->first();
+
+        $data['id']             = $task['id'];
+        $data['name']           = $task['name'];
+        $data['description']    = $task['description'];
+        $data['status']         = $task['status'];
+
+        //--- Append Children
+        $children = $task->children();
+
+        if(!($children->exists())) {
+            return $data;
+        }
+
+        $children = $children->get();
+
+        $childrenArray = [];
+        $progress = 0;
+
+        foreach ($children as $child) {
+            $childrenArray[] = [
+                'id'            => $child['id'],
+                'name'          => $child['name'],
+                'description'   => $child['description'],
+                'status'        => $child['status'],
+                'progress'      => $child['progress'],
+                'type'          => $child['type']
+            ];
+
+            $progress += $child['progress'];
+        }
+
+        //@TODO Is the overall progress of the parent task just the average
+        //of all sub tasks? There should be some kind of weight be assigned
+        // to each task...
+        $data['progress'] = ($progress / count($childrenArray));
+        $data['children'] = $childrenArray;
+
+        return $data;
+    }
+    
 }

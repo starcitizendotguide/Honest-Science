@@ -798,9 +798,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_buefy___default.a);
 
 Vue.component('task-list-item', __WEBPACK_IMPORTED_MODULE_2__components_TaskListItem_vue___default.a);
 
-new Vue({
-  el: '#app'
-});
+new Vue({ el: '#app', data: { navigation: {} } });
 
 /***/ }),
 /* 9 */

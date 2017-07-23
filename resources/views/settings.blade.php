@@ -7,16 +7,23 @@
 
             <form class="form" action="#" method="POST">
                 <div class="field">
+                    <label class="label">Role</label>
+                    <p class="control">
+                        <input class="input" type="text" name="text" value="{{ $user->roles()->get()->implode('display_name', ', ') }}" disabled>
+                    </p>
+                </div>
+
+                <div class="field">
                     <label class="label">RSI Handle</label>
                     <p class="control">
-                        <input class="input" type="text" value="{{ $settings['rsi-handle'] }}" disabled>
+                        <input class="input" type="text" value="{{ $user->name }}" disabled>
                     </p>
                 </div>
 
                 <div class="field">
                     <label class="label">E-Mail</label>
                     <p class="control">
-                        <input class="input" type="text" value="{{ $settings['email'] }}" placeholder="Text input" disabled>
+                        <input class="input" type="text" value="{{ $user->email }}" placeholder="Text input" disabled>
                     </p>
                 </div>
 
@@ -34,16 +41,16 @@
                 <div class="column">
                     <h5 class="has-text-centered is-muted">
                         <span>Updated: </span>
-                        <b-tooltip label="{{ $settings['updated_at'] }}" dashed sqaure>
-                            {{ $settings['updated_at']->diffForHumans() }}
+                        <b-tooltip label="{{ $user->updated_at }}" dashed sqaure>
+                            {{ $user->updated_at->diffForHumans() }}
                         </b-tooltip>
                     </h5>
                 </div>
                 <div class="column">
                     <h5 class="has-text-centered is-muted">
                         <span>Created: </span>
-                        <b-tooltip label="{{ $settings['created_at'] }}" dashed square>
-                            {{ $settings['created_at']->diffForHumans() }}
+                        <b-tooltip label="{{ $user->created_at }}" dashed square>
+                            {{ $user->created_at->diffForHumans() }}
                         </b-tooltip>
                     </h5>
                 </div>

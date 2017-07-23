@@ -18,7 +18,7 @@ Route::get('/', 'HomeController@index')->name('home.index');
 Route::get('settings', 'SettingsController@index')->name('settings.index');
 
 Route::prefix('manage')
-    ->middleware('role:superadministrator|administrator|editor|author|contributor')
+    ->middleware('permission:read-managment')
     ->group(function() {
         Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
     }
@@ -26,7 +26,12 @@ Route::prefix('manage')
 
 Route::group(['prefix' => 'api/v1'], function() {
 
-        Route::resource('tasks',  'TasksController');
+        Route::resource('tasks',  'TasksController', [
+            'only' => [
+                'index', 'show',
+                'destroy'
+            ]
+        ]);
 
     }
 );

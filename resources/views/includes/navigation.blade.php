@@ -26,7 +26,9 @@
                     <div class="seperator"></div>
                     <b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
                     <b-dropdown-option class="has-text-centered"><a href="{{ route('settings.index') }}">Settings</a></b-dropdown-option>
+                    @if(Laratrust::can('read-managment'))
                     <b-dropdown-option class="has-text-centered"><a href="#">Management</a></b-dropdown-option>
+                    @endif
                     <div class="seperator"></div>
                     <b-dropdown-option class="has-text-centered">
                         <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

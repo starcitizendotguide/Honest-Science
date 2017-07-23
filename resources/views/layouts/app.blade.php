@@ -19,5 +19,6 @@
         <script src="{{ mix('assets/js/app.js') }}"></script>
         @yield('elixir')
     </body>
-    @include('includes.footer')
+    {{-- @TODO needs to be fixed
+     @include('includes.footer')--}}
 </html>

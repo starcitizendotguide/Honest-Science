@@ -16,6 +16,11 @@ class TaskChild extends Model
         'type'
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function parent() {
         return $this->hasOne('App\Task');
     }

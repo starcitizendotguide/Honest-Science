@@ -12,9 +12,11 @@ class Task extends Model
         'description',
         'status_id',
         'progress',
+    ];
 
-        'updated_at',
-        'created_at'
+    protected $dates = [
+        'created_at',
+        'updated_at'
     ];
 
     public function children() {
