@@ -1798,29 +1798,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     methods: {
-        statusToClass: function statusToClass(status) {
-
-            switch (status) {
-
-                //@TODO Fix CSS. Hovering over the TR in a table looks, well..., 'okay'
-                case 0:
-                    return { 'task-released': true };
-                case 1:
-                    return { 'task-partially-released': true };
-                case 2:
-                    return { 'task-in-progress': true };
-                case 3:
-                    return { 'task-stagnant': true };
-                case 4:
-                    return { 'task-broken': true };
-                case 5:
-                    return { 'task-cut': true };
-
-                default:
-                    return {};
-
-            }
-        },
         isCategoryActive: function isCategoryActive(category) {
             return this.meta.categories[category];
         },
@@ -1877,7 +1854,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         axios.get('/api/v1/tasks').then(function (response) {
-            return _this.tasks = response.data;
+            var data = response.data;
+
+            data.forEach(function (e) {
+                e.collapsed = false;
+            });
+
+            _this.tasks = data;
         });
     }
 };
@@ -19911,7 +19894,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media-content"
     }, [_c('div', {
       staticClass: "content"
-    }, [_c('p', [_c('strong', [_vm._v(_vm._s(task.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(task.status))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(task.progress * 100, 2)) + "%")]), _vm._v(" "), _c('span', [_c('i', {
+    }, [_c('p', [_c('strong', [_vm._v(_vm._s(task.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(task.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(task.progress * 100, 2)) + "%")]), _vm._v(" "), _c('span', [_c('i', {
       staticClass: "fa is-focused is-pulled-right",
       class: {
         'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed
@@ -19934,7 +19917,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [(task.collapsed) ? _c('div', _vm._l((task.children), function(child) {
       return _c('div', {
         staticClass: "box",
-        class: _vm.statusToClass(child.status)
+        class: child.status.css
       }, [_c('article', {
         staticClass: "media"
       }, [_c('div', {
@@ -19950,7 +19933,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "media-content"
       }, [_c('div', {
         staticClass: "content"
-      }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                            " + _vm._s(child.description) + "\n                                            "), _c('br')])])])])
+      }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                            " + _vm._s(child.description) + "\n                                            "), _c('br')])])])])
     })) : _vm._e()])], 1)])])])
   })], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

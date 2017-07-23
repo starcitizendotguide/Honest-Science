@@ -26,7 +26,7 @@ class TaskChild extends Model
     }
 
     public function status() {
-        return $this->hasOne('App\TaskStatus', 'id', 'status');
+        return $this->hasOne('App\TaskStatus', 'id', 'status')->first();
     }
 
 }

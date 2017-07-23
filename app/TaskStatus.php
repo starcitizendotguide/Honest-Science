@@ -22,4 +22,8 @@ class TaskStatus extends Model
         return $this->hasMany('App\Task', 'status', 'id');
     }
 
+    public function scopeById($query, $id) {
+        return $query->where('id', '=', $id);
+    }
+
 }

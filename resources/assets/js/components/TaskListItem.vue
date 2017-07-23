@@ -71,7 +71,7 @@
                     <div class="content">
                         <p>
                             <strong>{{ task.name }}</strong>
-                            <small>{{ task.status }}</small>
+                            <small>{{ task.status.name }}</small>
                             <small>{{ toFixed(task.progress * 100, 2) }}%</small>
                             <span><i v-on:click="task.collapsed = !task.collapsed" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
                             <br />
@@ -82,7 +82,7 @@
                         <transition name="fade">
                             <div v-if="task.collapsed">
 
-                                <div class="box" v-bind:class="statusToClass(child.status)" v-for="child in task.children">
+                                <div class="box" v-bind:class="child.status.css" v-for="child in task.children">
                                     <article class="media">
                                         <div class="media-left">
                                             <figure class="image is-64x64">
@@ -92,7 +92,7 @@
                                         <div class="media-content">
                                             <div class="content">
                                                 <strong>{{ child.name }}</strong>
-                                                <small>{{ child.status }}</small>
+                                                <small>{{ child.status.name }}</small>
                                                 <small>{{ toFixed(child.progress * 100, 2) }}%</small>
                                                 <br />
                                                 {{ child.description }}
@@ -131,22 +131,6 @@ export default {
         };
     },
     methods: {
-        statusToClass: function(status) {
-
-            switch (status) {
-
-                //@TODO Fix CSS. Hovering over the TR in a table looks, well..., 'okay'
-                case 0: return { 'task-released': true };
-                case 1: return { 'task-partially-released': true };
-                case 2: return { 'task-in-progress': true };
-                case 3: return { 'task-stagnant': true };
-                case 4: return { 'task-broken': true };
-                case 5: return { 'task-cut': true };
-
-                default: return {};
-
-            }
-        },
         isCategoryActive: function(category) {
             return this.meta.categories[category];
         },
@@ -207,7 +191,15 @@ export default {
     },
     mounted: function() {
         axios.get('/api/v1/tasks')
-            .then(response => (this.tasks = response.data));
+            .then(response => {
+                var data = response.data;
+
+                data.forEach(function(e) {
+                    e.collapsed = false;
+                });
+
+                this.tasks = data;
+            });
     },
 }
 </script>

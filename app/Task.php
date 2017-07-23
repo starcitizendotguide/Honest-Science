@@ -21,4 +21,9 @@ class Task extends Model
         return $this->hasMany('App\TaskChild');
     }
 
+    public function status() {
+        //@TODO The status is based on the completion of all sub tasks
+        return TaskStatus::byId(1)->first();
+    }
+
 }

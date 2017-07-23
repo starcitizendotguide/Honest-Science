@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Task;
 use App\TaskChild;
+use App\TaskStatus;
 
 class TasksController extends Controller
 {
@@ -20,10 +21,10 @@ class TasksController extends Controller
         foreach ($tasks as $task) {
 
             $tmp = [
-                'id'            => $task['id'],
-                'name'          => $task['name'],
-                'description'   => $task['description'],
-                'status'        => 1, //@TODO The status is based on the completion of all sub tasks
+                'id'            => $task->id,
+                'name'          => $task->name,
+                'description'   => $task->description,
+                'status'        => $task->status(),
                 'progress'      => 0,
                 'children'      => []
             ];
@@ -42,12 +43,12 @@ class TasksController extends Controller
 
             foreach ($children as $child) {
                 $childrenArray[] = [
-                    'id'            => $child['id'],
-                    'name'          => $child['name'],
-                    'description'   => $child['description'],
-                    'status'        => $child['status'],
-                    'progress'      => $child['progress'],
-                    'type'          => $child['type']
+                    'id'            => $child->id,
+                    'name'          => $child->name,
+                    'description'   => $child->description,
+                    'status'        => $child->status(),
+                    'progress'      => $child->progress,
+                    'type'          => $child->type
                 ];
 
                 $progress += $child['progress'];
@@ -87,10 +88,10 @@ class TasksController extends Controller
 
         $task = $task->first();
 
-        $data['id']             = $task['id'];
-        $data['name']           = $task['name'];
-        $data['description']    = $task['description'];
-        $data['status']         = $task['status'];
+        $data['id']             = $task->id;
+        $data['name']           = $task->name;
+        $data['description']    = $task->description;
+        $data['status']         = $task->status();
 
         //--- Append Children
         $children = $task->children();
@@ -106,12 +107,12 @@ class TasksController extends Controller
 
         foreach ($children as $child) {
             $childrenArray[] = [
-                'id'            => $child['id'],
-                'name'          => $child['name'],
-                'description'   => $child['description'],
-                'status'        => $child['status'],
-                'progress'      => $child['progress'],
-                'type'          => $child['type']
+                'id'            => $child->id,
+                'name'          => $child->name,
+                'description'   => $child->description,
+                'status'        => $child->status(),
+                'progress'      => $child->progress,
+                'type'          => $child->type
             ];
 
             $progress += $child['progress'];
