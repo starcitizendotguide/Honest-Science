@@ -68,9 +68,3 @@
 
     </div>
 @endsection
-
-@section('elixir')
-    <script type="text/javascript">
-
-    </script>
-@endsection

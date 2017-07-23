@@ -1780,17 +1780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    /**
-        @TODO: Index for use in database, probably
-        0 -> Released
-        1 -> Partially Released
-        2 -> In-Progress
-        3 -> Stagnant
-        4 -> Broken
-        5 -> Cut
-     */
     data: function data() {
-
         return {
             tasks: [],
             meta: {

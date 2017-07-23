@@ -113,18 +113,7 @@
 
 <script type="text-javascript">
 export default {
-    /**
-        @TODO: Index for use in database, probably
-        0 -> Released
-        1 -> Partially Released
-        2 -> In-Progress
-        3 -> Stagnant
-        4 -> Broken
-        5 -> Cut
-
-    */
     data: function() {
-
         return {
             tasks: [],
             meta: {

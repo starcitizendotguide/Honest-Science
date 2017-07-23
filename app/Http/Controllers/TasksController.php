@@ -23,10 +23,8 @@ class TasksController extends Controller
                 'id'            => $task['id'],
                 'name'          => $task['name'],
                 'description'   => $task['description'],
-                'status'        => $task['status'],
-
+                'status'        => 1, //@TODO The status is based on the completion of all sub tasks
                 'progress'      => 0,
-                'collapsed'     => false,
                 'children'      => []
             ];
 
@@ -127,5 +125,5 @@ class TasksController extends Controller
 
         return $data;
     }
-    
+
 }

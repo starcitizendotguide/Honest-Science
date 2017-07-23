@@ -4,12 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class TaskStatus extends Model
 {
 
     protected $fillable = [
+        'id',
         'name',
-        'description',
+        'css',
     ];
 
     protected $dates = [
@@ -17,8 +18,8 @@ class Task extends Model
         'updated_at'
     ];
 
-    public function children() {
-        return $this->hasMany('App\TaskChild');
+    public function tasks() {
+        return $this->hasMany('App\Task', 'status', 'id');
     }
 
 }

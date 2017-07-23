@@ -16,7 +16,6 @@ class TasksSeeder extends Seeder
             [
                 'name' => 'Alpha',
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                'status' => 1,
                 'children' => [
                     [
                         'name' => 'Beta',
@@ -37,7 +36,6 @@ class TasksSeeder extends Seeder
             [
                 'name' => 'Delta',
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                'status' => 2,
                 'children' => [
                     [
                         'name' => 'Epsilon',
@@ -51,7 +49,6 @@ class TasksSeeder extends Seeder
             [
                 'name' => 'Zeta',
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
-                'status' => 3,
                 'children' => [
                     [
                         'name' => 'Eta',
@@ -80,27 +77,22 @@ class TasksSeeder extends Seeder
 
         foreach($data as $parent) {
 
-            $id = DB::table('tasks')->insertGetId([
-                'name'          => $parent['name'],
-                'description'   => $parent['description'],
-                'status_id'     => $parent['status'],
 
-                'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
-                'created_at'    => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
+            $task = new App\Task;
+            $task->name = $parent['name'];
+            $task->description = $parent['description'];
+            $task->save();
 
             foreach ($parent['children'] as $child) {
-                DB::table('task_children')->insert([
-                    'task_id'       => $id,
-                    'name'          => $child['name'],
-                    'description'   => $child['description'],
-                    'status_id'     => $child['status'],
-                    'progress'      => $child['progress'],
-                    'type'          => $child['type'],
 
-                    'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
-                    'created_at'    => Carbon::now()->format('Y-m-d H:i:s')
-                ]);
+                $tmp = new App\TaskChild;
+                $tmp->task_id = $task->id;
+                $tmp->name = $child['name'];
+                $tmp->description = $child['description'];
+                $tmp->status = $child['status'];
+                $tmp->progress = $child['progress'];
+                $tmp->type = $child['type'];
+                $tmp->save();
             }
 
         }

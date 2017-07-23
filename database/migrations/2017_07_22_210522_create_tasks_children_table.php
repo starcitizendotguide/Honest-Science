@@ -22,7 +22,7 @@ class CreateTasksChildrenTable extends Migration
             $table->string('name');
             $table->text('description');
 
-            $table->smallInteger('status_id');
+            $table->integer('status');
             $table->integer('type');
             $table->double('progress');
 

@@ -11,7 +11,7 @@ class TaskChild extends Model
         'parent_id',
         'name',
         'description',
-        'status_id',
+        'status',
         'progress',
         'type'
     ];
@@ -23,6 +23,10 @@ class TaskChild extends Model
 
     public function parent() {
         return $this->hasOne('App\Task');
+    }
+
+    public function status() {
+        return $this->hasOne('App\TaskStatus', 'id', 'status');
     }
 
 }
