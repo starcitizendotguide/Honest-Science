@@ -10,7 +10,8 @@ class TaskStatus extends Model
     protected $fillable = [
         'id',
         'name',
-        'css',
+        'css_class',
+        'css_icon'
     ];
 
     protected $dates = [

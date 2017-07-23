@@ -1754,30 +1754,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -1785,14 +1761,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tasks: [],
             meta: {
                 search: '',
-                categories: {
-                    0: false,
-                    1: false,
-                    2: false,
-                    3: false,
-                    4: false,
-                    5: false
-                }
+                categories: [],
+                statuses: []
             }
 
         };
@@ -1805,19 +1775,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //--- Reset Collapse
             this.tasks.map(function (v) {
-                return v.collapsed = false;
+                v.collapsed = false;
             });
 
             //--- Reset search value
             this.meta.search = '';
 
             //--- Reset categories
-            for (var i = 0; i < Object.keys(this.meta.categories).length; i++) {
+            for (var i = 0; i < this.meta.categories.length; i++) {
                 this.meta.categories[i] = false;
             }
         },
         toFixed: function toFixed(value, digits) {
             return value.toFixed(digits);
+        },
+        getButtonClass: function getButtonClass(id) {
+            var classes = {
+                'is-active': this.meta.categories[id]
+            };
+            classes[this.meta.statuses[id].css.button_class] = true;
+            return classes;
+        },
+        categoryOnClick: function categoryOnClick(id) {
+            this.meta.categories[id] = !this.meta.categories[id];
         }
     },
     computed: {
@@ -1829,7 +1809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var categoryMode = false;
 
-            for (var i = 0; i < 6; i++) {
+            for (var i = 1; i < categories.length; i++) {
                 if (categories[i] === true) {
                     categoryMode = true;
                 }
@@ -1842,7 +1822,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             search = search.trim().toLowerCase();
 
             _tmp = _tmp.filter(function (item) {
-                if ((categories[item.status] === true || !categoryMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
+                if ((categories[item.status.id] === true || !categoryMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
                     return item;
                 }
             });
@@ -1852,6 +1832,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         var _this = this;
+
+        axios.get('/api/v1/statuses').then(function (response) {
+
+            var data = response.data;
+            var categories = [];
+            var $this = _this;
+            data.forEach(function (e) {
+
+                if (e.id < 0) {
+                    return;
+                }
+
+                //--- If the categories are "enabled/disabled" for search
+                $this.meta.categories[e.id] = false;
+
+                //--- Add to buttons
+                $this.meta.statuses.push({
+                    id: e.id,
+                    name: e.name,
+                    css: {
+                        button_class: e.css_class,
+                        icon: e.css_icon
+                    }
+                });
+            });
+        });
 
         axios.get('/api/v1/tasks').then(function (response) {
             var data = response.data;
@@ -19818,79 +19824,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "field has-addons control"
-  }, [_c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-released",
-    class: {
-      'is-active': _vm.isCategoryActive(0)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[0] = !_vm.meta.categories[0]
+  }, _vm._l((_vm.meta.statuses), function(status) {
+    return _c('p', {
+      staticClass: "control"
+    }, [_c('a', {
+      class: _vm.getButtonClass(status.id),
+      on: {
+        "click": function($event) {
+          _vm.categoryOnClick(status.id)
+        }
       }
-    }
-  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v("Released")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-partially-released",
-    class: {
-      'is-active': _vm.isCategoryActive(1)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[1] = !_vm.meta.categories[1]
-      }
-    }
-  }, [_vm._m(1), _vm._v(" "), _c('span', [_vm._v("Partially Released")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-in-progress",
-    class: {
-      'is-active': _vm.isCategoryActive(2)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[2] = !_vm.meta.categories[2]
-      }
-    }
-  }, [_vm._m(2), _vm._v(" "), _c('span', [_vm._v("In-Progress")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-stagnant",
-    class: {
-      'is-active': _vm.isCategoryActive(3)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[3] = !_vm.meta.categories[3]
-      }
-    }
-  }, [_vm._m(3), _vm._v(" "), _c('span', [_vm._v("Stagnant")])])]), _vm._v(" "), _c('p', {
-    staticClass: "control"
-  }, [_c('a', {
-    staticClass: "button task-broken",
-    class: {
-      'is-active': _vm.isCategoryActive(4)
-    },
-    on: {
-      "click": function($event) {
-        _vm.meta.categories[4] = !_vm.meta.categories[4]
-      }
-    }
-  }, [_vm._m(4), _vm._v(" "), _c('span', [_vm._v("Cut/Broken")])])])]), _vm._v(" "), _c('p', {
+    }, [_c('span', {
+      staticClass: "icon is-small"
+    }, [_c('i', {
+      class: status.css.icon
+    })]), _vm._v(" "), _c('span', [_vm._v(_vm._s(status.name))])])])
+  })), _vm._v(" "), _c('p', {
     staticClass: "control is-pulled-right"
   }, [_c('a', {
     staticClass: "button",
     on: {
       "click": _vm.resetMeta
     }
-  }, [_vm._m(5), _vm._v(" "), _c('span', [_vm._v("Reset")])])])]), _vm._v(" "), _vm._l((_vm.filteredItems), function(task) {
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v("Reset")])])])]), _vm._v(" "), _vm._l((_vm.filteredItems), function(task) {
     return _c('div', {
       staticClass: "box"
     }, [_c('article', {
       staticClass: "media"
-    }, [_vm._m(6, true), _vm._v(" "), _c('div', {
+    }, [_vm._m(1, true), _vm._v(" "), _c('div', {
       staticClass: "media-content"
     }, [_c('div', {
       staticClass: "content"
@@ -19937,36 +19898,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })) : _vm._e()])], 1)])])])
   })], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-battery-4"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-battery-3"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-battery-2"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-battery-1"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-chain-broken"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small"
   }, [_c('i', {

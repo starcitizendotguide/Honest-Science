@@ -13,34 +13,53 @@ class TaskStatusSeeder extends Seeder
     {
         $statuses = [
             [
+                'id'    => -1,
+                'name'  => 'Unknown',
+                'css'   => [
+                            'class' => '',
+                            'icon'  => ''
+                        ]
+            ],
+            [
                 'id'    => 0,
                 'name'  => 'Released',
-                'css'   => 'task-released'
+                'css'   => 'task-released',
+                'css'   => [
+                            'class' => 'button task-released',
+                            'icon'  => 'fa fa-battery-4'
+                        ]
             ],
             [
                 'id'    => 1,
                 'name'  => 'Partially Released',
-                'css'   => 'task-partially-released'
+                'css'   => [
+                            'class' => 'button task-partially-released',
+                            'icon'  => 'fa fa-battery-3'
+                        ]
             ],
             [
                 'id'    => 2,
                 'name'  => 'In-Progress',
-                'css'   => 'task-in-progress'
+                'css'   => [
+                            'class' => 'button task-in-progress',
+                            'icon'  => 'fa fa-battery-2'
+                        ]
             ],
             [
                 'id'    => 3,
                 'name'  => 'Stagnant',
-                'css'   => 'task-stagnant'
+                'css'   => [
+                            'class' => 'button task-stagnant',
+                            'icon'  => 'fa fa-battery-1'
+                        ]
             ],
             [
                 'id'    => 4,
-                'name'  => 'Broken',
-                'css'   => 'task-broken'
-            ],
-            [
-                'id'    => 5,
-                'name'  => 'Cut',
-                'css'   => 'task-cut'
+                'name'  => 'Cut/Broken',
+                'css'   => [
+                            'class' => 'button task-broken',
+                            'icon'  => 'fa fa-chain-broken'
+                        ]
             ]
         ];
 
@@ -48,7 +67,8 @@ class TaskStatusSeeder extends Seeder
             $tmp = new App\TaskStatus;
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
-            $tmp->css = $status['css'];
+            $tmp->css_class = $status['css']['class'];
+            $tmp->css_icon = $status['css']['icon'];
             $tmp->save();
         }
     }

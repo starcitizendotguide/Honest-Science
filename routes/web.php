@@ -33,5 +33,11 @@ Route::group(['prefix' => 'api/v1'], function() {
             ]
         ]);
 
+        Route::resource('statuses', 'TaskStatusesController', [
+            'only' => [
+                'index', 'show'
+            ]
+        ]);
+
     }
 );

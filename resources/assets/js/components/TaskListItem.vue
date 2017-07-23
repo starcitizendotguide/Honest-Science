@@ -5,35 +5,11 @@
                 <input v-model="meta.search" class="input" placeholder="Search...">
             </p>
             <div class="field has-addons control">
-                <p class="control">
-                    <a v-on:click="meta.categories[0] = !meta.categories[0]" v-bind:class="{ 'is-active': isCategoryActive(0) }" class="button task-released">
-                        <span class="icon is-small"><i class="fa fa-battery-4"></i></span>
-                        <span>Released</span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a v-on:click="meta.categories[1] = !meta.categories[1]" v-bind:class="{ 'is-active': isCategoryActive(1) }" class="button task-partially-released">
-                        <span class="icon is-small"><i class="fa fa-battery-3"></i></span>
-                        <span>Partially Released</span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a v-on:click="meta.categories[2] = !meta.categories[2]" v-bind:class="{ 'is-active': isCategoryActive(2) }" class="button task-in-progress">
-                        <span class="icon is-small"><i class="fa fa-battery-2"></i></span>
-                        <span>In-Progress</span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a v-on:click="meta.categories[3] = !meta.categories[3]" v-bind:class="{ 'is-active': isCategoryActive(3) }" class="button task-stagnant">
-                        <span class="icon is-small"><i class="fa fa-battery-1"></i></span>
-                        <span>Stagnant</span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a v-on:click="meta.categories[4] = !meta.categories[4]" v-bind:class="{ 'is-active': isCategoryActive(4) }" class="button task-broken">
-                        <span class="icon is-small"><i class="fa fa-chain-broken"></i></span>
-                        <span>Cut/Broken</span>
-                    </a>
+                <p class="control" v-for="status in meta.statuses">
+                    <a v-on:click="categoryOnClick(status.id)" v-bind:class="getButtonClass(status.id)" >
+                       <span class="icon is-small"><i :class="status.css.icon"></i></span>
+                       <span>{{ status.name }}</span>
+                   </a>
                 </p>
             </div>
             <p class="control is-pulled-right">
@@ -118,14 +94,8 @@ export default {
             tasks: [],
             meta: {
                 search: '',
-                categories: {
-                    0: false,
-                    1: false,
-                    2: false,
-                    3: false,
-                    4: false,
-                    5: false
-                }
+                categories: [],
+                statuses: [],
             },
 
         };
@@ -137,20 +107,29 @@ export default {
         resetMeta: function() {
 
             //--- Reset Collapse
-            this.tasks.map(v => v.collapsed = false);
+            this.tasks.map(v => { v.collapsed = false;  });
 
             //--- Reset search value
             this.meta.search = '';
 
             //--- Reset categories
-            for(var i = 0; i < Object.keys(this.meta.categories).length; i++) {
+            for(var i = 0; i < this.meta.categories.length; i++) {
                 this.meta.categories[i] = false;
             }
-
 
         },
         toFixed(value, digits) {
             return value.toFixed(digits);
+        },
+        getButtonClass(id) {
+            var classes = {
+                'is-active': this.meta.categories[id],
+            };
+            classes[this.meta.statuses[id].css.button_class] = true;
+            return classes;
+        },
+        categoryOnClick(id) {
+            this.meta.categories[id] = !this.meta.categories[id];
         }
     },
     computed: {
@@ -162,7 +141,7 @@ export default {
 
             var categoryMode = false;
 
-            for(var i = 0; i < 6; i++) {
+            for(var i = 1; i < categories.length; i++) {
                 if(categories[i] === true) {
                     categoryMode = true;
                 }
@@ -176,7 +155,7 @@ export default {
 
             _tmp = _tmp.filter(function(item){
                 if(
-                    (categories[item.status] === true || !categoryMode) &&
+                    (categories[item.status.id] === true || !categoryMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1
@@ -187,9 +166,38 @@ export default {
             });
 
             return _tmp;
-        }
+        },
     },
     mounted: function() {
+        axios.get('/api/v1/statuses')
+            .then(response => {
+
+                var data = response.data;
+                var categories = [];
+                var $this = this;
+                data.forEach(function(e) {
+
+                    if(e.id < 0) {
+                        return;
+                    }
+
+                    //--- If the categories are "enabled/disabled" for search
+                    $this.meta.categories[e.id] = false;
+
+                    //--- Add to buttons
+                    $this.meta.statuses.push({
+                        id: e.id,
+                        name: e.name,
+                        css: {
+                            button_class: e.css_class,
+                            icon: e.css_icon
+                        }
+                    });
+
+                });
+
+            });
+
         axios.get('/api/v1/tasks')
             .then(response => {
                 var data = response.data;

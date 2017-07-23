@@ -26,11 +26,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('home', [
-            'list' => [
+            'list'      => [
                 //Read: https://cloudimperiumgames.com/news/19-CIG-Opens-New-Game-Development-Office-In-Santa-Monica
                 'first-office' => Carbon::createFromTimeStamp(strtotime('23 April 2013'))->diffForHumans()
             ],
-            'chart' => []
+            'chart'     => []
         ]);
     }
 }
