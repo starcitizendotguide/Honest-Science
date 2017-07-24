@@ -25,6 +25,7 @@ Route::prefix('manage')
         Route::prefix('content')
             ->group(function() {
                 Route::get('tasks', 'ManageContentController@tasks')->name('manage.content.tasks');
+                Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
             });
     }
 );

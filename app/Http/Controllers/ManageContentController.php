@@ -11,4 +11,8 @@ class ManageContentController extends Controller
         return view('manage.tasks');
     }
 
+    public function statuses() {
+        return view('manage.statuses');
+    }
+
 }
