@@ -30362,6 +30362,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -30370,7 +30371,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,
-                perPage: 10
+                perPage: 10,
+                isLoading: true
             }
         };
     },
@@ -30378,7 +30380,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         axios.get('/api/v1/tasks').then(function (response) {
-            return _this.tasks = response.data;
+            _this.tasks = response.data;
+            _this.settings.isLoading = false;
         });
     }
 };
@@ -30435,7 +30438,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "striped": _vm.settings.isStriped,
       "paginated": _vm.settings.isPaginatedSimple,
       "pagination-simple": _vm.settings.isPaginatedSimple,
-      "per-page": _vm.settings.perPage
+      "per-page": _vm.settings.perPage,
+      "loading": _vm.settings.isLoading
     },
     scopedSlots: _vm._u([{
       key: "default",

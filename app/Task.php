@@ -27,8 +27,9 @@ class Task extends Model
 
         //--- No children is or should be invalid, so we return the default status
         $children = null;
+
         if(!($children = $this->children())->exists()) {
-            require TaskStatus::byId(-1)->first();
+            return TaskStatus::byId(-1)->first();
         }
 
         //--- Score

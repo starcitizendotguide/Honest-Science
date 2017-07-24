@@ -36,6 +36,8 @@ class TasksController extends Controller
             $children = $task->children();
 
             if(!($children->exists())) {
+                //--- Add without children
+                $data[] = $tmp;
                 continue;
             }
 

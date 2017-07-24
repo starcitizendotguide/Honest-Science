@@ -6,6 +6,7 @@
         :paginated="settings.isPaginatedSimple"
         :pagination-simple="settings.isPaginatedSimple"
         :per-page="settings.perPage"
+        :loading="settings.isLoading"
     >
         <template scope="props">
             <b-table-column field="id" label="#" sortable numeric>
@@ -52,13 +53,17 @@ export default {
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,
-                perPage: 10
+                perPage: 10,
+                isLoading: true,
             }
         };
     },
     mounted: function() {
         axios.get('/api/v1/tasks')
-            .then(response => (this.tasks = response.data));
+            .then(response => {
+                this.tasks = response.data;
+                this.settings.isLoading = false;
+            });
     },
 }
 </script>

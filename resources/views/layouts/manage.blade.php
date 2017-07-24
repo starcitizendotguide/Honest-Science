@@ -15,11 +15,11 @@
         <div id="app">
             @include('includes.navigation')
 
-            <div class="columns">
+            <div class="columns m-t-20">
                 <div class="column is-1">
                     @include('includes.manage.navigation')
                 </div>
-                <div class="column is-11 content">
+                <div class="column content m-r-20">
                     @yield('content')
                 </div>
             </div>

@@ -24,7 +24,17 @@ Route::prefix('manage')
 
         Route::prefix('content')
             ->group(function() {
-                Route::get('tasks', 'ManageContentController@tasks')->name('manage.content.tasks');
+
+
+                Route::prefix('tasks', 'ManageContentController')
+                    ->group(function() {
+                        Route::get('/', 'ManageContentController@tasks')->name('manage.content.tasks');
+                        Route::get('/create', 'ManageContentController@tasksCreate')->name('manage.content.tasks.create');
+
+                        Route::post('/create', 'ManageContentController@taskStore')->name('manage.content.tasks.create.store');
+                    });
+
+
                 Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
             });
     }
@@ -40,6 +50,13 @@ Route::group(['prefix' => 'api/v1'], function() {
         ]);
 
         Route::resource('statuses', 'TaskStatusesController', [
+            'only' => [
+                'index', 'show'
+            ]
+        ]);
+
+
+        Route::resource('users', 'UserController', [
             'only' => [
                 'index', 'show'
             ]
