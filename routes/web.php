@@ -28,10 +28,14 @@ Route::prefix('manage')
 
                 Route::prefix('tasks', 'ManageContentController')
                     ->group(function() {
+
                         Route::get('/', 'ManageContentController@tasks')->name('manage.content.tasks');
                         Route::get('/create', 'ManageContentController@tasksCreate')->name('manage.content.tasks.create');
+                        Route::get('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit');
 
                         Route::post('/create', 'ManageContentController@taskStore')->name('manage.content.tasks.create.store');
+                        Route::post('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit.update');
+
                     });
 
 
@@ -46,6 +50,12 @@ Route::group(['prefix' => 'api/v1'], function() {
             'only' => [
                 'index', 'show',
                 'destroy'
+            ]
+        ]);
+
+        Route::resource('children', 'TasksChildrenController', [
+            'only' => [
+                'index'
             ]
         ]);
 

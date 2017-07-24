@@ -12,6 +12,16 @@
 
     </head>
     <body>
+
+        @if (session('status'))
+            {{--
+            $request->session()->flash('status', 'Task was successful!');
+             --}}
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <div id="app">
             @include('includes.navigation')
             @yield('content')

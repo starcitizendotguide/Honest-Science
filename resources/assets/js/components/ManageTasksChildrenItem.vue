@@ -1,6 +1,6 @@
 <template>
     <b-table
-        :data="tasks"
+        :data="children"
         default-sort="id"
         :striped="settings.isStriped"
         :paginated="settings.isPaginatedSimple"
@@ -13,20 +13,24 @@
                 {{ props.row.id }}
             </b-table-column>
 
-            <b-table-column field="name" label="Name" sortable>
-                {{ props.row.name }}
+            <b-table-column field="name" label="Parent" sortable>
+                {{ props.row.task_id }}
             </b-table-column>
 
             <b-table-column field="status" label="Status" sortable>
                 {{ props.row.status.name }}
             </b-table-column>
 
+            <b-table-column field="type" label="Type" sortable>
+                {{ props.row.type }}
+            </b-table-column>
+
             <b-table-column field="description" label="Description" width="500" >
                 {{ props.row.description }}
             </b-table-column>
 
-            <b-table-column field="children" label="Children">
-                {{ props.row.children.length }} Children
+            <b-table-column field="progres" label="Progress">
+                {{ props.row.progress * 100 }}%
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>
@@ -36,11 +40,6 @@
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
-
-            <b-table-column label="Action">
-                <a :href="'/manage/content/tasks/edit/' + props.row.id" ><span><i class="fa fa-pencil"></i></span></a>
-            </b-table-column>
-
         </template>
     </b-table>
 </template>
@@ -49,7 +48,7 @@
 export default {
     data: function() {
         return {
-            tasks: [],
+            children: [],
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,
@@ -59,9 +58,9 @@ export default {
         };
     },
     mounted: function() {
-        axios.get('/api/v1/tasks')
+        axios.get('/api/v1/children')
             .then(response => {
-                this.tasks = response.data;
+                this.children = response.data;
                 this.settings.isLoading = false;
             });
     }
