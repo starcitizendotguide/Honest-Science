@@ -7,22 +7,32 @@ use Illuminate\Http\Request;
 class ManageContentController extends Controller
 {
 
+    /**
+     * The view of all tasks.
+     */
     public function tasks() {
         return view('manage.tasks.show');
     }
 
+    /**
+     * The view of creating a new task.
+     */
     public function tasksCreate() {
         return view('manage.tasks.create');
     }
 
+    /**
+     * GET: The view of updating a task.
+     * POST: Updating the edited task.
+     */
     public function tasksEdit(Request $request, $id) {
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $task = \App\Task::find($id);
+            $task = \App\Task::byId($id);
 
-            if(!($task->exists())) {
-                dd(404);
+            if($task === null) {
+                dd(404 . ' - ManageContentController');
             }
 
             return view('manage.tasks.edit', [
@@ -31,12 +41,9 @@ class ManageContentController extends Controller
         } else if($request->isMethod('POST')) {
 
             //--- Validate
-            $this->validate($request, [
-                'name'          => 'required|min:5',
-                'description'   => 'required|min:30',
-            ]);
+            $this->validateTask($request);
 
-            $task = \App\Task::find($request->input('id'))->first();
+            $task = \App\Task::byId($request->input('id'))->first();
 
             $task->name = $request->input('name');
             $task->description = $request->input('description');
@@ -48,13 +55,13 @@ class ManageContentController extends Controller
         }
     }
 
+    /**
+     * POST: Creating a new task.
+     */
     public function taskStore(Request $request) {
 
         //--- Validate
-        $this->validate($request, [
-            'name'          => 'required|min:5',
-            'description'   => 'required|min:30',
-        ]);
+        $this->validateTask($request);
 
         //--- Store
         $task = new \App\Task;
@@ -66,8 +73,23 @@ class ManageContentController extends Controller
         return redirect()->route('manage.content.tasks');
     }
 
+    /**
+     * GET: A list of all available statuses.
+     */
     public function statuses() {
         return view('manage.statuses');
     }
+
+    /**
+     * The method to validate requests bind to 'Task'.
+     */
+    public function validateTask($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+        ]);
+    }
+
 
 }

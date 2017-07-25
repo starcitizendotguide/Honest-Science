@@ -41,11 +41,16 @@
                 {{ props.row.updated_at.date }}
             </b-table-column>
         </template>
+
+        <div slot="empty" class="has-text-centered">
+            This task has no children.
+        </div>
     </b-table>
 </template>
 
 <script type="text-javascript">
 export default {
+    props: ['taskid'],
     data: function() {
         return {
             children: [],
@@ -58,7 +63,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get('/api/v1/children')
+        axios.get('/api/v1/children/task/' + this.taskid)
             .then(response => {
                 this.children = response.data;
                 this.settings.isLoading = false;

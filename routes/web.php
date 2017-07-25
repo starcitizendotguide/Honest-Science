@@ -53,9 +53,10 @@ Route::group(['prefix' => 'api/v1'], function() {
             ]
         ]);
 
+        Route::get('children/task/{id}', 'TasksChildrenController@task');
         Route::resource('children', 'TasksChildrenController', [
             'only' => [
-                'index'
+                'index', 'show'
             ]
         ]);
 

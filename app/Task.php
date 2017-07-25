@@ -19,6 +19,10 @@ class Task extends Model
         'updated_at'
     ];
 
+    public function scopeById($query, $id) {
+        return $query->where('id', $id);
+    }
+
     public function children() {
         return $this->hasMany('App\TaskChild');
     }

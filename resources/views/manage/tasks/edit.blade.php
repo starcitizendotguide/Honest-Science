@@ -34,7 +34,7 @@
         </b-tab-item>
 
         <b-tab-item label="Children">
-            <manage-tasks-children-item></manage-tasks-children-item>
+            <manage-tasks-children-item taskid="{{ $task->id }}"></manage-tasks-children-item>
         </b-tab-item>
 
         <b-tab-item label="Sources">
