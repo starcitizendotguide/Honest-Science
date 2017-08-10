@@ -21,11 +21,15 @@
             </b-table-column>
 
             <b-table-column field="css_button" label="CSS Button">
-                <button class="button" :class="props.row.css_class">Example</button>
+                <b-tooltip :label="props.row.css_class" dashed>
+                    <button class="button" :class="props.row.css_class">Example</button>
+                </b-tooltip>
             </b-table-column>
 
             <b-table-column field="css_icon" label="CSS Icon">
-                <i class="fa" :class="props.row.css_icon"></i>
+                <b-tooltip :label="props.row.css_icon" dashed>
+                    <i class="fa" :class="props.row.css_icon"></i>
+                </b-tooltip>
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>

@@ -1822,6 +1822,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -1849,11 +1853,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2130,16 +2129,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         filteredItems: function filteredItems() {
-
             var _tmp = this.tasks,
                 search = this.meta.search,
-                statuses = this.meta.statuses;
+                statuses = this.meta.statuses,
+                self = this,
+                statusById = function statusById(id) {
+                statuses.forEach(function (e) {
+                    console.log(e);
+                });
+            };
 
             //--- Going through all "status buttons" to decide whether or not, we
             // have to include this in our search.
             var statusMode = false;
-            for (var i = 0; i < statuses.length; i++) {
-                if (statuses[i].css.button_classes['is-active'] === true) {
+            for (var key in statuses) {
+                if (statuses[key].css.button_classes['is-active'] === true) {
                     statusMode = true;
                 }
             }
@@ -2151,7 +2155,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             search = search.trim().toLowerCase();
 
             _tmp = _tmp.filter(function (item) {
-                if ((statuses[item.status.id].css.button_classes['is-active'] === true || !statusMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
+
+                //--- We wanna display features that have an 'Unknown' status but
+                //    we don't allow it to be filtered
+                if (item.status.id < 0) {
+                    return;
+                }
+
+                //@HACK: Why do we have strings as keys? The Rest API is passing ints
+                //       and casting it doesn't help for some reason, weird... 
+                if ((statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
                     return item;
                 }
             });
@@ -20254,12 +20267,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }, [_vm._v("\n            " + _vm._s(props.row.id) + "\n        ")]), _vm._v(" "), _c('b-table-column', {
           attrs: {
-            "field": "name",
-            "label": "Parent",
-            "sortable": ""
-          }
-        }, [_vm._v("\n            " + _vm._s(props.row.task_id) + "\n        ")]), _vm._v(" "), _c('b-table-column', {
-          attrs: {
             "field": "status",
             "label": "Status",
             "sortable": ""
@@ -20483,18 +20490,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             "field": "css_button",
             "label": "CSS Button"
           }
+        }, [_c('b-tooltip', {
+          attrs: {
+            "label": props.row.css_class,
+            "dashed": ""
+          }
         }, [_c('button', {
           staticClass: "button",
           class: props.row.css_class
-        }, [_vm._v("Example")])]), _vm._v(" "), _c('b-table-column', {
+        }, [_vm._v("Example")])])], 1), _vm._v(" "), _c('b-table-column', {
           attrs: {
             "field": "css_icon",
             "label": "CSS Icon"
           }
+        }, [_c('b-tooltip', {
+          attrs: {
+            "label": props.row.css_icon,
+            "dashed": ""
+          }
         }, [_c('i', {
           staticClass: "fa",
           class: props.row.css_icon
-        })]), _vm._v(" "), _c('b-table-column', {
+        })])], 1), _vm._v(" "), _c('b-table-column', {
           attrs: {
             "field": "created_at",
             "label": "Created At",

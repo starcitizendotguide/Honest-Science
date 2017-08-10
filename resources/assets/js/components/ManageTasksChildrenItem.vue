@@ -12,11 +12,6 @@
             <b-table-column field="id" label="#" sortable numeric>
                 {{ props.row.id }}
             </b-table-column>
-
-            <b-table-column field="name" label="Parent" sortable>
-                {{ props.row.task_id }}
-            </b-table-column>
-
             <b-table-column field="status" label="Status" sortable>
                 {{ props.row.status.name }}
             </b-table-column>

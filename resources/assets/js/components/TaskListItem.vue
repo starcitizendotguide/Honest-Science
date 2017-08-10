@@ -122,16 +122,25 @@ export default {
     },
     computed: {
         filteredItems: function () {
-
             var _tmp = this.tasks,
                 search = this.meta.search,
-                statuses = this.meta.statuses;
+                statuses = this.meta.statuses,
+
+                self = this,
+
+                statusById = function(id) {
+                    statuses.forEach(function(e) {
+                        console.log(e);
+                    })
+                };
+
+
 
             //--- Going through all "status buttons" to decide whether or not, we
             // have to include this in our search.
             var statusMode = false;
-            for(var i = 0; i < statuses.length; i++) {
-                if(statuses[i].css.button_classes['is-active'] === true) {
+            for (var key in statuses) {
+                if(statuses[key].css.button_classes['is-active'] === true) {
                     statusMode = true;
                 }
             }
@@ -143,8 +152,17 @@ export default {
             search = search.trim().toLowerCase();
 
             _tmp = _tmp.filter(function(item){
+
+                //--- We wanna display features that have an 'Unknown' status but
+                //    we don't allow it to be filtered
+                if(item.status.id < 0) {
+                    return;
+                }
+
+                //@HACK: Why do we have strings as keys? The Rest API is passing ints
+                //       and casting it doesn't help for some reason, weird... 
                 if(
-                    (statuses[item.status.id].css.button_classes['is-active'] === true || !statusMode) &&
+                    (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1

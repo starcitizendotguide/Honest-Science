@@ -33,7 +33,7 @@ class TasksChildrenController extends Controller
     }
 
     public function show($id) {
-        $child = \App\TaskChild::find($id);
+        $child = \App\TaskChild::byId($id);
 
         $data = [];
 
@@ -53,14 +53,19 @@ class TasksChildrenController extends Controller
     public function task($task_id) {
         $task = \App\Task::byId($task_id);
 
-        if($task === null) {
+
+        if(!($task->exists())) {
             return [];
         }
 
         $task = $task->first();
+        $children = $task->children();
 
-        $children = $task->children()->get();
+        if($children === null) {
+            return [];
+        }
 
+        $children = $children->get();
         $data = collect([]);
 
         foreach ($children as $child) {
@@ -72,7 +77,6 @@ class TasksChildrenController extends Controller
             $tmp['type']        = $child->type;
             $tmp['description'] = $child->description;
             $tmp['status']      = $child->status();
-            $tmp['parent']      = $child->parent();
             $tmp['created_at']  = $child->created_at;
             $tmp['updated_at']  = $child->updated_at;
 

@@ -21,6 +21,10 @@ class TaskChild extends Model
         'updated_at'
     ];
 
+    public function scopeById($query, $id) {
+        return $query->where('id', $id);
+    }
+
     public function parent() {
         return $this->hasOne('App\Task', 'id', 'task_id')->first();
     }
