@@ -2109,7 +2109,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 search: '',
                 interactionBar: {
                     id: null,
-                    task: null
+                    task: null,
+                    content: this.defaultInteractionBar()
                 },
                 statuses: []
             }
@@ -2152,8 +2153,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.loadDisqus(task);
             } else {
                 this.meta.interactionBar.task = null;
-                this.meta.interactionBar.content = null;
+                this.meta.interactionBar.content = this.defaultInteractionBar();
             }
+        },
+        defaultInteractionBar: function defaultInteractionBar() {
+            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open a any task to test its behaviour.</p></div></div>';
         },
         loadDisqus: function loadDisqus(task) {
 
@@ -20489,12 +20493,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "content"
       }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                                    " + _vm._s(child.description) + "\n                                                    "), _c('br')])])])])
     })) : _vm._e()])], 1)])])])
-  })], 2)]), _vm._v(" "), (_vm.meta.interactionBar.task != null) ? _c('div', {
-    staticClass: "column is-3 m-t-50",
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "column m-t-40 is-3",
     domProps: {
       "innerHTML": _vm._s(_vm.meta.interactionBar.content)
     }
-  }) : _vm._e()])
+  })])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small"

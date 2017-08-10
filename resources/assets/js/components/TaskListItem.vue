@@ -89,7 +89,7 @@
             </div>
         </div>
         <!-- Interaction Bar -->
-        <div v-if="meta.interactionBar.task != null" v-html="meta.interactionBar.content" class="column is-3 m-t-50">
+        <div v-html="meta.interactionBar.content" class="column m-t-40 is-3">
         </div>
     </div>
 </template>
@@ -103,7 +103,8 @@ export default {
                 search: '',
                 interactionBar: {
                     id: null,
-                    task: null
+                    task: null,
+                    content: this.defaultInteractionBar()
                 },
                 statuses: []
             },
@@ -143,9 +144,12 @@ export default {
                 this.loadDisqus(task);
             } else {
                 this.meta.interactionBar.task = null;
-                this.meta.interactionBar.content = null;
+                this.meta.interactionBar.content = this.defaultInteractionBar();
             }
 
+        },
+        defaultInteractionBar() {
+            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open a any task to test its behaviour.</p></div></div>';
         },
         loadDisqus(task) {
 
