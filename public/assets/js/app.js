@@ -2168,7 +2168,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         loadDisqus: function loadDisqus(task) {
 
-            this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread">Loading Disqus...</div>';
+            this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
             var CONF_SHORTNAME = 'starcitizen-tasks';
             var CONF_IDENTIFIER = task.id + task.created_at.date.replace(' ', '') + '-task-id';
