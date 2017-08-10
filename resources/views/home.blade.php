@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="columns is-clearfix m-t-10">
         <div class="column is-offset-2 is-4">
             <table class="table is-bordered">
@@ -60,11 +61,8 @@
             </div>
         </div>
     </div>
-    <div class="columns">
-
-        <div class="column is-offset-2 is-8">
-            <task-list-item></task-list-item>
-        </div>
-
+    <div>
+        <task-list-item></task-list-item>
     </div>
+
 @endsection

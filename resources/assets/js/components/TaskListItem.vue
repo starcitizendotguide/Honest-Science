@@ -1,88 +1,95 @@
 <template>
-    <div class="task-list">
-        <div class="field is-grouped">
-            <p class="control">
-                <input v-model="meta.search" class="input" placeholder="Search...">
-            </p>
-            <div class="field has-addons control">
-                <p class="control" v-for="status in meta.statuses">
-                    <a v-on:click="categoryOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
-                       <span class="icon is-small"><i :class="status.css.icon"></i></span>
-                       <span>{{ status.name }}</span>
-                   </a>
-                </p>
-            </div>
-            <p class="control is-pulled-right">
-                <a v-on:click="resetMeta" class="button">
-                    <span class="icon is-small"><i class="fa fa-undo"></i></span>
-                    <span>Reset</span>
-                </a>
-            </p>
-        </div>
-        <!--<div class="field has-addons">
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-            <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-        </div>-->
-
-
-        <div class="box" v-for="task in filteredItems">
-            <article class="media">
-                <div class="media-left">
-                    <figure class="image is-64x64">
-                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>{{ task.name }}</strong>
-                            <small>{{ task.status.name }}</small>
-                            <small>{{ toFixed(task.progress * 100, 2) }}%</small>
-                            <span><i v-on:click="task.collapsed = !task.collapsed" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
-                            <br />
-                            {{ task.description }}
-                            <br />
-                            <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+    <div class="columns">
+        <div class="column is-offset-1 is-7">
+            <div class="task-list">
+                <div class="field is-grouped">
+                    <p class="control">
+                        <input v-model="meta.search" class="input" placeholder="Search...">
+                    </p>
+                    <div class="field has-addons control">
+                        <p class="control" v-for="status in meta.statuses">
+                            <a v-on:click="categoryOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
+                               <span class="icon is-small"><i :class="status.css.icon"></i></span>
+                               <span>{{ status.name }}</span>
+                           </a>
                         </p>
-                        <transition name="fade">
-                            <div v-if="task.collapsed">
-
-                                <div class="box" v-bind:class="child.status.css_class" v-for="child in task.children">
-                                    <article class="media">
-                                        <div class="media-left">
-                                            <figure class="image is-64x64">
-                                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                                            </figure>
-                                        </div>
-                                        <div class="media-content">
-                                            <div class="content">
-                                                <strong>{{ child.name }}</strong>
-                                                <small>{{ child.status.name }}</small>
-                                                <small>{{ toFixed(child.progress * 100, 2) }}%</small>
-                                                <br />
-                                                {{ child.description }}
-                                                <br />
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-
-                            </div>
-                        </transition>
                     </div>
+                    <p class="control is-pulled-right">
+                        <a v-on:click="resetMeta" class="button">
+                            <span class="icon is-small"><i class="fa fa-undo"></i></span>
+                            <span>Reset</span>
+                        </a>
+                    </p>
                 </div>
-            </article>
+                <!--<div class="field has-addons">
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
+                </div>-->
+
+
+                <div class="box" v-for="task in filteredItems">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ task.name }}</strong>
+                                    <small>{{ task.status.name }}</small>
+                                    <small>{{ toFixed(task.progress * 100, 2) }}%</small>
+                                    <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
+                                    <br />
+                                    {{ task.description }}
+                                    <br />
+                                    <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+                                </p>
+                                <transition name="fade">
+                                    <div v-if="task.collapsed">
+
+                                        <div class="box" v-bind:class="child.status.css_class" v-for="child in task.children">
+                                            <article class="media">
+                                                <div class="media-left">
+                                                    <figure class="image is-64x64">
+                                                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                                                    </figure>
+                                                </div>
+                                                <div class="media-content">
+                                                    <div class="content">
+                                                        <strong>{{ child.name }}</strong>
+                                                        <small>{{ child.status.name }}</small>
+                                                        <small>{{ toFixed(child.progress * 100, 2) }}%</small>
+                                                        <br />
+                                                        {{ child.description }}
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+
+                                    </div>
+                                </transition>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <!-- Interaction Bar -->
+        <div v-if="meta.interactionBar.task != null" v-html="meta.interactionBar.content" class="column is-3 m-t-50">
         </div>
     </div>
 </template>
@@ -94,7 +101,11 @@ export default {
             tasks: [],
             meta: {
                 search: '',
-                statuses: [],
+                interactionBar: {
+                    id: null,
+                    task: null
+                },
+                statuses: []
             },
         };
     },
@@ -118,22 +129,69 @@ export default {
         },
         categoryOnClick(id) {
             this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
+        },
+        triggerCollapse(task) {
+            //--- Reset Collapse & Reset Interaction Bar
+            this.tasks.map(v => { if(v != task) v.collapsed = false;  });
+
+            //--- Collapse or uncollapse children
+            task.collapsed = !task.collapsed;
+
+            //--- Trigger
+            if(task.collapsed === true) {
+                this.meta.interactionBar.task = task;
+                this.loadDisqus(task);
+            } else {
+                this.meta.interactionBar.task = null;
+                this.meta.interactionBar.content = null;
+            }
+
+        },
+        loadDisqus(task) {
+
+            //@TODO: Fix the bug that we get for all tasks the same comment page.
+
+            this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
+
+            var CONF_SHORTNAME      = 'starcitizen-tasks';
+            var CONF_IDENTIFIER     = task.id + '-test';
+            var CONF_TITLE          = (task.name + ' - Discussion Test');
+
+            if(typeof DISQUS === 'undefined') {
+                window.disqus_config = function () {
+                    this.page.identifier = CONF_IDENTIFIER;
+                    this.page.url = '/testA';
+                    this.page.title = CONF_TITLE;
+                };
+            } else {
+                DISQUS.reset({
+                  reload: true,
+                  config: function () {
+                      this.page.identifier = CONF_IDENTIFIER;
+                      this.page.url = '/testB';
+                      this.page.title = CONF_TITLE;
+                  }
+                });
+            }
+
+            setTimeout(() => {
+                (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+                    var d = document, s = d.createElement('script');
+
+                    s.src = '//starcitizen-tasks.disqus.com/embed.js';
+
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            }, 0);
+
         }
     },
     computed: {
         filteredItems: function () {
             var _tmp = this.tasks,
                 search = this.meta.search,
-                statuses = this.meta.statuses,
-
-                self = this,
-
-                statusById = function(id) {
-                    statuses.forEach(function(e) {
-                        console.log(e);
-                    })
-                };
-
+                statuses = this.meta.statuses;
 
 
             //--- Going through all "status buttons" to decide whether or not, we
@@ -160,7 +218,7 @@ export default {
                 }
 
                 //@HACK: Why do we have strings as keys? The Rest API is passing ints
-                //       and casting it doesn't help for some reason, weird... 
+                //       and casting it doesn't help for some reason, weird...
                 if(
                     (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
                     (

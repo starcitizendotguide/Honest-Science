@@ -2093,6 +2093,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -2100,6 +2107,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tasks: [],
             meta: {
                 search: '',
+                interactionBar: {
+                    id: null,
+                    task: null
+                },
                 statuses: []
             }
         };
@@ -2125,19 +2136,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         categoryOnClick: function categoryOnClick(id) {
             this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
+        },
+        triggerCollapse: function triggerCollapse(task) {
+            //--- Reset Collapse & Reset Interaction Bar
+            this.tasks.map(function (v) {
+                if (v != task) v.collapsed = false;
+            });
+
+            //--- Collapse or uncollapse children
+            task.collapsed = !task.collapsed;
+
+            //--- Trigger
+            if (task.collapsed === true) {
+                this.meta.interactionBar.task = task;
+                this.loadDisqus(task);
+            } else {
+                this.meta.interactionBar.task = null;
+                this.meta.interactionBar.content = null;
+            }
+        },
+        loadDisqus: function loadDisqus(task) {
+
+            //@TODO: Fix the bug that we get for all tasks the same comment page.
+
+            this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
+
+            var CONF_SHORTNAME = 'starcitizen-tasks';
+            var CONF_IDENTIFIER = task.id + '-test';
+            var CONF_TITLE = task.name + ' - Discussion Test';
+
+            if (typeof DISQUS === 'undefined') {
+                window.disqus_config = function () {
+                    this.page.identifier = CONF_IDENTIFIER;
+                    this.page.url = '/testA';
+                    this.page.title = CONF_TITLE;
+                };
+            } else {
+                DISQUS.reset({
+                    reload: true,
+                    config: function config() {
+                        this.page.identifier = CONF_IDENTIFIER;
+                        this.page.url = '/testB';
+                        this.page.title = CONF_TITLE;
+                    }
+                });
+            }
+
+            setTimeout(function () {
+                (function () {
+                    // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+                    var d = document,
+                        s = d.createElement('script');
+
+                    s.src = '//starcitizen-tasks.disqus.com/embed.js';
+
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            }, 0);
         }
     },
     computed: {
         filteredItems: function filteredItems() {
             var _tmp = this.tasks,
                 search = this.meta.search,
-                statuses = this.meta.statuses,
-                self = this,
-                statusById = function statusById(id) {
-                statuses.forEach(function (e) {
-                    console.log(e);
-                });
-            };
+                statuses = this.meta.statuses;
 
             //--- Going through all "status buttons" to decide whether or not, we
             // have to include this in our search.
@@ -2163,7 +2226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 //@HACK: Why do we have strings as keys? The Rest API is passing ints
-                //       and casting it doesn't help for some reason, weird... 
+                //       and casting it doesn't help for some reason, weird...
                 if ((statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) && (item.name.toLowerCase().indexOf(search) !== -1 || item.description.toLowerCase().indexOf(search) !== -1)) {
                     return item;
                 }
@@ -20322,6 +20385,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-offset-1 is-7"
+  }, [_c('div', {
     staticClass: "task-list"
   }, [_c('div', {
     staticClass: "field is-grouped"
@@ -20388,10 +20455,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "click": function($event) {
-          task.collapsed = !task.collapsed
+          _vm.triggerCollapse(task)
         }
       }
-    })]), _vm._v(" "), _c('br'), _vm._v("\n                        " + _vm._s(task.description) + "\n                        "), _c('br'), _vm._v(" "), _c('progress', {
+    })]), _vm._v(" "), _c('br'), _vm._v("\n                                " + _vm._s(task.description) + "\n                                "), _c('br'), _vm._v(" "), _c('progress', {
       staticClass: "progress",
       attrs: {
         "value": task.progress,
@@ -20420,9 +20487,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "media-content"
       }, [_c('div', {
         staticClass: "content"
-      }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                            " + _vm._s(child.description) + "\n                                            "), _c('br')])])])])
+      }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                                    " + _vm._s(child.description) + "\n                                                    "), _c('br')])])])])
     })) : _vm._e()])], 1)])])])
-  })], 2)
+  })], 2)]), _vm._v(" "), (_vm.meta.interactionBar.task != null) ? _c('div', {
+    staticClass: "column is-3 m-t-50",
+    domProps: {
+      "innerHTML": _vm._s(_vm.meta.interactionBar.content)
+    }
+  }) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small"

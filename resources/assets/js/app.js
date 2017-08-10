@@ -11,6 +11,7 @@ import ManageTasksItem from './components/ManageTasksItem.vue';
 import ManageStatusesItem from './components/ManageStatusesItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
 
+
 Vue.use(Vue2Filters)
 Vue.use(Buefy, {
     defaultIconPack: 'fa'
