@@ -89,7 +89,8 @@
             </div>
         </div>
         <!-- Interaction Bar -->
-        <div v-html="meta.interactionBar.content" class="column m-t-40 is-3">
+        <div class="column is-3 m-t-50">
+            <div class="card card-content" v-html="meta.interactionBar.content"></div>
         </div>
     </div>
 </template>
@@ -150,7 +151,7 @@ export default {
 
         },
         defaultInteractionBar() {
-            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open any task to test its behaviour.</p></div></div>';
+            return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
         },
         resetInteractionBar() {
             this.meta.interactionBar.task = null;
@@ -158,7 +159,7 @@ export default {
         },
         loadDisqus(task) {
 
-            this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
+            this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread">Loading Disqus...</div>';
 
             var CONF_SHORTNAME      = 'starcitizen-tasks';
             var CONF_IDENTIFIER     = (task.id + task.created_at.date.replace(' ', '') + '-task-id');

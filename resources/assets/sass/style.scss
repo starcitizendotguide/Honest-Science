@@ -31,6 +31,7 @@
   opacity: 0
 }
 
+//--- Account
 .account-verified {
     background-color: $account-verified;
 }
@@ -41,4 +42,9 @@
 
 .account-suspended {
     background-color: $account-suspended;
+}
+
+//--- Interaction Bar
+.interaction-bar .disqus {
+    width: 90%;
 }

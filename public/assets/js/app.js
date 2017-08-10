@@ -2100,6 +2100,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -2159,7 +2160,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         defaultInteractionBar: function defaultInteractionBar() {
-            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open any task to test its behaviour.</p></div></div>';
+            return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
         },
         resetInteractionBar: function resetInteractionBar() {
             this.meta.interactionBar.task = null;
@@ -2167,7 +2168,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         loadDisqus: function loadDisqus(task) {
 
-            this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
+            this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread">Loading Disqus...</div>';
 
             var CONF_SHORTNAME = 'starcitizen-tasks';
             var CONF_IDENTIFIER = task.id + task.created_at.date.replace(' ', '') + '-task-id';
@@ -20508,11 +20509,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                                    " + _vm._s(child.description) + "\n                                                    "), _c('br')])])])])
     })) : _vm._e()])], 1)])])])
   })], 2)]), _vm._v(" "), _c('div', {
-    staticClass: "column m-t-40 is-3",
+    staticClass: "column is-3 m-t-50"
+  }, [_c('div', {
+    staticClass: "card card-content",
     domProps: {
       "innerHTML": _vm._s(_vm.meta.interactionBar.content)
     }
-  })])
+  })])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small"

@@ -13517,6 +13517,10 @@ table tr:hover {
   background-color: #C9302C;
 }
 
+.interaction-bar .disqus {
+  width: 90%;
+}
+
 .side-menu {
   position: fixed;
   height: 100vh;

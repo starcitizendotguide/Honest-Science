@@ -17,4 +17,5 @@ mix.copyDirectory('resources/assets/images', 'public/assets/img')
    .sass('resources/assets/sass/manage_app.scss', 'public/assets/css')
    .options({
         processCssUrls: true
-    });
+    })
+    .sourceMaps();
