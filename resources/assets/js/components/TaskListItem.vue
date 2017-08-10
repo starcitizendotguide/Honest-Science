@@ -163,20 +163,16 @@ export default {
             //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {
                 window.disqus_config = function () {
-                    console.log('AYYY');
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
                     this.page.url = CONF_URL;
                 };
 
-                (function() {
-                    var d = document, s = d.createElement('script');
-
-                    s.src = '//starcitizen-tasks.disqus.com/embed.js';
-
-                    s.setAttribute('data-timestamp', +new Date());
-                    (d.head || d.body).appendChild(s);
-                })();
+                //--- Appened Disqus Widget
+                var d = document, s = d.createElement('script');
+                s.src = '//' + CONF_SHORTNAME + '.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
 
             }
             //--- Disqus widget already loaded... just reset the values and load
