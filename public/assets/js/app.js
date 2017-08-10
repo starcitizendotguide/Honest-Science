@@ -2166,27 +2166,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
 
             var CONF_SHORTNAME = 'starcitizen-tasks';
-            var CONF_IDENTIFIER = task.id + '-test';
+            var CONF_IDENTIFIER = task.id + '-task-identifier';
             var CONF_TITLE = task.name + ' - Discussion Test';
 
             if (typeof DISQUS === 'undefined') {
+                console.log('AYYY');
                 window.disqus_config = function () {
                     this.page.identifier = CONF_IDENTIFIER;
-                    this.page.url = '/testA';
                     this.page.title = CONF_TITLE;
                 };
-            } else {
-                DISQUS.reset({
-                    reload: true,
-                    config: function config() {
-                        this.page.identifier = CONF_IDENTIFIER;
-                        this.page.url = '/testB';
-                        this.page.title = CONF_TITLE;
-                    }
-                });
-            }
 
-            setTimeout(function () {
                 (function () {
                     // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
                     var d = document,
@@ -2197,7 +2186,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     s.setAttribute('data-timestamp', +new Date());
                     (d.head || d.body).appendChild(s);
                 })();
-            }, 0);
+            } else {
+                console.log('RESTET');
+                DISQUS.reset({
+                    reload: true,
+                    config: function config() {
+                        this.page.identifier = CONF_IDENTIFIER;
+                        this.page.title = CONF_TITLE;
+                    }
+                });
+            }
         }
     },
     computed: {
