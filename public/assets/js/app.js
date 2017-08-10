@@ -2131,6 +2131,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var i = 0; i < this.meta.statuses.length; i++) {
                 this.meta.statuses[i].css.button_classes['is-active'] = false;
             }
+
+            //--- Reset Interaction Bar
+            this.resetInteractionBar();
         },
         toFixed: function toFixed(value, digits) {
             return value.toFixed(digits);
@@ -2152,12 +2155,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.meta.interactionBar.task = task;
                 this.loadDisqus(task);
             } else {
-                this.meta.interactionBar.task = null;
-                this.meta.interactionBar.content = this.defaultInteractionBar();
+                this.resetInteractionBar();
             }
         },
         defaultInteractionBar: function defaultInteractionBar() {
             return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open a any task to test its behaviour.</p></div></div>';
+        },
+        resetInteractionBar: function resetInteractionBar() {
+            this.meta.interactionBar.task = null;
+            this.meta.interactionBar.content = this.defaultInteractionBar();
         },
         loadDisqus: function loadDisqus(task) {
 
@@ -2170,6 +2176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //--- First time loading the Disqus widget requires more setup
             if (typeof DISQUS === 'undefined') {
+                console.log('b');
                 window.disqus_config = function () {
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
@@ -2186,6 +2193,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //--- Disqus widget already loaded... just reset the values and load
             //    a different discussion
             else {
+
+                    //--- Appened Disqus Widget
+                    var d = document,
+                        s = d.createElement('script');
+                    s.src = '//' + CONF_SHORTNAME + '.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+
                     DISQUS.reset({
                         reload: true,
                         config: function config() {
