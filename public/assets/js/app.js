@@ -2253,7 +2253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get(route('tasks.index')).then(function (response) {
+        axios.get(route('statuses.index')).then(function (response) {
 
             var data = response.data;
             var categories = [];
@@ -2264,6 +2264,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return;
                 }
 
+                console.log(e);
                 //--- Add to buttons
                 var tmp = {
                     id: e.id,
@@ -2280,8 +2281,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 tmp.css.button_classes[e.css_class] = true;
                 $this.meta.statuses.push(tmp);
             });
+        });
 
-            //---
+        axios.get(route('tasks.index')).then(function (response) {
+
+            var data = response.data;
+
             data.forEach(function (e) {
                 e.collapsed = false;
             });

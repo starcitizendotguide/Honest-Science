@@ -248,7 +248,7 @@ export default {
         },
     },
     mounted: function() {
-        axios.get(route('tasks.index'))
+        axios.get(route('statuses.index'))
             .then(response => {
 
                 var data = response.data;
@@ -260,6 +260,7 @@ export default {
                         return;
                     }
 
+                    console.log(e);
                     //--- Add to buttons
                     var tmp = {
                         id: e.id,
@@ -278,7 +279,13 @@ export default {
 
                 });
 
-                //---
+            });
+
+        axios.get(route('tasks.index'))
+            .then(response => {
+
+                var data = response.data;
+
                 data.forEach(function(e) {
                     e.collapsed = false;
                 });
