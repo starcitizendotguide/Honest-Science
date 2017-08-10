@@ -25,6 +25,7 @@
             </div>
 
         </div>
+        @routes
         <script src="{{ mix('assets/js/app.js') }}" ></script>
         @yield('elixir')
     </body>

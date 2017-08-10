@@ -1841,7 +1841,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/api/v1/statuses').then(function (response) {
+        axios.get(route('statuses.index')).then(function (response) {
             return _this.statuses = response.data;
         });
     }
@@ -1915,7 +1915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/api/v1/children/task/' + this.taskid).then(function (response) {
+        axios.get(route('children.task.show', { id: this.taskid })).then(function (response) {
             _this.children = response.data;
             _this.settings.isLoading = false;
         });
@@ -1991,7 +1991,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/api/v1/tasks').then(function (response) {
+        axios.get(route('tasks.index')).then(function (response) {
             _this.tasks = response.data;
             _this.settings.isLoading = false;
         });
@@ -2176,7 +2176,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //--- First time loading the Disqus widget requires more setup
             if (typeof DISQUS === 'undefined') {
-                console.log('b');
                 window.disqus_config = function () {
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
@@ -2254,7 +2253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/api/v1/statuses').then(function (response) {
+        axios.get(route('tasks.index')).then(function (response) {
 
             var data = response.data;
             var categories = [];
@@ -2281,11 +2280,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 tmp.css.button_classes[e.css_class] = true;
                 $this.meta.statuses.push(tmp);
             });
-        });
 
-        axios.get('/api/v1/tasks').then(function (response) {
-            var data = response.data;
-
+            //---
             data.forEach(function (e) {
                 e.collapsed = false;
             });

@@ -167,7 +167,6 @@ export default {
 
             //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {
-            console.log('b');
                 window.disqus_config = function () {
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
@@ -249,7 +248,7 @@ export default {
         },
     },
     mounted: function() {
-        axios.get('/api/v1/statuses')
+        axios.get(route('tasks.index'))
             .then(response => {
 
                 var data = response.data;
@@ -279,17 +278,13 @@ export default {
 
                 });
 
-            });
-
-        axios.get('/api/v1/tasks')
-            .then(response => {
-                var data = response.data;
-
+                //---
                 data.forEach(function(e) {
                     e.collapsed = false;
                 });
 
                 this.tasks = data;
+
             });
     },
 }

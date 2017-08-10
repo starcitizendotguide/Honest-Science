@@ -26,8 +26,8 @@
             @include('includes.navigation')
             @yield('content')
         </div>
+        @routes
         <script src="{{ mix('assets/js/app.js') }}"></script>
-        @yield('elixir')
     </body>
     {{-- @TODO needs to be fixed
      @include('includes.footer')--}}

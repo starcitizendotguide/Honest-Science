@@ -58,7 +58,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get('/api/v1/children/task/' + this.taskid)
+        axios.get(route('children.task.show', {id: this.taskid}))
             .then(response => {
                 this.children = response.data;
                 this.settings.isLoading = false;

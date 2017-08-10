@@ -59,7 +59,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get('/api/v1/tasks')
+        axios.get(route('tasks.index'))
             .then(response => {
                 this.tasks = response.data;
                 this.settings.isLoading = false;

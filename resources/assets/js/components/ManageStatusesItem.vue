@@ -61,7 +61,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get('/api/v1/statuses')
+        axios.get(route('statuses.index'))
             .then(response => (this.statuses = response.data));
     },
 }
