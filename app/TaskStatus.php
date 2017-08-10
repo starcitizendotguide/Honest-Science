@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\TaskChild;
+
 class TaskStatus extends Model
 {
 
@@ -19,6 +21,10 @@ class TaskStatus extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function countRelative() {
+        return (TaskChild::all()->where('status', '=', $this->id)->count() / TaskChild::count());
+    }
 
     public function tasks() {
         return $this->hasMany('App\Task', 'status', 'id');

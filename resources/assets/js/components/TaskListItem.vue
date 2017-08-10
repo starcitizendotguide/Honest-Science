@@ -260,7 +260,6 @@ export default {
                         return;
                     }
 
-                    console.log(e);
                     //--- Add to buttons
                     var tmp = {
                         id: e.id,

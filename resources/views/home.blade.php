@@ -12,41 +12,15 @@
                             <span>CIG's first officed opened {{ $list['first-office'] }}</span>
                          </td>
                     </tr>
-                    <tr class="task-released">
-                        <td>
-                            <span class="icon is-small"><i class="fa fa-battery-4"></i></span>
-                            <span>Released: 42%</span>
-                            <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
-                         </td>
-                    </tr>
-                    <tr class="task-partially-released">
-                        <td>
-                            <span class="icon is-small"><i class="fa fa-battery-3"></i></span>
-                            <span>Partially Released: 42%</span>
-                            <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
-                         </td>
-                    </tr>
-                    <tr class="task-in-progress">
-                        <td>
-                            <span class="icon is-small"><i class="fa fa-battery-2"></i></span>
-                            <span>In-Progress: 42%</span>
-                            <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
-                        </td>
-                    </tr>
-                    <tr class="task-stagnant">
-                        <td>
-                            <span class="icon is-small"><i class="fa fa-battery-1"></i></span>
-                            <span>Stagnant: 42%</span>
-                            <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
-                        </td>
-                    </tr>
-                    <tr class="task-broken">
-                        <td>
-                            <span class="icon is-small"><i class="fa fa-chain-broken"></i></span>
-                            <span>Cut/Broken: 42%</span>
-                            <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
-                        </td>
-                    </tr>
+                    @foreach ($list['statuses'] as $status)
+                        <tr class="{{ $status['css_class'] }}">
+                            <td>
+                                <span class="icon is-small"><i class="{{ $status['css_icon'] }}"></i></span>
+                                <span>{{ $status['name'] }}: {{ number_format($status->countRelative(), 2) }}%</span>
+                                <span class="icon is-pulled-right"><i class="fa fa-question-circle-o"></i></span>
+                             </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
