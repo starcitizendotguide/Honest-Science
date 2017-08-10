@@ -20509,9 +20509,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, [_c('strong', [_vm._v(_vm._s(child.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(child.status.name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.toFixed(child.progress * 100, 2)) + "%")]), _vm._v(" "), _c('br'), _vm._v("\n                                                    " + _vm._s(child.description) + "\n                                                    "), _c('br')])])])])
     })) : _vm._e()])], 1)])])])
   })], 2)]), _vm._v(" "), _c('div', {
-    staticClass: "column is-3 m-t-50"
+    staticClass: "column is-3 m-t-50 m-b-100"
   }, [_c('div', {
-    staticClass: "card card-content",
+    staticClass: "card card-content interaction-bar",
     domProps: {
       "innerHTML": _vm._s(_vm.meta.interactionBar.content)
     }

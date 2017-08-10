@@ -45,6 +45,11 @@
 }
 
 //--- Interaction Bar
+.interaction-bar {
+    position: fixed;
+    width: inherit;
+}
+
 .interaction-bar .disqus {
     width: 90%;
 }

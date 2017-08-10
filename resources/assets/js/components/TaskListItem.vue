@@ -89,8 +89,8 @@
             </div>
         </div>
         <!-- Interaction Bar -->
-        <div class="column is-3 m-t-50">
-            <div class="card card-content" v-html="meta.interactionBar.content"></div>
+        <div class="column is-3 m-t-50 m-b-100">
+            <div class="card card-content interaction-bar" v-html="meta.interactionBar.content"></div>
         </div>
     </div>
 </template>
