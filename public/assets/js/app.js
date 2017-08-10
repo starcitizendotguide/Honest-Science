@@ -2159,7 +2159,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         defaultInteractionBar: function defaultInteractionBar() {
-            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open a any task to test its behaviour.</p></div></div>';
+            return '<div class="card m-t-10 m-l-10"><div class="card-content"><p>This is our interactive bar. You can open any task to test its behaviour.</p></div></div>';
         },
         resetInteractionBar: function resetInteractionBar() {
             this.meta.interactionBar.task = null;
