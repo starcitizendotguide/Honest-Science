@@ -153,22 +153,23 @@ export default {
         },
         loadDisqus(task) {
 
-            //@TODO: Fix the bug that we get for all tasks the same comment page.
-
             this.meta.interactionBar.content = '<div id="disqus_thread"></div>';
 
             var CONF_SHORTNAME      = 'starcitizen-tasks';
-            var CONF_IDENTIFIER     = (task.id + '-task-identifier');
+            var CONF_IDENTIFIER     = (task.id + task.created_at.date.replace(' ', '') + '-task-id');
+            var CONF_URL            = ('http://tracker.starcitizen.guide/' + CONF_IDENTIFIER + '-url');
             var CONF_TITLE          = (task.name + ' - Discussion Test');
 
+            //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {
-                console.log('AYYY');
                 window.disqus_config = function () {
+                    console.log('AYYY');
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
+                    this.page.url = CONF_URL;
                 };
 
-                (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+                (function() {
                     var d = document, s = d.createElement('script');
 
                     s.src = '//starcitizen-tasks.disqus.com/embed.js';
@@ -177,13 +178,16 @@ export default {
                     (d.head || d.body).appendChild(s);
                 })();
 
-            } else {
-                console.log('RESTET');
+            }
+            //--- Disqus widget already loaded... just reset the values and load
+            //    a different discussion
+            else {
                 DISQUS.reset({
                   reload: true,
                   config: function () {
                       this.page.identifier = CONF_IDENTIFIER;
                       this.page.title = CONF_TITLE;
+                      this.page.url = CONF_URL;
                   }
                 });
             }
@@ -258,6 +262,8 @@ export default {
                             },
                             icon: e.css_icon
                         },
+                        created_at: e.created_at,
+                        updated_at: e.updated_at
                     };
                     tmp.css.button_classes[e.css_class] = true;
                     $this.meta.statuses.push(tmp);
