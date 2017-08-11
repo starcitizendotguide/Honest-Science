@@ -108,6 +108,8 @@ export default {
         };
     },
     methods: {
+        //--- Resets all the meta values. They are mainly used for the search function &
+        //    the interaction bar.
         resetMeta: function() {
 
             //--- Reset Collapse
@@ -127,28 +129,23 @@ export default {
             //--- Reset Interaction Bar
             this.resetInteractionBar();
         },
-        toFixed(value, digits) {
-            return value.toFixed(digits);
+        //--- Resets the interaction bar to its default status.
+        resetInteractionBar() {
+            this.meta.interactionBar.task = null;
+            this.meta.interactionBar.content = this.defaultInteractionBar();
         },
-        hasChildTypesActive(task) {
-
-            for(var key in task.children) {
-                for(var i = 0; i < this.meta.types.length; i++) {
-                    if(this.meta.types[i].id === task.children[key].type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-
-        },
+        //--- Called when the user clicks on the "status" button to enable or disable
+        //    it.
         statusOnClick(id) {
             this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
         },
+        //--- Called when the user clicks on the "type" button to enable or disable
+        //    it.
         typeOnClick(id) {
             this.meta.types[id].css.button_classes['is-active'] = !this.meta.types[id].css.button_classes['is-active'];
         },
+        //--- Called when the user clicks on the arrow next to a task to collapse it.
+        //    It collapse all other tasks and resets or loads the interaction bar.
         triggerCollapse(task) {
             //--- Reset Collapse & Reset Interaction Bar
             this.tasks.map(v => { if(v != task) v.collapsed = false;  });
@@ -165,13 +162,7 @@ export default {
             }
 
         },
-        defaultInteractionBar() {
-            return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
-        },
-        resetInteractionBar() {
-            this.meta.interactionBar.task = null;
-            this.meta.interactionBar.content = this.defaultInteractionBar();
-        },
+        //--- Loads the Disqus section for an task.
         loadDisqus(task) {
 
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
@@ -215,7 +206,30 @@ export default {
                   }
                 });
             }
-        }
+        },
+        //---- Help function: returns the default value of the interaction bar.
+        defaultInteractionBar() {
+            return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
+        },
+        //--- Help Fuction: formations a number using fixed-point notation.
+        toFixed(value, digits) {
+            return value.toFixed(digits);
+        },
+        //--- Help Function: checks if the task has a child that has a 'TaskType'
+        //    the user is currently looking for
+        hasChildTypesActive(task) {
+
+            for(var key in task.children) {
+                for(var i = 0; i < this.meta.types.length; i++) {
+                    if(this.meta.types[i].id === task.children[key].type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+
+        },
     },
     computed: {
         filteredItems: function () {
