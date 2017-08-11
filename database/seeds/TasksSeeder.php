@@ -28,7 +28,7 @@ class TasksSeeder extends Seeder
                         'name' => 'Gamma',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 0,
-                        'type' => 0,
+                        'type' => 1,
                         'progress' => 0.0433
                     ],
                 ]
@@ -41,7 +41,7 @@ class TasksSeeder extends Seeder
                         'name' => 'Epsilon',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 3,
-                        'type' => 0,
+                        'type' => 2,
                         'progress' => 0.3178
                     ],
                 ]
@@ -54,22 +54,42 @@ class TasksSeeder extends Seeder
                         'name' => 'Eta',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 0,
-                        'type' => 0,
+                        'type' => 3,
                         'progress' => 0.3178
                     ],
                     [
                         'name' => 'Theta',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 3,
-                        'type' => 0,
+                        'type' => 4,
                         'progress' => 0.1457
                     ],
                     [
                         'name' => 'Iota',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 2,
-                        'type' => 0,
+                        'type' => 5,
                         'progress' => 0.0362
+                    ]
+                ]
+            ],
+            [
+                'name' => 'Kappa',
+                'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, tenetur.',
+                'children' => [
+                    [
+                        'name' => 'Lambda',
+                        'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                        'status' => 6,
+                        'type' => 3,
+                        'progress' => 0.9999
+                    ],
+                    [
+                        'name' => 'Mu',
+                        'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
+                        'status' => 7,
+                        'type' => 4,
+                        'progress' => 0.9537
                     ]
                 ]
             ],

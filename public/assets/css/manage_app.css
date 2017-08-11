@@ -13517,11 +13517,6 @@ table tr:hover {
   background-color: #C9302C;
 }
 
-.interaction-bar {
-  position: fixed;
-  width: inherit;
-}
-
 .interaction-bar .disqus {
   width: 90%;
 }

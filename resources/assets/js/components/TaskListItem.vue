@@ -8,7 +8,7 @@
                     </p>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
-                            <a v-on:click="categoryOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
+                            <a v-on:click="statusOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
                                <span>{{ status.name }}</span>
                            </a>
@@ -21,22 +21,17 @@
                         </a>
                     </p>
                 </div>
-                <!--<div class="field has-addons">
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                    <p class="control"><a href="#" class="button"><span class="icon is-small"><i class="fa fa-rocket"></i></span><span>Example</span></a></p>
-                </div>-->
 
+                <div class="field is-grouped">
+                    <div class="field has-addons control">
+                        <p class="control" v-for="type in meta.types">
+                            <a v-on:click="typeOnClick(type.id)" class="button" v-bind:class="type.css.button_classes" >
+                               <span class="icon is-small"><i :class="type.css.icon"></i></span>
+                               <span>{{ type.name }}</span>
+                           </a>
+                        </p>
+                    </div>
+                </div>
 
                 <div class="box" v-for="task in filteredItems">
                     <article class="media">
@@ -107,7 +102,8 @@ export default {
                     task: null,
                     content: this.defaultInteractionBar()
                 },
-                statuses: []
+                statuses: [],
+                types: [],
             },
         };
     },
@@ -120,9 +116,12 @@ export default {
             //--- Reset search value
             this.meta.search = '';
 
-            //--- Reset categories
+            //--- Reset statuses & types
             for(var i = 0; i < this.meta.statuses.length; i++) {
                 this.meta.statuses[i].css.button_classes['is-active'] = false;
+            }
+            for(var i = 0; i < this.meta.types.length; i++) {
+                this.meta.types[i].css.button_classes['is-active'] = false;
             }
 
             //--- Reset Interaction Bar
@@ -131,8 +130,24 @@ export default {
         toFixed(value, digits) {
             return value.toFixed(digits);
         },
-        categoryOnClick(id) {
+        hasChildTypesActive(task) {
+
+            for(var key in task.children) {
+                for(var i = 0; i < this.meta.types.length; i++) {
+                    if(this.meta.types[i].id === task.children[key].type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+
+        },
+        statusOnClick(id) {
             this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
+        },
+        typeOnClick(id) {
+            this.meta.types[id].css.button_classes['is-active'] = !this.meta.types[id].css.button_classes['is-active'];
         },
         triggerCollapse(task) {
             //--- Reset Collapse & Reset Interaction Bar
@@ -204,9 +219,11 @@ export default {
     },
     computed: {
         filteredItems: function () {
-            var _tmp = this.tasks,
-                search = this.meta.search,
-                statuses = this.meta.statuses;
+            var _tmp        = this.tasks,
+                self        = this,
+                search      = this.meta.search,
+                statuses    = this.meta.statuses,
+                types       = this.meta.types;
 
 
             //--- Going through all "status buttons" to decide whether or not, we
@@ -215,10 +232,19 @@ export default {
             for (var key in statuses) {
                 if(statuses[key].css.button_classes['is-active'] === true) {
                     statusMode = true;
+                    break;
                 }
             }
 
-            if(!search && !statusMode){
+            var typeMode = false;
+            for (var key in types) {
+                if(types[key].css.button_classes['is-active'] === true) {
+                    typeMode = true;
+                    break;
+                }
+            }
+
+            if(!search && !statusMode && !typeMode){
                 return _tmp;
             }
 
@@ -236,6 +262,7 @@ export default {
                 //       and casting it doesn't help for some reason, weird...
                 if(
                     (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
+                    (self.hasChildTypesActive(item) || !typeMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1
@@ -253,7 +280,6 @@ export default {
             .then(response => {
 
                 var data = response.data;
-                var categories = [];
                 var $this = this;
                 data.forEach(function(e) {
 
@@ -292,6 +318,35 @@ export default {
 
                 this.tasks = data;
 
+            });
+
+        axios.get(route('types.index'))
+            .then(response => {
+                var data = response.data;
+                var $this = this;
+                data.forEach(function(e) {
+
+                    if(e.id < 0) {
+                        return;
+                    }
+
+                    //--- Add to buttons
+                    var tmp = {
+                        id: e.id,
+                        name: e.name,
+                        css: {
+                            button_classes: {
+                                'is-active': false,
+                            },
+                            icon: e.css_icon
+                        },
+                        created_at: e.created_at,
+                        updated_at: e.updated_at
+                    };
+                    tmp.css.button_classes[e.css_class] = true;
+                    $this.meta.types.push(tmp);
+
+                });
             });
     },
 }

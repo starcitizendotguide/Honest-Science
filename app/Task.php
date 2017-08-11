@@ -41,11 +41,16 @@ class Task extends Model
         $table = [];
 
         $children->each(function($item, $key) use (&$table) {
-            $status = $item->status();
-            if(array_key_exists($status->id, $table)) {
-                $table[$status->id] += (1 * $status->rating);
+            $status = $item->status()->first();
+
+            if($status['id'] === -1) {
+                return;
+            }
+
+            if(array_key_exists($status['id'], $table)) {
+                $table[$status['id']] += (1 * $status['rating']);
             } else {
-                $table[$status->id] = (1 * $status->rating);
+                $table[$status['id']] = (1 * $status['rating']);
             }
         });
         $table = collect($table);

@@ -71,6 +71,11 @@ class TaskStatusSeeder extends Seeder
 
         foreach ($statuses as $status) {
             $tmp = new App\TaskStatus;
+
+            if(App\TaskStatus::byId($status['id'])->exists()) {
+                continue;
+            }
+
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
             $tmp->rating = $status['rating'];

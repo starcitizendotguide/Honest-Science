@@ -66,6 +66,11 @@ Route::group(['prefix' => 'api/v1'], function() {
             ]
         ]);
 
+        Route::resource('types', 'TaskTypesController', [
+            'only' => [
+                'index', 'show'
+            ]
+        ]);
 
         Route::resource('users', 'UserController', [
             'only' => [

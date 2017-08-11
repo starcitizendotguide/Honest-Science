@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LaratrustSeeder::class);
         $this->call(TasksSeeder::class);
         $this->call(TaskStatusSeeder::class);
+        $this->call(TaskTypeSeeder::class);
 
         if(env('APP_DEBUG') === true) {
             $this->call(DebugSeeder::class);

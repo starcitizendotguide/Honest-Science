@@ -26,11 +26,15 @@ class TaskChild extends Model
     }
 
     public function parent() {
-        return $this->hasOne('App\Task', 'id', 'task_id')->first();
+        return $this->hasOne('App\Task', 'id', 'task_id');
     }
 
     public function status() {
-        return $this->hasOne('App\TaskStatus', 'id', 'status')->first();
+        return $this->hasOne('App\TaskStatus', 'id', 'status');
+    }
+
+    public function type() {
+        return $this->hasOne('App\TaskType', 'id', 'type');
     }
 
 }

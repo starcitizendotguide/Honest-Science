@@ -19,7 +19,6 @@ class TasksController extends Controller
 
         $tasks = Task::all();
         foreach ($tasks as $task) {
-
             $tmp = [
                 'id'            => $task->id,
                 'name'          => $task->name,
@@ -51,9 +50,9 @@ class TasksController extends Controller
                     'id'            => $child->id,
                     'name'          => $child->name,
                     'description'   => $child->description,
-                    'status'        => $child->status(),
+                    'status'        => $child->status()->first(),
                     'progress'      => $child->progress,
-                    'type'          => $child->type,
+                    'type'          => $child->type()->first(),
 
                     'created_at'    => $child->created_at,
                     'updated_at'    => $child->updated_at
@@ -120,9 +119,9 @@ class TasksController extends Controller
                 'id'            => $child->id,
                 'name'          => $child->name,
                 'description'   => $child->description,
-                'status'        => $child->status(),
+                'status'        => $child->status()->first(),
                 'progress'      => $child->progress,
-                'type'          => $child->type,
+                'type'          => $child->type()->first(),
 
                 'created_at'    => $child->created_at,
                 'updated_at'    => $child->updated_at
