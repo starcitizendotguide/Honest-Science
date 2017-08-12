@@ -80,14 +80,14 @@ class TasksSeeder extends Seeder
                     [
                         'name' => 'Lambda',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                        'status' => 6,
+                        'status' => 0,
                         'type' => 3,
                         'progress' => 0.9999
                     ],
                     [
                         'name' => 'Mu',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                        'status' => 7,
+                        'status' => 0,
                         'type' => 4,
                         'progress' => 0.9537
                     ]

@@ -14,12 +14,6 @@
                            </a>
                         </p>
                     </div>
-                    <p class="control is-pulled-right">
-                        <a v-on:click="resetMeta" class="button">
-                            <span class="icon is-small"><i class="fa fa-undo"></i></span>
-                            <span>Reset</span>
-                        </a>
-                    </p>
                 </div>
 
                 <div class="field is-grouped">
@@ -30,7 +24,16 @@
                                <span>{{ type.name }}</span>
                            </a>
                         </p>
+
+
                     </div>
+
+                    <p class="control is-pulled-right">
+                        <a v-on:click="resetMeta" class="button">
+                            <span class="icon is-small"><i class="fa fa-undo"></i></span>
+                            <span>Reset</span>
+                        </a>
+                    </p>
                 </div>
 
                 <div class="box" v-for="task in filteredItems">
@@ -84,7 +87,7 @@
             </div>
         </div>
         <!-- Interaction Bar -->
-        <div class="column is-3 m-t-50 m-b-100">
+        <div class="column is-3 m-t-100">
             <div class="card card-content interaction-bar" v-html="meta.interactionBar.content"></div>
         </div>
     </div>
@@ -175,6 +178,7 @@ export default {
             //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {
                 window.disqus_config = function () {
+                    console.log('A: ' + CONF_IDENTIFIER);
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
                     this.page.url = CONF_URL;
@@ -191,15 +195,10 @@ export default {
             //    a different discussion
             else {
 
-                //--- Appened Disqus Widget
-                var d = document, s = d.createElement('script');
-                s.src = '//' + CONF_SHORTNAME + '.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-
                 DISQUS.reset({
                   reload: true,
                   config: function () {
+                      console.log('B: ' + CONF_IDENTIFIER);
                       this.page.identifier = CONF_IDENTIFIER;
                       this.page.title = CONF_TITLE;
                       this.page.url = CONF_URL;
