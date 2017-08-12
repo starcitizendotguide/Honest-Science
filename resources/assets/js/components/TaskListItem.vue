@@ -265,12 +265,6 @@ export default {
 
             _tmp = _tmp.filter(function(item){
 
-                //--- We wanna display features that have an 'Unknown' status but
-                //    we don't allow it to be filtered
-                if(item.status.id < 0) {
-                    return;
-                }
-
                 //@HACK: Why do we have strings as keys? The Rest API is passing ints
                 //       and casting it doesn't help for some reason, weird...
                 if(
@@ -295,10 +289,6 @@ export default {
                 var data = response.data;
                 var $this = this;
                 data.forEach(function(e) {
-
-                    if(e.id < 0) {
-                        return;
-                    }
 
                     //--- Add to buttons
                     var tmp = {
@@ -338,10 +328,6 @@ export default {
                 var data = response.data;
                 var $this = this;
                 data.forEach(function(e) {
-
-                    if(e.id < 0) {
-                        return;
-                    }
 
                     //--- Add to buttons
                     var tmp = {

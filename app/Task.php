@@ -29,11 +29,13 @@ class Task extends Model
 
     public function status() {
 
+        $DEFAULT_STATUS = 3;
+
         //--- No children is or should be invalid, so we return the default status
         $children = null;
 
         if(!($children = $this->children())->exists()) {
-            return TaskStatus::byId(-1)->first();
+            return TaskStatus::byId($DEFAULT_STATUS)->first();
         }
 
         //--- Score

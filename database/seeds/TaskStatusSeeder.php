@@ -13,15 +13,6 @@ class TaskStatusSeeder extends Seeder
     {
         $statuses = [
             [
-                'id'    => -1,
-                'name'  => 'Unknown',
-                'rating'=> -1,
-                'css'   => [
-                            'class' => '',
-                            'icon'  => ''
-                        ]
-            ],
-            [
                 'id'    => 0,
                 'name'  => 'Released',
                 'rating'=> 5,
@@ -51,7 +42,7 @@ class TaskStatusSeeder extends Seeder
             ],
             [
                 'id'    => 3,
-                'name'  => 'Stagnant',
+                'name'  => 'Stagnant/Unknown',
                 'rating'=> 2,
                 'css'   => [
                             'class' => 'task-stagnant',
