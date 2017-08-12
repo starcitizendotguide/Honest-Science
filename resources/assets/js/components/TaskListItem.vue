@@ -178,7 +178,6 @@ export default {
             //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {
                 window.disqus_config = function () {
-                    console.log('A: ' + CONF_IDENTIFIER);
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
                     this.page.url = CONF_URL;
@@ -198,7 +197,6 @@ export default {
                 DISQUS.reset({
                   reload: true,
                   config: function () {
-                      console.log('B: ' + CONF_IDENTIFIER);
                       this.page.identifier = CONF_IDENTIFIER;
                       this.page.title = CONF_TITLE;
                       this.page.url = CONF_URL;
