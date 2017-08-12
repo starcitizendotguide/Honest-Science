@@ -171,8 +171,7 @@ export default {
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
             var CONF_SHORTNAME      = 'starcitizen-tasks';
-            var CONF_IDENTIFIER     = (task.id + task.created_at.date.replace(' ', '') + '-task-id');
-            var CONF_URL            = ('http://tracker.starcitizen.guide/' + CONF_IDENTIFIER + '-url');
+            var CONF_IDENTIFIER     = (task.id + '-task-id');
             var CONF_TITLE          = (task.name + ' - Discussion Test');
 
             //--- First time loading the Disqus widget requires more setup
@@ -180,7 +179,6 @@ export default {
                 window.disqus_config = function () {
                     this.page.identifier = CONF_IDENTIFIER;
                     this.page.title = CONF_TITLE;
-                    this.page.url = CONF_URL;
                 };
 
                 //--- Appened Disqus Widget
@@ -199,7 +197,6 @@ export default {
                   config: function () {
                       this.page.identifier = CONF_IDENTIFIER;
                       this.page.title = CONF_TITLE;
-                      this.page.url = CONF_URL;
                   }
                 });
             }
