@@ -13,19 +13,9 @@
     </head>
     <body>
 
-        @if (session('status'))
-            {{--
-            $request->session()->flash('status', 'Task was successful!');
-             --}}
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <div id="app">
+        <div id="app" class="grid">
             @include('includes.navigation')
             @yield('content')
-
         </div>
         @include('includes.footer')
         @routes

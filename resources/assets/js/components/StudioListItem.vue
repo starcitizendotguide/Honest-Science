@@ -4,6 +4,7 @@
         default-sort="since"
         :loading="settings.isLoading"
         striped
+        class="highlighted-element"
     >
     <!-- TODO Add 'detailed' to b-table again to enable the details and images -->
 

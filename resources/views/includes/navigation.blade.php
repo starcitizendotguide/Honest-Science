@@ -1,9 +1,6 @@
 <nav class="nav has-shadow">
     <div class="container">
         <div class="nav-left">
-            <a href="{{ route('home.index') }}" class="nav-item">
-                <img src="{{ asset('assets/img/logo.jpg') }}" alt="Logo">
-            </a>
             <a href="{{ route('home.index') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">About</a>
             <a href="#" class="nav-item is-tab is-hidden-mobile">FAQ</a>

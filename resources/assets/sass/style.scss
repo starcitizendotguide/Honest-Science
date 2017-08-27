@@ -1,4 +1,32 @@
-// Colours
+/**
+*    CIGs awesome background. Thank you guys. - http://robertsspaceindustries.com/
+*/
+@font-face {
+    font-family: 'Electrolize';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Electrolize'), local('Electrolize-Regular'), url('../fonts/Electrolize.woff2') format('woff2');
+    unicode-range: U+0-FF, U+131, U+152-153, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+html * {
+    font-family: 'Electrolize';
+}
+
+body {
+    background: url('../images/background.jpg') repeat;
+}
+
+.grid {
+    background: transparent url('../images/gridbg_glow.png') repeat;
+}
+
+//--- Navigation
+nav {
+    background: rgba(0, 0, 0, 0);
+}
+
+//--- Colours
 .task-released {
     background-color: $task-released;
     border-color: $task-released;
@@ -44,12 +72,30 @@
     background-color: $account-suspended;
 }
 
-//--- Interaction Bar
-.interaction-bar {
-    //position: fixed;
-    //width: inherit;
-}
-
 .interaction-bar .disqus {
     width: 90%;
+}
+
+//--- Boxes
+
+
+.highlighted-element {
+    background: rgba(6, 70, 102, 0.4);
+    border: 1px solid rgba(0, 237, 255, 0.3);
+    color: $font-color;
+}
+
+.highlighted-element:hover,
+.highlighted-element:active,
+.highlighted-element:focus,
+.highlighted-element.is-active {
+    color: #ffefc7;
+    border-color: rgba(255, 187, 24, 0.6);
+    box-shadow: 0 0 6px rgba(76, 33, 4, 0.79), 0 0 18px rgba(255, 187, 24, 0.6);
+}
+
+.search-box {
+    color: $font-color;
+    background: rgba(6, 70, 102, 0.4);
+    border: 1px solid rgba(0, 237, 255, 0.3);
 }
