@@ -51,7 +51,6 @@
 
 <script type="text-javascript">
 export default {
-    props: ['taskid'],
     data: function() {
         return {
             studios: [],

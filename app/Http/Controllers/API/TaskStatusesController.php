@@ -10,7 +10,13 @@ class TaskStatusesController extends Controller
 {
 
     public function index() {
-        return TaskStatus::all();
+        $data = TaskStatus::all();
+
+        $data->each(function($item, $key) {
+            $item['countRelative'] = $item->countRelative();
+        });
+
+        return $data;
     }
 
 }
