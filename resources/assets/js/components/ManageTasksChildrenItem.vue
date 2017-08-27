@@ -35,8 +35,8 @@
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
-        </template>
 
+        </template>
         <div slot="empty" class="has-text-centered">
             This task has no children.
         </div>
@@ -63,6 +63,7 @@ export default {
                 this.children = response.data;
                 this.settings.isLoading = false;
             });
+
     }
 }
 </script>

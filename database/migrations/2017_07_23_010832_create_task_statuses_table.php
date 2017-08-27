@@ -25,7 +25,7 @@ class CreateTaskStatusesTable extends Migration
             $table->timestamps();
 
             //--- Index
-            $table->index('id');
+            $table->primary('id');
 
         });
     }

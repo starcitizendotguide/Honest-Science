@@ -35,6 +35,7 @@
 
         <b-tab-item label="Children">
             <manage-tasks-children-item taskid="{{ $task->id }}"></manage-tasks-children-item>
+            <button class="button is-primary is-outlined is-fullwidth m-t-5">Add New Child</button>
         </b-tab-item>
 
         <b-tab-item label="Sources">

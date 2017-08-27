@@ -24,8 +24,6 @@
                                <span>{{ type.name }}</span>
                            </a>
                         </p>
-
-
                     </div>
 
                     <p class="control is-pulled-right">
@@ -38,21 +36,16 @@
 
                 <div class="box" v-for="task in filteredItems">
                     <article class="media">
-                        <div class="media-left">
-                            <figure class="image is-64x64">
-                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                            </figure>
-                        </div>
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong>{{ task.name }}</strong>
-                                    <small>{{ task.status.name }}</small>
-                                    <small>{{ toFixed(task.progress * 100, 2) }}%</small>
+                                    <strong>{{ task.name }}</strong> -
+                                    <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
+                                        <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
+                                    </b-tooltip>
+
                                     <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
-                                    <br />
-                                    {{ task.description }}
-                                    <br />
+                                    <p>{{ task.description }}</p>
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
                                 </p>
                                 <transition name="fade">
@@ -60,16 +53,15 @@
 
                                         <div class="box" v-bind:class="child.status.css_class" v-for="child in task.children">
                                             <article class="media">
-                                                <div class="media-left">
-                                                    <figure class="image is-64x64">
-                                                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                                                    </figure>
-                                                </div>
                                                 <div class="media-content">
                                                     <div class="content">
-                                                        <strong>{{ child.name }}</strong>
-                                                        <small>{{ child.status.name }}</small>
-                                                        <small>{{ toFixed(child.progress * 100, 2) }}%</small>
+                                                        <strong>{{ child.name }}</strong> -
+                                                        <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
+                                                            <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
+                                                        </b-tooltip>
+                                                        <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
+                                                            <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
+                                                        </b-tooltip>
                                                         <br />
                                                         {{ child.description }}
                                                         <br />
@@ -171,8 +163,8 @@ export default {
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
             var CONF_SHORTNAME      = 'starcitizen-tasks';
-            var CONF_IDENTIFIER     = (task.id + '-task-id');
-            var CONF_TITLE          = (task.name + ' - Discussion Test');
+            var CONF_IDENTIFIER     = (task.id + '-' + task.name + '-task-id');
+            var CONF_TITLE          = (task.name + ' - Discussion');
 
             //--- First time loading the Disqus widget requires more setup
             if(typeof DISQUS === 'undefined') {

@@ -16,7 +16,7 @@ class CreateTasksChildrenTable extends Migration
         Schema::create('task_children', function(Blueprint $table) {
 
             //--- Types
-            $table->increments('id');
+            $table->increments('id')->index();
             $table->integer('task_id');
 
             $table->string('name');
@@ -28,9 +28,6 @@ class CreateTasksChildrenTable extends Migration
 
 
             $table->timestamps();
-
-            //--- Index
-            $table->index('id');
 
         });
     }

@@ -20,7 +20,7 @@ class TasksChildrenController extends Controller
             $tmp['progress']    = $child->progress;
             $tmp['type']        = $child->type;
             $tmp['description'] = $child->description;
-            $tmp['status']      = $child->status();
+            $tmp['status']      = $child->status()->first();
             $tmp['parent']      = $child->parent();
             $tmp['created_at']  = $child->created_at;
             $tmp['updated_at']  = $child->updated_at;
@@ -33,9 +33,11 @@ class TasksChildrenController extends Controller
     }
 
     public function show($id) {
-        $child = \App\TaskChild::byId($id);
+        $child = \App\TaskChild::where('id', '=', $id)->first();
 
         $data = [];
+
+        dd($child->name);
 
         $data['id']             = $child->id;
         $data['name']           = $child->name;
@@ -51,8 +53,7 @@ class TasksChildrenController extends Controller
     }
 
     public function task($task_id) {
-        $task = \App\Task::byId($task_id);
-
+        $task = \App\Task::where('id', '=', $task_id);
 
         if(!($task->exists())) {
             return [];
@@ -76,7 +77,7 @@ class TasksChildrenController extends Controller
             $tmp['progress']    = $child->progress;
             $tmp['type']        = $child->type;
             $tmp['description'] = $child->description;
-            $tmp['status']      = $child->status();
+            $tmp['status']      = $child->status()->first();
             $tmp['created_at']  = $child->created_at;
             $tmp['updated_at']  = $child->updated_at;
 
