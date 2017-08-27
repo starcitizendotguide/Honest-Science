@@ -50,7 +50,6 @@ export default {
         axios.get(route('statuses.index'))
             .then(response => {
                 this.statuses = response.data;
-                console.log(this.statuses);
                 this.settings.isLoading = false;
             });
     }

@@ -14,7 +14,13 @@
 
             <b-table-column field="employees" label="Employees" soable>
                 <span v-if="props.row.employees[props.row.employees.length - 1].amount > 1">
-                    {{ props.row.employees[props.row.employees.length - 1].amount }} ({{ props.row.employees[props.row.employees.length - 1].year }})
+                    <b-tooltip
+                        :label="props.row.employee_tooltip"
+                        dashed
+                        type="is-dark"
+                    >
+                        {{ props.row.employees[props.row.employees.length - 1].amount }} ({{ props.row.employees[props.row.employees.length - 1].year }})
+                    </b-tooltip>
                 </span>
                 <span v-else>-</span>
             </b-table-column>
@@ -174,6 +180,16 @@ export default {
                 ]
             },
         ];
+
+        studios.forEach(function(item) {
+            var tmp = [];
+
+            item.employees.forEach(function(entry) {
+                tmp.push(entry.amount + ' (' + entry.year + ')');
+            });
+
+            item.employee_tooltip = tmp.join(', ');
+        });
 
         this.studios = studios;
         this.settings.isLoading = false;
