@@ -3,22 +3,18 @@
         :data="studios"
         default-sort="since"
         :loading="settings.isLoading"
-        striped
-        detailed
         class="highlighted-element"
     >
-    <!-- TODO Add 'detailed' to b-table again to enable the details and images -->
 
         <template scope="props">
             <b-table-column field="location" label="Location">
                 {{ props.row.location }}
             </b-table-column>
 
-            <b-table-column field="employees" label="Employees" soable>
+            <b-table-column field="employees" label="Employees">
                 <span v-if="props.row.employees[props.row.employees.length - 1].amount > 1">
                     <b-tooltip
                         :label="props.row.employee_tooltip"
-                        dashed
                         type="is-dark"
                     >
                         {{ props.row.employees[props.row.employees.length - 1].amount }} ({{ props.row.employees[props.row.employees.length - 1].year }})
@@ -27,7 +23,7 @@
                 <span v-else>-</span>
             </b-table-column>
 
-            <b-table-column field="established" label="Established" centered>
+            <b-table-column field="established" label="Established">
                 <span>{{ props.row.employees[0].year }}</span>
             </b-table-column>
 
@@ -35,25 +31,23 @@
 
         <template slot="detail" scope="props">
             <article class="media">
-                </figure>
                 <div class="media-content">
                     <div class="content">
                         <p>{{ props.row.description }}</p>
                         <a href="#" v-if="props.row.image != null" @click="props.row.image.show = true">Show Team</a>
                     </div>
                 </div>
-            </article>
-            <b-modal  v-if="props.row.image != null" :active.sync="props.row.image.show">
-                <div class="card highlighted-element is-active">
-                    <div class="card-image">
-                        <figure class="image">
-                            <img :src="props.row.image.url_full" :alt="props.row.location">
-                        </figure>
+                <b-modal  v-if="props.row.image != null" :active.sync="props.row.image.show">
+                    <div class="card highlighted-element is-active">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img :src="props.row.image.url_full" :alt="props.row.location">
+                            </figure>
+                        </div>
                     </div>
-                </div>
-            </b-modal>
+                </b-modal>
+            </article>
         </template>
-
     </b-table>
 </template>
 

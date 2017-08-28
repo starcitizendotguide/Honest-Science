@@ -20,12 +20,6 @@
                 {{ props.row.rating }}
             </b-table-column>
 
-            <b-table-column field="css_button" label="CSS Button">
-                <b-tooltip :label="props.row.css_class" dashed>
-                    <button class="button" :class="props.row.css_class">Example</button>
-                </b-tooltip>
-            </b-table-column>
-
             <b-table-column field="css_icon" label="CSS Icon">
                 <b-tooltip :label="props.row.css_icon" dashed>
                     <i class="fa" :class="props.row.css_icon"></i>
