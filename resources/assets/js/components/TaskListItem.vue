@@ -51,7 +51,7 @@
                                 <transition name="fade">
                                     <div v-if="task.collapsed">
 
-                                        <div class="box" v-bind:class="child.status.css_class" v-for="child in task.children">
+                                        <div class="box highlighted-element" v-for="child in task.children">
                                             <article class="media">
                                                 <div class="media-content">
                                                     <div class="content">

@@ -16,7 +16,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 0,
                 'name'  => 'Gameplay',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-gamepad'
                 ]
             ],
@@ -24,7 +23,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 1,
                 'name'  => 'Engine',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-gears'
                 ]
             ],
@@ -32,7 +30,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 2,
                 'name'  => 'Performance',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-dashboard'
                 ]
             ],
@@ -40,7 +37,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 3,
                 'name'  => 'Celestial Body',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-globe'
                 ]
             ],
@@ -48,7 +44,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 4,
                 'name'  => 'UI/UX',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-eye'
                 ]
             ],
@@ -56,7 +51,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 5,
                 'name'  => 'Rework',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-refresh'
                 ]
             ],
@@ -64,7 +58,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 6,
                 'name'  => 'Ships',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-space-shuttle'
                 ]
             ],
@@ -72,7 +65,6 @@ class TaskTypeSeeder extends Seeder
                 'id'    => 7,
                 'name'  => 'Ground Vehicles',
                 'css'   => [
-                    'class' => '',
                     'icon'  => 'fa fa-car'
                 ]
             ]
@@ -82,7 +74,6 @@ class TaskTypeSeeder extends Seeder
             $tmp = new App\TaskType;
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
-            $tmp->css_class = $status['css']['class'];
             $tmp->css_icon = $status['css']['icon'];
             $tmp->save();
         }

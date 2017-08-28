@@ -4,6 +4,7 @@
         default-sort="since"
         :loading="settings.isLoading"
         striped
+        detailed
         class="highlighted-element"
     >
     <!-- TODO Add 'detailed' to b-table again to enable the details and images -->
@@ -26,7 +27,7 @@
                 <span v-else>-</span>
             </b-table-column>
 
-            <b-table-column field="since" label="Since">
+            <b-table-column field="established" label="Established" centered>
                 <span>{{ props.row.employees[0].year }}</span>
             </b-table-column>
 
@@ -43,7 +44,7 @@
                 </div>
             </article>
             <b-modal  v-if="props.row.image != null" :active.sync="props.row.image.show">
-                <div class="card">
+                <div class="card highlighted-element is-active">
                     <div class="card-image">
                         <figure class="image">
                             <img :src="props.row.image.url_full" :alt="props.row.location">

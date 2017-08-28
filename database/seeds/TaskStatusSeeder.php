@@ -16,9 +16,7 @@ class TaskStatusSeeder extends Seeder
                 'id'    => 0,
                 'name'  => 'Released',
                 'rating'=> 5,
-                'css'   => 'task-released',
                 'css'   => [
-                            'class' => 'task-released',
                             'icon'  => 'fa fa-battery-4'
                         ]
             ],
@@ -27,7 +25,6 @@ class TaskStatusSeeder extends Seeder
                 'name'  => 'Partially Released',
                 'rating'=> 4,
                 'css'   => [
-                            'class' => 'task-partially-released',
                             'icon'  => 'fa fa-battery-3'
                         ]
             ],
@@ -36,7 +33,6 @@ class TaskStatusSeeder extends Seeder
                 'name'  => 'In-Progress',
                 'rating'=> 3,
                 'css'   => [
-                            'class' => 'task-in-progress',
                             'icon'  => 'fa fa-battery-2'
                         ]
             ],
@@ -45,7 +41,6 @@ class TaskStatusSeeder extends Seeder
                 'name'  => 'Stagnant/Unknown',
                 'rating'=> 2,
                 'css'   => [
-                            'class' => 'task-stagnant',
                             'icon'  => 'fa fa-battery-1'
                         ]
             ],
@@ -54,7 +49,6 @@ class TaskStatusSeeder extends Seeder
                 'name'  => 'Cut/Broken',
                 'rating'=> 1,
                 'css'   => [
-                            'class' => 'task-broken',
                             'icon'  => 'fa fa-chain-broken'
                         ]
             ]
@@ -70,7 +64,6 @@ class TaskStatusSeeder extends Seeder
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
             $tmp->rating = $status['rating'];
-            $tmp->css_class = $status['css']['class'];
             $tmp->css_icon = $status['css']['icon'];
             $tmp->save();
         }
