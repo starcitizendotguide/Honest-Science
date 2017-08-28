@@ -16,6 +16,7 @@
                     <b-tooltip
                         :label="props.row.employee_tooltip"
                         type="is-dark"
+                        dashed
                     >
                         {{ props.row.employees[props.row.employees.length - 1].amount }} ({{ props.row.employees[props.row.employees.length - 1].year }})
                     </b-tooltip>

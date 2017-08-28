@@ -96,9 +96,9 @@ nav {
     box-shadow: 0 0 6px rgba(76, 33, 4, 0.79), 0 0 18px rgba(255, 187, 24, 0.6);
 }
 
-.highlighted-element:hover.highlighted-text,
-.highlighted-element:active.highlighted-text,
-.highlighted-element:focus.highlighted-text,
+.highlighted-element:hover .highlighted-text,
+.highlighted-element:active .highlighted-text,
+.highlighted-element:focus .highlighted-text,
 .highlighted-element.is-active.highlighted-text {
     color: $font-color-highlighted;
 }
@@ -107,4 +107,10 @@ nav {
     color: $font-color;
     background: rgba(6, 70, 102, 0.4);
     border: 1px solid rgba(0, 237, 255, 0.3);
+}
+
+//--- Utitilies
+.is-dashed {
+	border-bottom: 1px dashed #b5b5b5;
+	cursor: default;
 }
