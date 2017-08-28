@@ -4,11 +4,11 @@
             <div class="task-list">
                 <div class="field is-grouped">
                     <p class="control">
-                        <input v-model="meta.search" class="input highlighted-element" placeholder="Search...">
+                        <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
                     </p>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
-                            <a v-on:click="statusOnClick(status.id)" class="button" v-bind:class="status.css.button_classes" >
+                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" >
                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
                                <span>{{ status.name }}</span>
                            </a>
@@ -19,7 +19,7 @@
                 <div class="field is-grouped">
                     <div class="field has-addons control">
                         <p class="control" v-for="type in meta.types">
-                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element" v-bind:class="type.css.button_classes" >
+                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" >
                                <span class="icon is-small"><i :class="type.css.icon"></i></span>
                                <span>{{ type.name }}</span>
                            </a>
@@ -27,14 +27,14 @@
                     </div>
 
                     <p class="control is-pulled-right">
-                        <a v-on:click="resetMeta" class="button highlighted-element">
+                        <a v-on:click="resetMeta" class="button highlighted-element highlighted-text">
                             <span class="icon is-small"><i class="fa fa-undo"></i></span>
                             <span>Reset</span>
                         </a>
                     </p>
                 </div>
 
-                <div class="box task-box highlighted-element" :class="{'highlighted-element': true}" v-for="task in filteredItems">
+                <div class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
                             <div class="content">

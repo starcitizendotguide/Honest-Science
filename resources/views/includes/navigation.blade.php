@@ -1,4 +1,4 @@
-<nav class="nav has-shadow">
+<nav class="nav nav-modified has-shadow">
     <div class="container">
         <div class="nav-left">
             <a href="{{ route('home.index') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>

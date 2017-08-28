@@ -76,9 +76,12 @@ nav {
     width: 90%;
 }
 
+//--- Navigation Bar
+.nav-modified {
+    background-color: transparent;
+}
+
 //--- Boxes
-
-
 .highlighted-element {
     background: rgba(6, 70, 102, 0.4);
     border: 1px solid rgba(0, 237, 255, 0.3);
@@ -89,9 +92,15 @@ nav {
 .highlighted-element:active,
 .highlighted-element:focus,
 .highlighted-element.is-active {
-    color: #ffefc7;
     border-color: rgba(255, 187, 24, 0.6);
     box-shadow: 0 0 6px rgba(76, 33, 4, 0.79), 0 0 18px rgba(255, 187, 24, 0.6);
+}
+
+.highlighted-element:hover.highlighted-text,
+.highlighted-element:active.highlighted-text,
+.highlighted-element:focus.highlighted-text,
+.highlighted-element.is-active.highlighted-text {
+    color: $font-color-highlighted;
 }
 
 .search-box {
