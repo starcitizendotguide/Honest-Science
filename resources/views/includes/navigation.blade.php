@@ -17,12 +17,8 @@
                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </a>
 
-                    <b-dropdown-option class="account-verified">
-                        <span class="icon is-clearfix"><p>Verified</p> <i class="column is-one-third fa fa-check-square"></i></span>
-                    </b-dropdown-option>
-                    <div class="seperator"></div>
-                    <b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
-                    <b-dropdown-option class="has-text-centered"><a href="{{ route('settings.index') }}">Settings</a></b-dropdown-option>
+                    <!--<b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
+                    <b-dropdown-option class="has-text-centered"><a href="{{ route('settings.index') }}">Settings</a></b-dropdown-option>-->
                     @if(Laratrust::can('read-managment'))
                     <b-dropdown-option class="has-text-centered"><a href="{{ route('manage.dashboard') }}">Management</a></b-dropdown-option>
                     @endif

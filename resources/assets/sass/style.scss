@@ -22,6 +22,14 @@ body {
     height: 100%;
 }
 
+a {
+    color: $font-color;
+
+    &:hover {
+        color: $font-color-highlighted;
+    }
+}
+
 .grid {
     background: transparent url('../images/gridbg_glow.png') repeat;
 }
@@ -129,6 +137,10 @@ nav {
     tr:hover {
         color: $font-color-highlighted;
         background: rgba(6, 70, 102, 1);
+    }
+
+    .detail {
+        background-color: rgba(6, 70, 102, 0.4) !important;
     }
 
 }
