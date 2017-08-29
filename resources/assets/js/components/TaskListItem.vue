@@ -160,36 +160,26 @@ export default {
         },
         //--- Loads the Disqus section for an task.
         loadDisqus(task) {
-
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
-            var CONF_SHORTNAME      = 'star-citizen-honest-tracker';
-            var CONF_IDENTIFIER     = ('#!' + task.id + '-task-id');
-            var CONF_TITLE          = (task.name + ' - Discussion');
+            var CONF_URL            = (location.protocol + '//' + window.location.hostname),
+                CONF_SHORTNAME      = 'star-citizen-honest-tracker',
+                CONF_IDENTIFIER     = task.id,
+                CONF_TITLE          = (task.name + ' - Discussion');
 
-            var id = task.id,
+            var id = CONF_IDENTIFIER,
             disqus_shortname = CONF_SHORTNAME,
             disqus_identifier = id,
-            disqus_title = id,
-            disqus_url = "http://starcitizen.app/#!" + id;
+            disqus_title = CONF_TITLE,
+            disqus_url = (CONF_URL + "/#!" + id);
 
-            if (typeof DISQUS === "undefined") {
-                (function () {
-                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-                    (document.getElementsByTagName('head')[0]).appendChild(dsq);
-                })();
-            }
-
-            if(!(typeof DISQUS === "undefined")) {
-                DISQUS.reset({
-                    reload: true,
-                    config: function () {
-                        this.page.identifier = id;
-                        this.page.url = "http://starcitizen.app/#!" + id;
-                    }
-                });
-            }
+            DISQUS.reset({
+                reload: true,
+                config: function () {
+                    this.page.identifier = id;
+                    this.page.url = disqus_url;
+                }
+            });
         },
         //---- Help function: returns the default value of the interaction bar.
         defaultInteractionBar() {

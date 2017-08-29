@@ -10,6 +10,8 @@
 
         <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
 
+        <script src="http://{{ env('DISQUS_SHORTNAME') }}.disqus.com/embed.js" charset="utf-8"></script>
+
     </head>
     <body>
         <div class="grid">
