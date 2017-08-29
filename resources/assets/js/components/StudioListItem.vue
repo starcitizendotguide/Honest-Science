@@ -12,7 +12,7 @@
                 {{ props.row.location }}
             </b-table-column>
 
-            <b-table-column field="employees" label="Employees">
+            <b-table-column field="employees" label="Employees" centered>
                 <span v-if="props.row.employees[props.row.employees.length - 1].amount > 1">
                     <b-tooltip
                         :label="props.row.employee_tooltip"
@@ -25,7 +25,7 @@
                 <span v-else>-</span>
             </b-table-column>
 
-            <b-table-column field="established" label="Established">
+            <b-table-column field="established" label="Established" centered>
                 <span>{{ props.row.employees[0].year }}</span>
             </b-table-column>
 
