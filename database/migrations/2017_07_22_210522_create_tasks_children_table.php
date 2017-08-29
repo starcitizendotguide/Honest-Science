@@ -17,7 +17,7 @@ class CreateTasksChildrenTable extends Migration
 
             //--- Types
             $table->increments('id')->index();
-            $table->integer('task_id');
+            $table->integer('task_id')->unsigned();
 
             $table->string('name');
             $table->text('description');
@@ -26,9 +26,12 @@ class CreateTasksChildrenTable extends Migration
             $table->integer('type');
             $table->double('progress');
 
-
             $table->timestamps();
 
+        });
+
+        Schema::table('task_children', function($table) {
+            $table->foreign('task_id')->references('id')->on('tasks');
         });
     }
 
