@@ -1,7 +1,8 @@
-
 require('./bootstrap');
 
 window.Vue = require('vue');
+
+import VueClipboard from 'vue-clipboard2'
 
 import Buefy from 'buefy';
 import Vue2Filters from 'vue2-filters'
@@ -17,10 +18,13 @@ import ManageStatusesItem from './components/ManageStatusesItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
 
 
-Vue.use(Vue2Filters)
+
+Vue.use(Vue2Filters);
 Vue.use(Buefy, {
     defaultIconPack: 'fa'
 });
+
+Vue.use(VueClipboard);
 
 Vue.component('confirm-item', ConfirmItem);
 

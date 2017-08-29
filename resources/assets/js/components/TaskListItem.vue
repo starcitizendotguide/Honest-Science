@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <div class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                <div :id="task.id" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
                             <div class="content">
@@ -45,6 +45,8 @@
                                     </b-tooltip>
 
                                     <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
+                                    <a href="#" v-clipboard:copy="'#' + task.id" v-clipboard:success="'Copied!'" class="m-r-10"><i class="fa fa-external-link is-pulled-right"></i></a>
+
                                     <p>{{ task.description }}</p>
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
                                 </p>
