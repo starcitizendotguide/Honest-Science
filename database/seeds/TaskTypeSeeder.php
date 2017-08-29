@@ -67,6 +67,13 @@ class TaskTypeSeeder extends Seeder
                 'css'   => [
                     'icon'  => 'fa fa-car'
                 ]
+            ],
+            [
+                'id'    => 8,
+                'name'  => 'Spectrum',
+                'css'   => [
+                    'icon'  => 'fa fa-commenting'
+                ]
             ]
         ];
 

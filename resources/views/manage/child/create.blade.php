@@ -1,7 +1,7 @@
 @extends('layouts.manage')
 
 @section('content')
-    <h1 class="title has-text-centered">Create a new child for task {{ $parent->id }}</h1>
+    <h1 class="title has-text-centered">Child for {{ $parent->name }}</h1>
     <form class="form" action="{{ route('manage.content.child.create.store') }}" method="POST">
 
         {{ csrf_field() }}

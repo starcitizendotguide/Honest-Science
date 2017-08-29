@@ -113,19 +113,19 @@ class ManageContentController extends Controller
             //--- Validate
             $this->validateChild($request);
 
-            $child = \App\TaskChild::byId($request->input('id'))->first();
-            $task->task_id = $request->input('parent');
-            $task->name = $request->input('name');
-            $task->description = $request->input('description');
-            $task->status = $request->input('status');
-            $task->type = $request->input('type');
-            $task->progress = ($request->input('progress') / 100);
+            $child = \App\TaskChild::findOrFail($id);
+
+            $child->name = $request->input('name');
+            $child->description = $request->input('description');
+            $child->status = $request->input('status');
+            $child->type = $request->input('type');
+            $child->progress = ($request->input('progress') / 100);
             $child->save();
 
         }
 
         return view('manage.child.edit', [
-            'child'     => $child->first(),
+            'child'     => $child,
             'parent'    => $child->parent()->first(),
             'statuses'  => \App\TaskStatus::all(),
             'types'     => \App\TaskType::all()
