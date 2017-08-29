@@ -17,9 +17,9 @@ class CreateTaskStatusesTable extends Migration
 
             //--- Types
             $table->integer('id');
-            $table->string('name');
+            $table->string('name', 255);
             $table->double('rating');
-            $table->string('css_icon');
+            $table->string('css_icon', 255);
 
             $table->timestamps();
 

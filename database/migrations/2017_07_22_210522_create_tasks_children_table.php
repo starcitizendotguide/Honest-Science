@@ -19,7 +19,7 @@ class CreateTasksChildrenTable extends Migration
             $table->increments('id')->index();
             $table->integer('task_id')->unsigned();
 
-            $table->string('name');
+            $table->string('name', 255);
             $table->text('description');
 
             $table->integer('status');

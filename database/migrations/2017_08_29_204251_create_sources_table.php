@@ -18,7 +18,7 @@ class CreateSourcesTable extends Migration
             //--- Types
             $table->increments('id');
             $table->integer('child_id');
-            $table->string('link');
+            $table->string('link', 255);
 
             $table->timestamps();
 

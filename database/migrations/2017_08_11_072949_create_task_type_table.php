@@ -17,8 +17,8 @@ class CreateTaskTypeTable extends Migration
 
             //--- Types
             $table->integer('id');
-            $table->string('name');
-            $table->string('css_icon');
+            $table->string('name', 255);
+            $table->string('css_icon', 255);
 
             $table->timestamps();
 
