@@ -9,7 +9,7 @@
             <b-table-column field="content" label="Status Report">
                 <i :class="props.row.css_icon"></i>
                 <span>{{ props.row.name }}</span>
-                <span class="is-pulled-right is-dashed">{{ props.row.countRelative * 100 }}%</span>
+                <span class="is-pulled-right is-dashed">{{ props.row.countRelative * 100 | toFixed(2) }}%</span>
             </b-table-column>
         </template>
 

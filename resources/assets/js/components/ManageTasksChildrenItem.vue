@@ -28,7 +28,7 @@
             </b-table-column>
 
             <b-table-column field="progres" label="Progress">
-                {{ props.row.progress * 100 }}%
+                {{ props.row.progress * 100 | toFixed(2) }}%
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>
