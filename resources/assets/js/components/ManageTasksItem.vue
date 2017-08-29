@@ -21,8 +21,8 @@
                 {{ props.row.status.name }}
             </b-table-column>
 
-            <b-table-column field="description" label="Description" width="500" >
-                {{ props.row.description }}
+            <b-table-column field="description" label="Description" width="400" >
+                {{ props.row.description | truncate(50) }}
             </b-table-column>
 
             <b-table-column field="children" label="Children">
@@ -38,7 +38,7 @@
             </b-table-column>
 
             <b-table-column label="Action">
-                <a :href="'/manage/content/tasks/edit/' + props.row.id" ><span><i class="fa fa-pencil"></i></span></a>
+                <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
             </b-table-column>
 
         </template>
@@ -62,6 +62,11 @@ export default {
         axios.get(route('tasks.index'))
             .then(response => {
                 this.tasks = response.data;
+
+                this.tasks.forEach(function(item) {
+                    item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
+                });
+
                 this.settings.isLoading = false;
             });
     }

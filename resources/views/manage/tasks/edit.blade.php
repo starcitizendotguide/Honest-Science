@@ -1,7 +1,12 @@
 @extends('layouts.manage')
 
 @section('content')
-    <h1 class="title has-text-centered">Edit <i>{{ $task->name }}</i> Task</h1>
+    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{{ route('manage.content.tasks') }}">Overview</a></li>
+            <li class="is-active"><a href="#">{{ $task->name }} [Task]</a></li>
+        </ul>
+    </nav>
     <b-tabs v-model="activeTab" position="is-centered" expanded class="block">
         <b-tab-item label="Task">
             <form class="form" action="{{ route('manage.content.tasks.edit.update', ['id' => $task->id]) }}" method="POST">
@@ -23,7 +28,7 @@
                 <div class="field">
                     <label class="label">Description</label>
                     <p class="control">
-                        <textarea class="textarea" type="text" name="description">{{ $task->description }}</textarea>
+                        <textarea class="textarea" type="text" name="description">{{ $task->descriptio }}</textarea>
                     </p>
                     @if ($errors->has('name'))
                         <p class="help is-danger">{{ $errors->first('description') }}</p>

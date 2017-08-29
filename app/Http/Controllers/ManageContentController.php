@@ -87,7 +87,7 @@ class ManageContentController extends Controller
 
         $parent = \App\Task::byId($parent)->first();
 
-        return view('manage.tasks.create_child', [
+        return view('manage.child.create', [
             'parent'    => $parent,
             'statuses'  => \App\TaskStatus::all(),
             'types'     => \App\TaskType::all()
@@ -98,7 +98,7 @@ class ManageContentController extends Controller
      * GET: The view of updating a task.
      * POST: Updating the edited task.
      */
-    public function taskEdit(Request $request, $id) {
+    public function childEdit(Request $request, $id) {
 
         //--- Request Method
         if($request->isMethod('GET')) {
@@ -108,24 +108,29 @@ class ManageContentController extends Controller
                 dd(404 . ' - ManageContentController');
             }
 
-            return view('manage.child.edit', [
-                'child' => $child->first()
-            ]);
         } else if($request->isMethod('POST')) {
 
             //--- Validate
             $this->validateChild($request);
 
-            $task = \App\TaskChild::byId($request->input('id'))->first();
-
+            $child = \App\TaskChild::byId($request->input('id'))->first();
+            $task->task_id = $request->input('parent');
             $task->name = $request->input('name');
             $task->description = $request->input('description');
-            $task->save();
+            $task->status = $request->input('status');
+            $task->type = $request->input('type');
+            $task->progress = ($request->input('progress') / 100);
+            $child->save();
 
-            return view('manage.child.edit', [
-                'child' => $task->first()
-            ]);
         }
+
+        return view('manage.child.edit', [
+            'child'     => $child->first(),
+            'parent'    => $child->parent()->first(),
+            'statuses'  => \App\TaskStatus::all(),
+            'types'     => \App\TaskType::all()
+        ]);
+
     }
 
     /**
@@ -146,16 +151,7 @@ class ManageContentController extends Controller
         $task->progress = ($request->input('progress') / 100);
         $task->save();
 
-        //--- Redirect
-        $task = \App\Task::byId($request->input('parent'));
-
-        if($task === null) {
-            dd(404 . ' - ManageContentController');
-        }
-
-        return view('manage.tasks.edit', [
-            'task' => $task->first()
-        ]);
+        return redirect()->route('manage.content.child.edit', ['id' => $task->id]);
     }
 
 

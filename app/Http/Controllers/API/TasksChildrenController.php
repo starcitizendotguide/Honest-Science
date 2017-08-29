@@ -37,15 +37,13 @@ class TasksChildrenController extends Controller
 
         $data = [];
 
-        dd($child->name);
-
         $data['id']             = $child->id;
         $data['name']           = $child->name;
         $data['progress']       = $child->progress;
-        $data['type']           = $child->type;
+        $data['type']           = $child->type()->first();
         $data['description']    = $child->description;
-        $data['status']         = $child->status();
-        $data['parent']         = $child->parent();
+        $data['status']         = $child->status()->first();
+        $data['parent']         = $child->parent()->first();
         $data['created_at']     = $child->created_at;
         $data['updated_at']     = $child->updated_at;
 
@@ -75,7 +73,7 @@ class TasksChildrenController extends Controller
             $tmp['id']          = $child->id;
             $tmp['name']        = $child->name;
             $tmp['progress']    = $child->progress;
-            $tmp['type']        = $child->type;
+            $tmp['type']        = $child->type()->first();
             $tmp['description'] = $child->description;
             $tmp['status']      = $child->status()->first();
             $tmp['created_at']  = $child->created_at;

@@ -20,11 +20,11 @@
             </b-table-column>
 
             <b-table-column field="type" label="Type" sortable>
-                {{ props.row.type }}
+                {{ props.row.type.name }}
             </b-table-column>
 
-            <b-table-column field="description" label="Description" width="500" >
-                {{ props.row.description }}
+            <b-table-column field="description" label="Description" width="400" >
+                {{ props.row.description | truncate(50) }}
             </b-table-column>
 
             <b-table-column field="progres" label="Progress">
@@ -37,6 +37,10 @@
 
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
+            </b-table-column>
+
+            <b-table-column label="Action">
+                <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
             </b-table-column>
 
         </template>
@@ -64,6 +68,11 @@ export default {
         axios.get(route('children.task.show', {id: this.taskid}))
             .then(response => {
                 this.children = response.data;
+
+                this.children.forEach(function(item) {
+                    item.edit_url = route('manage.content.child.edit', {'id': item.id});
+                });
+
                 this.settings.isLoading = false;
             });
 

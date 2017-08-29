@@ -6,7 +6,7 @@
 
         {{ csrf_field() }}
 
-        <input type="text" name="parent" value="{{$parent->id}}" hidden>
+        <input type="text" name="parent" value="{{ $parent->id }}" hidden>
 
         <div class="field">
             <label class="label">Name</label>
@@ -35,7 +35,11 @@
                     <div class="select">
                         <select name="status">
                             @foreach ($statuses as $status)
-                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                @if (old('status') == $status->id)
+                                      <option value="{{ $status->id }}" selected>{{ $status->name }}</option>
+                                @else
+                                      <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -51,7 +55,11 @@
                     <div class="select">
                         <select name="type">
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @if (old('type') == $type->id)
+                                      <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
+                                @else
+                                      <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -64,7 +72,9 @@
             <div class="field">
                 <label class="label">Progress<label>
                 <p class="control">
-                    <input class="input" name="progress" type="number" value="{{ old('progress', 0) }}">
+                    <div>
+                        <input class="input" name="progress" type="number" value="{{ old('progress', 0) }}">
+                    </div>
                 </p>
                 @if ($errors->has('progress'))
                     <p class="help is-danger">{{ $errors->first('progress') }}</p>
