@@ -25,19 +25,33 @@ Route::prefix('manage')
         Route::prefix('content')
             ->group(function() {
 
-
                 Route::prefix('tasks', 'ManageContentController')
                     ->group(function() {
 
+                        //--- GET: Views
                         Route::get('/', 'ManageContentController@tasks')->name('manage.content.tasks');
                         Route::get('/create', 'ManageContentController@tasksCreate')->name('manage.content.tasks.create');
                         Route::get('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit');
 
+                        //--- Post
                         Route::post('/create', 'ManageContentController@taskStore')->name('manage.content.tasks.create.store');
                         Route::post('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit.update');
 
                     });
 
+
+                    Route::prefix('child', 'ManageContentController')
+                        ->group(function() {
+
+                            //--- GET: Views
+                            Route::get('/create/{parent}', 'ManageContentController@childCreate')->name('manage.content.child.create');
+                            Route::get('/edit/{id}', 'ManageContentController@childEdit')->name('manage.content.child.edit');
+
+                            //--- Post
+                            Route::post('/create', 'ManageContentController@childStore')->name('manage.content.child.create.store');
+                            Route::post('/edit/{id}', 'ManageContentController@childEdit')->name('manage.content.child.edit.update');
+
+                        });
 
                 Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
             });

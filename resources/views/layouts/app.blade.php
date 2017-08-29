@@ -16,8 +16,8 @@
             <div id="app">
                 @include('includes.navigation')
                 @yield('content')
+                @include('includes.footer')
             </div>
-            @include('includes.footer')
         </div>
         @routes
         <script src="{{ mix('assets/js/app.js') }}"></script>

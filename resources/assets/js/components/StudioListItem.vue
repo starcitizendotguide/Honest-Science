@@ -94,7 +94,7 @@ export default {
             },
 
             {
-                location: "Los Angeleses, U.S.A.",
+                location: "Los Angeles, U.S.A.",
                 description: "Located in sunny Los Angeles, California, CIG LA is Cloud Imperium’s flagship studio. Home to Chris Roberts and much of the company’s leadership, CIG LA represents a cross-section of the company and includes the ship development pipeline, technical designers, high level engineering, community, marketing and more.",
                 image: {
                     show: false,

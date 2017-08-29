@@ -2,7 +2,10 @@
     <div class="container">
         <div class="content has-text-centered">
             <p>
-                The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+                Source code licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+            </p>
+            <p>
+                Website content licensed <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
             </p>
             <p>
                 <a href="#"><i class="fa fa-reddit"></i> mauzao9</a>

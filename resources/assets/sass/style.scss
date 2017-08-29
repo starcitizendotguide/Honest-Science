@@ -13,8 +13,13 @@ html * {
     font-family: 'Electrolize';
 }
 
-body {
+html {
     background: url('../images/background.jpg') repeat;
+    height: 100%;
+}
+
+body {
+    height: 100%;
 }
 
 .grid {

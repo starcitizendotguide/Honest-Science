@@ -35,7 +35,7 @@
 
         <b-tab-item label="Children">
             <manage-tasks-children-item taskid="{{ $task->id }}"></manage-tasks-children-item>
-            <button class="button is-primary is-outlined is-fullwidth m-t-5">Add New Child</button>
+            <a href="{{ route('manage.content.child.create', ['parent' => $task->id]) }}" class="button is-primary is-outlined is-fullwidth m-t-5">Add New Child</a>
         </b-tab-item>
 
         <b-tab-item label="Sources">
