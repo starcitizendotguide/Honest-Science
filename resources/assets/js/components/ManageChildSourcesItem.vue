@@ -32,6 +32,7 @@
                     negative="Cancel"
                     :url="props.row.delete_url"
                     theme="is-danger"
+                    width=960
                 >
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
