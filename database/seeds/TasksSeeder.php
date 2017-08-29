@@ -22,7 +22,11 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 2,
                         'type' => 0,
-                        'progress' => 0.3178
+                        'progress' => 0.3178,
+                        'sources' => [
+                            'http://google.com',
+                            'http://reddit.com/r/starcitizen'
+                        ]
                     ],
                     [
                         'name' => 'Gamma',
@@ -113,6 +117,16 @@ class TasksSeeder extends Seeder
                 $tmp->progress = $child['progress'];
                 $tmp->type = $child['type'];
                 $tmp->save();
+
+                if(isset($child['sources'])) {
+                    foreach($child['sources'] as $source) {
+                        $source_tmp = new App\TaskChildSource;
+                        $source_tmp->child_id = $tmp->id;
+                        $source_tmp->link = $source;
+                        $source_tmp->save();
+                    }
+                }
+
             }
 
         }

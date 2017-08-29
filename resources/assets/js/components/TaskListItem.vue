@@ -66,6 +66,22 @@
                                                         <br />
                                                         {{ child.description }}
                                                         <br />
+                                                        <span class="is-pulled-right">
+                                                            <confirm-item
+                                                                v-for="(source, index) in child.sources"
+                                                                :key="source.id"
+
+                                                                title="You are leaving Star Citizen - Honest Science."
+                                                                :message="source.link + 'is not an official Honest Science site.'"
+                                                                positive="Continue to external site."
+                                                                negative="Cancel"
+                                                                :url="source.link"
+                                                                theme="is-danger"
+                                                                width=960
+                                                            >
+                                                                [{{ index + 1 }}]
+                                                            </confirm-item>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </article>

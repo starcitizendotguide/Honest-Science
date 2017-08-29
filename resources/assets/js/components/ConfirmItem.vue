@@ -1,13 +1,13 @@
 <template>
     <span>
-        <a href="#" @click="meta.isActive = true" :class="theme"><i :class="icon"></i></a>
+        <a href="#" @click="meta.isActive = true"><slot></slot></a>
         <b-modal :active.sync="meta.isActive" :width="width">
-                <div class="modal-card">
+            <div class="modal-card">
                 <header class="modal-card-head">
                     <p class="modal-card-title">{{ title }}</p>
                 </header>
                 <section class="modal-card-body">
-                    <p>{{ message }}</p>
+                    <p :class="theme">{{ message }}</p>
                 </section>
                 <footer class="modal-card-foot">
                     <a :href="url" class="button" :class="theme">{{ positive }}</a>
@@ -26,7 +26,6 @@ export default {
         positive: String,
         negative: String,
         url: String,
-        icon: String,
         theme: {
             type: String,
             default: 'is-primary'

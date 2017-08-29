@@ -46,6 +46,8 @@ class TasksController extends Controller
             $progress = 0;
 
             foreach ($children as $child) {
+
+                //--- Build
                 $childrenArray[] = [
                     'id'            => $child->id,
                     'name'          => $child->name,
@@ -53,6 +55,8 @@ class TasksController extends Controller
                     'status'        => $child->status()->first(),
                     'progress'      => $child->progress,
                     'type'          => $child->type()->first(),
+
+                    'sources'       => $child->sources()->get(),
 
                     'created_at'    => $child->created_at,
                     'updated_at'    => $child->updated_at
@@ -81,15 +85,15 @@ class TasksController extends Controller
             'name'          => null,
             'description'   => null,
             'status'        => null,
+            'type'          => null,
 
             'progress'      => 0,
             'children'      => []
         ];
 
-        $task = Task::where('id', '=', $id);
+        $task = Task::find($id);
 
-        if(!($task->exists()))
-        {
+        if(!($task->exists())) {
             return $data;
         }
 
@@ -122,6 +126,9 @@ class TasksController extends Controller
                 'status'        => $child->status()->first(),
                 'progress'      => $child->progress,
                 'type'          => $child->type()->first(),
+
+                'sources'       => $child->sources()->get(),
+
 
                 'created_at'    => $child->created_at,
                 'updated_at'    => $child->updated_at
