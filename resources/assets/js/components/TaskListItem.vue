@@ -72,7 +72,7 @@
                                                                 :key="source.id"
 
                                                                 title="You are leaving Star Citizen - Honest Science."
-                                                                :message="source.link + 'is not an official Honest Science site.'"
+                                                                :message="source.link + ' is not an official Honest Science site.'"
                                                                 positive="Continue to external site."
                                                                 negative="Cancel"
                                                                 :url="source.link"
