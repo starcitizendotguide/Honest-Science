@@ -10,7 +10,7 @@
             <p>
                 <a href="#"><i class="fa fa-reddit"></i> mauzao9</a>
                 <a href="https://github.com/"><i class="fa fa-github"></i> GitHub</a>
-                <a href="#"><i class="fa fa-reddit"></i> yonasismad</a>
+                <a href="https://reddit.com/user/yonasismad"><i class="fa fa-reddit"></i> yonasismad</a>
             </p>
             <p>This website is not affiliated with robertsspaceindustries.com and/or cloudimperiumgames.com.</p>
         </div>
