@@ -28,7 +28,7 @@
                 <div class="field">
                     <label class="label">Description</label>
                     <p class="control">
-                        <textarea class="textarea" type="text" name="description">{{ $task->descriptio }}</textarea>
+                        <textarea class="textarea" type="text" name="description">{{ $task->description }}</textarea>
                     </p>
                     @if ($errors->has('name'))
                         <p class="help is-danger">{{ $errors->first('description') }}</p>

@@ -33,30 +33,23 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $task = \App\Task::byId($id);
-
-            if($task === null) {
-                dd(404 . ' - ManageContentController');
-            }
-
-            return view('manage.tasks.edit', [
-                'task' => $task->first()
-            ]);
+            $task = \App\Task::findOrfail($id);
         } else if($request->isMethod('POST')) {
 
             //--- Validate
             $this->validateTask($request);
 
-            $task = \App\Task::byId($request->input('id'))->first();
+            $task = \App\Task::findOrFail($request->input('id'));
 
             $task->name = $request->input('name');
             $task->description = $request->input('description');
             $task->save();
 
-            return view('manage.tasks.edit', [
-                'task' => $task->first()
-            ]);
         }
+
+        return view('manage.tasks.edit', [
+            'task' => $task
+        ]);
     }
 
     /**
@@ -114,12 +107,7 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $child = \App\TaskChild::find($id);
-
-            if($child === null) {
-                dd(404 . ' - ManageContentController');
-            }
-
+            $child = \App\TaskChild::findOrFail($id);
         } else if($request->isMethod('POST')) {
 
             //--- Validate
@@ -164,6 +152,18 @@ class ManageContentController extends Controller
         $task->save();
 
         return redirect()->route('manage.content.child.edit', ['id' => $task->id]);
+    }
+
+    /**
+     * Delete: Delete a child.
+     */
+    public function childDelete(Request $request, $id) {
+        $child = \App\TaskChild::findOrFail($id);
+        $parent = $child->task_id;
+        $child->delete();
+
+        //--- Redirect
+        return redirect()->route('manage.content.tasks.edit', ['id' => $parent]);
     }
 
 

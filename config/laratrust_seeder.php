@@ -5,11 +5,13 @@ return [
         'general' => [
             'profile'   => 'c,r,u,d',
             'managment' => 'r',
-            'task'      => 'c,r,u,d'
+            'task'      => 'c,r,u,d',
+            'child'     => 'c,r,u,d'
         ],
         'recruiter' => [
             'profile'   => 'r,u',
-            'task'      => 'r'
+            'task'      => 'r',
+            'child'     => 'r'
         ],
     ],
     'permission_structure' => [],

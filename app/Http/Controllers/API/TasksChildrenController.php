@@ -51,18 +51,8 @@ class TasksChildrenController extends Controller
     }
 
     public function task($task_id) {
-        $task = \App\Task::where('id', '=', $task_id);
 
-        if(!($task->exists())) {
-            return [];
-        }
-
-        $task = $task->first();
-        $children = $task->children();
-
-        if($children === null) {
-            return [];
-        }
+        $children = \App\TaskChild::where('task_id', $task_id);
 
         $children = $children->get();
         $data = collect([]);

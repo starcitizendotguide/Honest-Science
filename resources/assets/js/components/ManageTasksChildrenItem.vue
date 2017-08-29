@@ -41,6 +41,7 @@
 
             <b-table-column label="Action">
                 <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
+                <a :href="props.row.delete_url"><span><i class="fa fa-trash"></i></span></a>
             </b-table-column>
 
         </template>
@@ -67,10 +68,12 @@ export default {
     mounted: function() {
         axios.get(route('children.task.show', {id: this.taskid}))
             .then(response => {
+                console.log(this.taskid);
                 this.children = response.data;
 
                 this.children.forEach(function(item) {
                     item.edit_url = route('manage.content.child.edit', {'id': item.id});
+                    item.delete_url = route('manage.content.child.delete', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;

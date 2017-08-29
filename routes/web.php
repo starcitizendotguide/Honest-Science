@@ -64,6 +64,11 @@ Route::prefix('manage')
                             Route::get('/create/{parent}', 'ManageContentController@childCreate')->name('manage.content.child.create');
                             Route::get('/edit/{id}', 'ManageContentController@childEdit')->name('manage.content.child.edit');
 
+                            //--- Delete
+                            Route::get('/delete/{id}', 'ManageContentController@childDelete')
+                                ->middleware('permission:delete-child')
+                                ->name('manage.content.child.delete');
+
                             //--- Post
                             Route::post('/create', 'ManageContentController@childStore')->name('manage.content.child.create.store');
                             Route::post('/edit/{id}', 'ManageContentController@childEdit')->name('manage.content.child.edit.update');
