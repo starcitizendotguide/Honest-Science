@@ -6,6 +6,8 @@ window.Vue = require('vue');
 import Buefy from 'buefy';
 import Vue2Filters from 'vue2-filters'
 
+import ConfirmItem from './components/ConfirmItem.vue';
+
 import TaskListItem from './components/TaskListItem.vue';
 import StudioListItem from './components/StudioListItem.vue';
 import TaskStatusesItem from './components/TaskStatusesItem.vue';
@@ -19,6 +21,8 @@ Vue.use(Vue2Filters)
 Vue.use(Buefy, {
     defaultIconPack: 'fa'
 });
+
+Vue.component('confirm-item', ConfirmItem);
 
 Vue.component('task-list-item', TaskListItem);
 Vue.component('studio-list-item', StudioListItem);

@@ -39,9 +39,17 @@
 
             <b-table-column label="Action">
                 <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
-                <a :href="props.row.delete_url"><span><i class="fa fa-trash"></i></span></a>
+                <confirm-item
+                    title="Delete Task"
+                    :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
+                    positive="Delete"
+                    negative="Cancel"
+                    icon="fa fa-trash is-danger"
+                    :url="props.row.delete_url"
+                    theme="is-danger"
+                >
+                </confirm-item>
             </b-table-column>
-
         </template>
     </b-table>
 </template>
