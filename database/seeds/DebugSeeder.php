@@ -18,7 +18,7 @@ class DebugSeeder extends Seeder
         //--- Dev User
         $yonas = new User;
         $yonas->name = 'Yonas';
-        $yonas->email = 'jan@krueger-jan.de';
+        $yonas->email = 'test@example.com';
         $yonas->password = Hash::make('testing');
         $yonas->save();
 
