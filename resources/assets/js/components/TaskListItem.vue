@@ -45,7 +45,6 @@
                                     </b-tooltip>
 
                                     <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
-                                    <a href="#" v-clipboard:copy="'#' + task.id" v-clipboard:success="'Copied!'" class="m-r-10"><i class="fa fa-external-link is-pulled-right"></i></a>
 
                                     <p>{{ task.description }}</p>
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
@@ -164,34 +163,31 @@ export default {
 
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
-            var CONF_SHORTNAME      = 'starcitizen-tasks';
-            var CONF_IDENTIFIER     = (task.id + '-' + task.name + '-task-id');
+            var CONF_SHORTNAME      = 'star-citizen-honest-tracker';
+            var CONF_IDENTIFIER     = ('#!' + task.id + '-task-id');
             var CONF_TITLE          = (task.name + ' - Discussion');
 
-            //--- First time loading the Disqus widget requires more setup
-            if(typeof DISQUS === 'undefined') {
-                window.disqus_config = function () {
-                    this.page.identifier = CONF_IDENTIFIER;
-                    this.page.title = CONF_TITLE;
-                };
+            var id = task.id,
+            disqus_shortname = CONF_SHORTNAME,
+            disqus_identifier = id,
+            disqus_title = id,
+            disqus_url = "http://starcitizen.app/#!" + id;
 
-                //--- Appened Disqus Widget
-                var d = document, s = d.createElement('script');
-                s.src = '//' + CONF_SHORTNAME + '.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-
+            if (typeof DISQUS === "undefined") {
+                (function () {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0]).appendChild(dsq);
+                })();
             }
-            //--- Disqus widget already loaded... just reset the values and load
-            //    a different discussion
-            else {
 
+            if(!(typeof DISQUS === "undefined")) {
                 DISQUS.reset({
-                  reload: true,
-                  config: function () {
-                      this.page.identifier = CONF_IDENTIFIER;
-                      this.page.title = CONF_TITLE;
-                  }
+                    reload: true,
+                    config: function () {
+                        this.page.identifier = id;
+                        this.page.url = "http://starcitizen.app/#!" + id;
+                    }
                 });
             }
         },
