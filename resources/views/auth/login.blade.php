@@ -3,7 +3,7 @@
 @section('content')
     <div class="columns m-t-100">
         <div class="column is-one-third is-offset-one-third">
-            <div class="card highlighted-element">
+            <div class="card">
                 <div class="card-content">
 
                     <h1 class="title">Log In</h1>

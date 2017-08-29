@@ -77,7 +77,7 @@
                 <label class="label">Progress<label>
                 <p class="control">
                     <div>
-                        <input class="input" name="progress" type="number" value="{{ old('progress', $child->progress * 100) }}">
+                        <input class="input" type="number" step=any name="progress" value="{{ old('progress', $child->progress * 100) }}">
                     </div>
                 </p>
                 @if ($errors->has('progress'))
