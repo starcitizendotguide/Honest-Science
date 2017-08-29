@@ -2,8 +2,8 @@
     <b-table
         :data="statuses"
         :loading="settings.isLoading"
-        :row-class="(row, index) => row.css_class"
-        class="highlighted-element"
+        :row-class="(row, index) => 'row'"
+        class="dark-table highlighted-element"
     >
         <template scope="props">
             <b-table-column field="content" label="Status Report">

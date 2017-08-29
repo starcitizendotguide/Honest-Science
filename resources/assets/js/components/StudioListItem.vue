@@ -3,7 +3,8 @@
         :data="studios"
         default-sort="since"
         :loading="settings.isLoading"
-        class="highlighted-element"
+        class="dark-table highlighted-element studio-table"
+        detailed
     >
 
         <template scope="props">
