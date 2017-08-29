@@ -77,6 +77,18 @@ class ManageContentController extends Controller
         return redirect()->route('manage.content.tasks');
     }
 
+    /**
+     * Delete: Delete a task.
+     */
+    public function tasksDelete(Request $request, $id) {
+
+        \App\Task::findOrFail($id)->delete();
+        \App\TaskChild::where('task_id', $id)->delete();
+
+        //--- Redirect
+        return redirect()->route('manage.content.tasks');
+    }
+
     //-------------
     //--- Children ---
     //-------------

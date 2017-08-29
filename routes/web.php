@@ -29,13 +29,30 @@ Route::prefix('manage')
                     ->group(function() {
 
                         //--- GET: Views
-                        Route::get('/', 'ManageContentController@tasks')->name('manage.content.tasks');
-                        Route::get('/create', 'ManageContentController@tasksCreate')->name('manage.content.tasks.create');
-                        Route::get('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit');
+                        Route::get('/', 'ManageContentController@tasks')
+                            ->name('manage.content.tasks');
+
+                        Route::get('/create', 'ManageContentController@tasksCreate')
+                            ->middleware('permission:create-task')
+                            ->name('manage.content.tasks.create');
+
+                        Route::get('/edit/{id}', 'ManageContentController@tasksEdit')
+                            ->middleware('permission:update-task')
+                            ->name('manage.content.tasks.edit');
+
+                        //--- Delete
+                        Route::get('/delete/{id}', 'ManageContentController@tasksDelete')
+                            ->middleware('permission:delete-task')
+                            ->name('manage.content.tasks.delete');
 
                         //--- Post
-                        Route::post('/create', 'ManageContentController@taskStore')->name('manage.content.tasks.create.store');
-                        Route::post('/edit/{id}', 'ManageContentController@tasksEdit')->name('manage.content.tasks.edit.update');
+                        Route::post('/create', 'ManageContentController@taskStore')
+                            ->middleware('permission:create-task')
+                            ->name('manage.content.tasks.create.store');
+
+                        Route::post('/edit/{id}', 'ManageContentController@tasksEdit')
+                            ->middleware('permission:update-task')
+                            ->name('manage.content.tasks.edit.update');
 
                     });
 

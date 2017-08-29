@@ -29,10 +29,6 @@ class CreateTasksChildrenTable extends Migration
             $table->timestamps();
 
         });
-
-        Schema::table('task_children', function($table) {
-            $table->foreign('task_id')->references('id')->on('tasks');
-        });
     }
 
     /**

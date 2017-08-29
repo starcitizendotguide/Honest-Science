@@ -39,6 +39,7 @@
 
             <b-table-column label="Action">
                 <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
+                <a :href="props.row.delete_url"><span><i class="fa fa-trash"></i></span></a>
             </b-table-column>
 
         </template>
@@ -65,6 +66,7 @@ export default {
 
                 this.tasks.forEach(function(item) {
                     item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
+                    item.delete_url = route('manage.content.tasks.delete', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;
