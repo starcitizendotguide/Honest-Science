@@ -75,16 +75,21 @@ class ManageContentController extends Controller
      */
     public function tasksDelete(Request $request, $id) {
 
-        \App\Task::findOrFail($id)->delete();
-        \App\TaskChild::where('task_id', $id)->delete();
+        $task = \App\Task::findOrFail($id);
 
+        foreach($task->children()->get() as $child) {
+            \App\TaskChildSource::where('child_id', '=', $child->id)->delete();
+            $child->delete();
+        }
+
+        $task->delete();
         //--- Redirect
         return redirect()->route('manage.content.tasks');
     }
 
-    //-------------
+    //----------------
     //--- Children ---
-    //-------------
+    //----------------
     /**
      * The view of creating a new task.
      */
@@ -159,6 +164,11 @@ class ManageContentController extends Controller
      */
     public function childDelete(Request $request, $id) {
         $child = \App\TaskChild::findOrFail($id);
+
+        //--- Delete Sources
+        \App\TaskChildSource::where('child_id', '=', $id)->delete();
+
+        //--- Delete
         $parent = $child->task_id;
         $child->delete();
 
@@ -166,6 +176,49 @@ class ManageContentController extends Controller
         return redirect()->route('manage.content.tasks.edit', ['id' => $parent]);
     }
 
+    //---------------
+    //--- Sources ---
+    //---------------
+    /**
+     * The view of creating a new task.
+     */
+    public function sourceCreate(Request $request, $child) {
+
+        $child = \App\TaskChild::findOrFail($child);
+
+        return view('manage.source.create', [
+            'child'    => $child,
+        ]);
+    }
+
+    /**
+     * POST: Creating a new task.
+     */
+    public function sourceStore(Request $request) {
+
+        //--- Validate
+        $this->validateSource($request);
+
+        //--- Store
+        $source = new \App\TaskChildSource;
+        $source->child_id = $request->input('child_id');
+        $source->link = $request->input('link');
+        $source->save();
+
+        return redirect()->route('manage.content.child.edit', ['id' => $source->child_id]);
+    }
+
+    /**
+     * Delete: Delete a child.
+     */
+    public function sourceDelete(Request $request, $id) {
+        $source = \App\TaskChildSource::findOrFail($id);
+        $child = $source->child_id;
+        $source->delete();
+
+        //--- Redirect
+        return redirect()->route('manage.content.child.edit', ['id' => $child]);
+    }
 
     /**
      * GET: A list of all available statuses.
@@ -198,5 +251,14 @@ class ManageContentController extends Controller
         ]);
     }
 
+    /**
+     * The method to validate requests bind to 'TaskChildSource'.
+     */
+    public function validateSource($request) {
+        //--- Validate
+        $this->validate($request, [
+            'link'          => 'required|url',
+        ]);
+    }
 
 }

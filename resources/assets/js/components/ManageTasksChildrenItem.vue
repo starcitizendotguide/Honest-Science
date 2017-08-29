@@ -46,10 +46,10 @@
                     :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
                     positive="Delete"
                     negative="Cancel"
-                    icon="fa fa-trash"
                     :url="props.row.delete_url"
                     theme="is-danger"
                 >
+                    <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
             </b-table-column>
 
@@ -77,7 +77,6 @@ export default {
     mounted: function() {
         axios.get(route('children.task.show', {id: this.taskid}))
             .then(response => {
-                console.log(this.taskid);
                 this.children = response.data;
 
                 this.children.forEach(function(item) {

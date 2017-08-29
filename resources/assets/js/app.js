@@ -16,7 +16,7 @@ import TaskStatusesItem from './components/TaskStatusesItem.vue';
 import ManageTasksItem from './components/ManageTasksItem.vue';
 import ManageStatusesItem from './components/ManageStatusesItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
-
+import ManageChildSourcesItem from './components/ManageChildSourcesItem.vue';
 
 
 Vue.use(Vue2Filters);
@@ -35,6 +35,7 @@ Vue.component('task-statuses-item', TaskStatusesItem);
 Vue.component('manage-statuses-item', ManageStatusesItem);
 Vue.component('manage-tasks-item', ManageTasksItem);
 Vue.component('manage-tasks-children-item', ManageTasksChildrenItem);
+Vue.component('manage-child-sources-item', ManageChildSourcesItem);
 
 //-- Filter
 Vue.filter('truncate', function (text, length, clamp) {

@@ -43,15 +43,5 @@
             <a href="{{ route('manage.content.child.create', ['parent' => $task->id]) }}" class="button is-primary is-outlined is-fullwidth m-t-5">Add New Child</a>
         </b-tab-item>
 
-        <b-tab-item label="Sources">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque vestibulum dui vel molestie egestas.
-            Nulla vulputate elementum diam quis consectetur.
-            Integer pulvinar laoreet nibh non faucibus.
-            Suspendisse ut cursus lectus. Donec consectetur turpis at leo ultricies rhoncus.
-            Cras consequat aliquet eros nec porta.
-            Nullam sit amet mollis turpis.
-            Aenean vitae tortor et velit sodales faucibus.
-        </b-tab-item>
     </b-tabs>
 @endsection

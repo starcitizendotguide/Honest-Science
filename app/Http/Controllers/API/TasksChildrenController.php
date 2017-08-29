@@ -76,4 +76,8 @@ class TasksChildrenController extends Controller
         return $data;
     }
 
+    public function sources($child_id) {
+        return \App\TaskChild::find($child_id)->sources()->get();
+    }
+
 }

@@ -1,6 +1,6 @@
 <template>
     <b-table
-        :data="tasks"
+        :data="sources"
         default-sort="id"
         :striped="settings.isStriped"
         :paginated="settings.isPaginatedSimple"
@@ -12,36 +12,22 @@
             <b-table-column field="id" label="#" sortable numeric>
                 {{ props.row.id }}
             </b-table-column>
-
-            <b-table-column field="name" label="Name" sortable>
-                {{ props.row.name }}
-            </b-table-column>
-
-            <b-table-column field="status" label="Status" sortable>
-                {{ props.row.status.name }}
-            </b-table-column>
-
-            <b-table-column field="description" label="Description" width="400" >
-                {{ props.row.description | truncate(50) }}
-            </b-table-column>
-
-            <b-table-column field="children" label="Children">
-                {{ props.row.children.length }} Children
+            <b-table-column field="link" label="Link" sortable>
+                {{ props.row.link }}
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>
-                {{ props.row.created_at.date }}
+                {{ props.row.created_at }}
             </b-table-column>
 
             <b-table-column field="updated_at" label="Updated At" sortable>
-                {{ props.row.updated_at.date }}
+                {{ props.row.updated_at }}
             </b-table-column>
 
             <b-table-column label="Action">
-                <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
-                    title="Delete Task"
-                    :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
+                    title="Delete Source"
+                    :message="'Are you sure you want to delete ' + props.row.link + ' (' + props.row.id + ')?'"
                     positive="Delete"
                     negative="Cancel"
                     :url="props.row.delete_url"
@@ -50,15 +36,20 @@
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
             </b-table-column>
+
         </template>
+        <div slot="empty" class="has-text-centered">
+            This task has no children.
+        </div>
     </b-table>
 </template>
 
 <script type="text-javascript">
 export default {
+    props: ['childid'],
     data: function() {
         return {
-            tasks: [],
+            sources: [],
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,
@@ -68,17 +59,17 @@ export default {
         };
     },
     mounted: function() {
-        axios.get(route('tasks.index'))
+        axios.get(route('children.sources.show', {id: this.childid}))
             .then(response => {
-                this.tasks = response.data;
+                this.sources = response.data;
 
-                this.tasks.forEach(function(item) {
-                    item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
-                    item.delete_url = route('manage.content.tasks.delete', {'id': item.id});
+                this.sources.forEach(function(item) {
+                    item.delete_url = route('manage.content.source.delete', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;
             });
+
     }
 }
 </script>

@@ -6,12 +6,14 @@ return [
             'profile'   => 'c,r,u,d',
             'managment' => 'r',
             'task'      => 'c,r,u,d',
-            'child'     => 'c,r,u,d'
+            'child'     => 'c,r,u,d',
+            'source'    => 'c,r,d'
         ],
         'recruiter' => [
             'profile'   => 'r,u',
             'task'      => 'r',
-            'child'     => 'r'
+            'child'     => 'r',
+            'source'    => 'r'
         ],
     ],
     'permission_structure' => [],

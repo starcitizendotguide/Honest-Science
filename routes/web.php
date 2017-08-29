@@ -73,6 +73,22 @@ Route::prefix('manage')
                             Route::post('/create', 'ManageContentController@childStore')->name('manage.content.child.create.store');
                             Route::post('/edit/{id}', 'ManageContentController@childEdit')->name('manage.content.child.edit.update');
 
+                            Route::prefix('source', 'ManageContentController')
+                                ->group(function() {
+
+                                    //--- GET: Views
+                                    Route::get('/create/{child}', 'ManageContentController@sourceCreate')->name('manage.content.source.create');
+
+                                    //--- Delete
+                                    Route::get('/delete/{id}', 'ManageContentController@sourceDelete')
+                                        ->middleware('permission:delete-source')
+                                        ->name('manage.content.source.delete');
+
+                                    //--- Post
+                                    Route::post('/create', 'ManageContentController@sourceStore')->name('manage.content.source.create.store');
+
+                                });
+
                         });
 
                 Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
@@ -90,6 +106,7 @@ Route::group(['prefix' => 'api/v1'], function() {
         ]);
 
         Route::get('children/task/{id}', 'TasksChildrenController@task')->name('children.task.show');
+        Route::get('children/sources/{id}', 'TasksChildrenController@sources')->name('children.sources.show');
         Route::resource('children', 'TasksChildrenController', [
             'only' => [
                 'index', 'show'
