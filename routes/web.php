@@ -111,6 +111,7 @@ Route::prefix('manage')
                         });
 
                 Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
+                Route::get('groups', 'ManageGroupsController@groups')->name('manage.content.groups');
 
                 Route::prefix('users', 'ManageUserController')
                     ->group(function() {
@@ -167,6 +168,12 @@ Route::group(['prefix' => 'api/v1'], function() {
         ]);
 
         Route::resource('users', 'UserController', [
+            'only' => [
+                'index', 'show'
+            ]
+        ]);
+
+        Route::resource('groups', 'GroupsController', [
             'only' => [
                 'index', 'show'
             ]
