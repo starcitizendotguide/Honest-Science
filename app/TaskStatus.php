@@ -23,6 +23,13 @@ class TaskStatus extends Model
     ];
 
     public function countRelative() {
+
+        $count = TaskChild::count();
+
+        if($count === 0) {
+            return 0;
+        }
+
         return (TaskChild::all()->where('status', '=', $this->id)->count() / TaskChild::count());
     }
 
