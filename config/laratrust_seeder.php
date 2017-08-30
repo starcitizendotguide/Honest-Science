@@ -7,13 +7,15 @@ return [
             'managment' => 'r',
             'task'      => 'c,r,u,d',
             'child'     => 'c,r,u,d',
-            'source'    => 'c,r,d'
+            'source'    => 'c,r,d',
+            'user'      => 'c,r,u,d'
         ],
         'recruiter' => [
             'profile'   => 'r,u',
             'task'      => 'r',
             'child'     => 'r',
-            'source'    => 'r'
+            'source'    => 'r',
+            'user'      => ''
         ],
     ],
     'permission_structure' => [],

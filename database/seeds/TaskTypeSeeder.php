@@ -78,11 +78,17 @@ class TaskTypeSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
+
+            if(App\TaskType::find($status['id']) !== null) {
+                continue;
+            }
+
             $tmp = new App\TaskType;
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
             $tmp->css_icon = $status['css']['icon'];
             $tmp->save();
+
         }
     }
 }

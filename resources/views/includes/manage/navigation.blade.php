@@ -12,7 +12,7 @@
 
         <p class="menu-label">Permission System</p>
         <ul class="menu-list">
-            <li><a href="#">Users</a></li>
+            <li><a href="{{ route('manage.content.users') }}" class="{{ Request::is('manage/content/users*') ? 'is-active' : '' }}">Users</a></li>
             <li><a href="#">Groups</a></li>
             <li><a href="#">Permissions</a></li>
         </ul>

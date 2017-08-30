@@ -111,6 +111,29 @@ Route::prefix('manage')
                         });
 
                 Route::get('statuses', 'ManageContentController@statuses')->name('manage.content.statuses');
+
+                Route::prefix('users', 'ManageUserController')
+                    ->group(function() {
+
+                        //--- GET: Views
+                        Route::get('/', 'ManageUserController@users')
+                            ->name('manage.content.users');
+
+                        Route::get('/edit/{id}', 'ManageUserController@tasksEdit')
+                            ->middleware('permission:update-user')
+                            ->name('manage.content.user.edit');
+
+                        //--- Post
+                        Route::post('/create', 'ManageUserController@taskStore')
+                            ->middleware('permission:create-user')
+                            ->name('manage.content.user.create.store');
+
+                        Route::post('/edit/{id}', 'ManageUserController@tasksEdit')
+                            ->middleware('permission:update-user')
+                            ->name('manage.content.user.edit.update');
+
+                    });
+
             });
     }
 );
@@ -119,8 +142,7 @@ Route::group(['prefix' => 'api/v1'], function() {
 
         Route::resource('tasks',  'TasksController', [
             'only' => [
-                'index', 'show',
-                'destroy'
+                'index', 'show'
             ]
         ]);
 

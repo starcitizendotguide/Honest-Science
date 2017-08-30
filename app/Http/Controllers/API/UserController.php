@@ -9,7 +9,7 @@ class UserController extends Controller
 {
 
     public function __construct() {
-        $this->middleware('permission:read-managment');
+        $this->middleware('permission:read-user');
     }
 
     /**
@@ -19,17 +19,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
-    }
+        $all = User::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $data = [];
+
+        foreach($all as $user) {
+
+            $data[] = [
+                'id'        => $user->id,
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'roles'     => $user->roles,
+                'created_at'=> $user->created_at,
+                'updated_at'=> $user->updated_at,
+            ];
+
+        }
+
+        return $data;
+
     }
 
     /**

@@ -55,11 +55,12 @@ class TaskStatusSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
-            $tmp = new App\TaskStatus;
 
-            if(App\TaskStatus::byId($status['id'])->exists()) {
+            if(\App\TaskStatus::find($status['id']) !== null) {
                 continue;
             }
+
+            $tmp = new App\TaskStatus;
 
             $tmp->id = $status['id'];
             $tmp->name = $status['name'];
