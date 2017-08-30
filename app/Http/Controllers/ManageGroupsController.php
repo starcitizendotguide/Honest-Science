@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 class ManageGroupsController extends Controller
 {
 
+    public function __construct()
+    {
+        \View::share('queue_amount', count(\App\Task::queue()));
+    }
+
     /**
      * The view of all groups.
      */
