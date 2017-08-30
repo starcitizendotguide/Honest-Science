@@ -189,6 +189,17 @@ export default {
             disqus_title = CONF_TITLE,
             disqus_url = (CONF_URL + "/#!" + id);
 
+            if(typeof DISQUS === 'undefined') {
+                (function() {  // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+
+                    s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
+
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            }
+
             DISQUS.reset({
                 reload: true,
                 config: function () {

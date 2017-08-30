@@ -31,7 +31,6 @@ export default {
             default: 'is-primary'
         },
         width: {
-            type: Number,
             default: 480
         }
     },
