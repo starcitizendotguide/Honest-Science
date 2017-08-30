@@ -25,15 +25,6 @@
                 {{ props.row.description | truncate(50) }}
             </b-table-column>
 
-            <b-table-column field="children" label="Children">
-                <span v-if="props.row.standalone">-</span>
-                <span v-else>{{ props.row.children.length }} Children</span>
-            </b-table-column>
-
-            <b-table-column field="created_at" label="Created At" sortable>
-                {{ props.row.created_at.date }}
-            </b-table-column>
-
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
@@ -41,20 +32,21 @@
             <b-table-column label="Action">
                 <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
-                    title="Delete Task"
-                    :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
-                    positive="Delete"
-                    negative="Cancel"
-                    :url="props.row.delete_url"
-                    theme="is-danger"
+                    title="Mark Task as Update-to-Date"
+                    :message="'Is all of the available for ' + props.row.name + ' (' + props.row.id + ') up to date?'"
+                    positive="Yes"
+                    negative="No"
+                    :url="props.row.checked_url"
+                    theme="is-success"
+                    width=300
                 >
-                    <span><i class="fa fa-trash"></i></span>
+                    <span><i class="fa fa-check"></i></span>
                 </confirm-item>
             </b-table-column>
         </template>
 
         <div slot="empty" class="has-text-centered">
-            No tasks available.
+            No tasks in the queue. Awesome!
         </div>
     </b-table>
 </template>
@@ -73,7 +65,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get(route('tasks.index'))
+        axios.get(route('tasks.queue'))
             .then(response => {
                 this.tasks = response.data;
 
@@ -84,7 +76,7 @@ export default {
                         item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
                     }
 
-                    item.delete_url = route('manage.content.tasks.delete', {'id': item.id});
+                    item.checked_url = route('manage.content.tasks.checked', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;

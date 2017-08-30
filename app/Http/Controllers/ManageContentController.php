@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 class ManageContentController extends Controller
 {
 
+    public function __construct() {
+        \View::share('queue_amount', count(\App\Task::queue()));
+    }
+
     //------------
     //--- Task ---
     //------------
@@ -74,7 +78,7 @@ class ManageContentController extends Controller
         }
 
         return view('manage.tasks.edit', [
-            'task' => $task
+            'task' => $task,
         ]);
     }
 
@@ -388,6 +392,23 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'link'          => 'required|url',
         ]);
+    }
+
+    //-------------
+    //--- Queue ---
+    //-------------
+    public function tasksQueue(Request $request) {
+        return view('manage.tasks.queue');
+    }
+
+    public function tasksChecked(Request $request, $id) {
+
+        $task = \App\Task::findOrFail($id);
+        $task->updated_at = \Carbon\Carbon::now();
+        $task->save(['timestamps' => true]);
+
+        return redirect()->route('manage.content.tasks.queue');
+
     }
 
 }

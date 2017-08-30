@@ -19,6 +19,7 @@ import ManageUserItem from './components/ManageUserItem.vue';
 import ManageTasksItem from './components/ManageTasksItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
 
+import ManageQueueItem from './components/ManageQueueItem.vue';
 import ManageSourcesItem from './components/ManageSourcesItem.vue';
 import ManageGroupsItem from './components/ManageGroupsItem.vue';
 
@@ -41,6 +42,7 @@ Vue.component('manage-user-item', ManageUserItem);
 Vue.component('manage-tasks-item', ManageTasksItem);
 Vue.component('manage-tasks-children-item', ManageTasksChildrenItem);
 
+Vue.component('manage-queue-item', ManageQueueItem);
 Vue.component('manage-sources-item', ManageSourcesItem);
 Vue.component('manage-groups-item', ManageGroupsItem);
 
@@ -57,7 +59,6 @@ Vue.filter('truncate', function (text, length, clamp) {
 
     while (last > 0 && tcText[last] !== ' ' && tcText[last] !== clamp[0]) last -= 1;
 
-    // Fix for case when text dont have any `space`
     last = last || length - clamp.length;
 
     tcText =  tcText.slice(0, last);

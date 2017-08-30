@@ -89,4 +89,26 @@ class Task extends Model
         return TaskStatus::byId($table->keys()->first())->first();
     }
 
+    //--- All Tasks which require a status check
+    public static function queue() {
+
+        $tasks = [];
+
+        foreach(\App\Task::where('updated_at', '<', \Carbon\Carbon::now()->subMonths(1.5)->toDateTimeString())->get() as $entry) {
+            $tasks[] = [
+                'id'            => $entry->id,
+                'name'          => $entry->name,
+                'description'   => $entry->description,
+                'status'        => $entry->status(),
+                'type'          => $entry->type,
+                'progress'      => $entry->progress,
+                'standalone'    => $entry->standalone,
+                'updated_at'    => $entry->updated_at,
+                'created_at'    => $entry->created_at
+            ];
+        }
+
+        return $tasks;
+    }
+
 }

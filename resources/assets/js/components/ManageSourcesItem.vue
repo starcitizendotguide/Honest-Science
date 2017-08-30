@@ -40,7 +40,7 @@
 
         </template>
         <div slot="empty" class="has-text-centered">
-            This task has no children.
+            This task has no sources.
         </div>
     </b-table>
 </template>

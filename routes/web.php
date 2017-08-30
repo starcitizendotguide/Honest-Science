@@ -97,6 +97,17 @@ Route::prefix('manage')
                             ->middleware('permission:update-task')
                             ->name('manage.content.tasks.edit.update_standalone');
 
+                        //------------------
+                        //--- Task Queue ---
+                        //------------------
+                        Route::get('/queue', 'ManageContentController@tasksQueue')
+                            ->middleware('permission:read-task')
+                            ->name('manage.content.tasks.queue');
+
+                        Route::get('/checked/{id}', 'ManageContentController@tasksChecked')
+                            ->middleware('permission:update-task')
+                            ->name('manage.content.tasks.checked');
+
                     });
 
 
@@ -165,6 +176,8 @@ Route::prefix('manage')
 
 Route::group(['prefix' => 'api/v1'], function() {
 
+        Route::get('tasks/queue', 'TasksController@queue')
+            ->name('tasks.queue');
         Route::resource('tasks',  'TasksController', [
             'only' => [
                 'index', 'show'

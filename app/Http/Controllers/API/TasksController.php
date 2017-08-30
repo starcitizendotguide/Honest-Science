@@ -158,4 +158,8 @@ class TasksController extends Controller
         return $data;
     }
 
+    public function queue() {
+        return \App\Task::queue();
+    }
+
 }
