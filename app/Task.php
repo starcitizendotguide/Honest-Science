@@ -12,6 +12,14 @@ class Task extends Model
     protected $fillable = [
         'name',
         'description',
+        'status',
+        'type',
+        'progress',
+        'standalone'
+    ];
+
+    protected $casts = [
+        'standalone' => 'boolean',
     ];
 
     protected $dates = [
@@ -27,7 +35,20 @@ class Task extends Model
         return $this->hasMany('App\TaskChild');
     }
 
+    public function type() {
+        return $this->hasOne('App\TaskType', 'id', 'type')->first();
+    }
+
+    public function sources() {
+        return $this->hasMany('App\TaskSource', 'parent_id', 'id');
+    }
+
     public function status() {
+
+        //--- Standalone Status
+        if($this->standalone === true) {
+            return TaskStatus::byId($this->status)->first();
+        }
 
         $DEFAULT_STATUS = 3;
 

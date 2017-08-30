@@ -73,7 +73,12 @@ export default {
                 this.tasks = response.data;
 
                 this.tasks.forEach(function(item) {
-                    item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
+                    if(item.standalone === true) {
+                        item.edit_url = route('manage.content.tasks.edit_standalone', {'id': item.id});
+                    } else {
+                        item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
+                    }
+
                     item.delete_url = route('manage.content.tasks.delete', {'id': item.id});
                 });
 

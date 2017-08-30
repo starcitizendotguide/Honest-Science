@@ -1,12 +1,10 @@
 @extends('layouts.manage')
 
 @section('content')
-    <h1 class="title has-text-centered">Source for {{ $child->name }}</h1>
-    <form class="form" action="{{ route('manage.content.source.create.store') }}" method="POST">
+    <h1 class="title has-text-centered">Source for {{ $object->name }}</h1>
+    <form class="form" action="{{ route('manage.content.source.create.store', ['id' => $object->id, 'standalone' => $standalone]) }}" method="POST">
 
         {{ csrf_field() }}
-
-        <input type="text" name="child_id" value="{{ $child->id }}" hidden>
 
         <div class="field">
             <label class="label">Link</label>

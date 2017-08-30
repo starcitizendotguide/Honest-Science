@@ -4,7 +4,7 @@
     <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
         <ul>
             <li><a href="{{ route('manage.content.tasks') }}">Overview</a></li>
-            <li class="is-active"><a href="#">{{ $task->name }} [Task]</a></li>
+            <li class="is-active"><a href="#">{{ $task->name }} [Subject Task]</a></li>
         </ul>
     </nav>
     <b-tabs v-model="activeTab" position="is-centered" expanded class="block">

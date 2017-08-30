@@ -76,8 +76,12 @@ class TasksChildrenController extends Controller
         return $data;
     }
 
-    public function sources($child_id) {
-        return \App\TaskChild::find($child_id)->sources()->get();
+    public function sources($id, $standalone) {
+        if(strtolower($standalone) == 'true') {
+            return \App\Task::find($id)->sources()->get();
+        } else {
+            return \App\TaskChild::find($id)->sources()->get();
+        }
     }
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSourcesTable extends Migration
+class AddStandaloneTasksToSources extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateSourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_sources', function(Blueprint $table) {
+        Schema::table('task_sources', function($table) {
 
-            //--- Types
-            $table->increments('id');
-            $table->integer('child_id');
-            $table->string('link', 255);
-
-            $table->timestamps();
+            $table->integer('child_id')->nullable()->change();
+            $table->integer('parent_id')->nullable();
 
         });
     }
@@ -32,6 +28,10 @@ class CreateSourcesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('task_sources');
+        Schema::table('task_sources', function($table) {
+
+            $table->dropColumn('parent_id');
+
+        });
     }
 }

@@ -120,7 +120,7 @@ class TasksSeeder extends Seeder
 
                 if(isset($child['sources'])) {
                     foreach($child['sources'] as $source) {
-                        $source_tmp = new App\TaskChildSource;
+                        $source_tmp = new App\TaskSource;
                         $source_tmp->child_id = $tmp->id;
                         $source_tmp->link = $source;
                         $source_tmp->save();

@@ -43,11 +43,33 @@
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
                                         <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
                                     </b-tooltip>
+                                    <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
+                                        <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
+                                    </b-tooltip>
 
                                     <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
 
-                                    <p>{{ task.description }}</p>
+                                    <p v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
+                                    <p v-if="task.collapsed">{{ task.description }}</p>
+
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+
+                                    <span v-if="task.standalone" class="is-pulled-right">
+                                        <confirm-item
+                                            v-for="(source, index) in task.sources"
+                                            :key="source.id"
+
+                                            title="You are leaving Star Citizen - Honest Science."
+                                            :message="source.link + ' is not an official Honest Science site.'"
+                                            positive="Continue to external site."
+                                            negative="Cancel"
+                                            :url="source.link"
+                                            theme="is-danger"
+                                            width=960
+                                        >
+                                            [{{ index + 1 }}]
+                                        </confirm-item>
+                                    </span>
                                 </p>
                                 <transition name="fade">
                                     <div v-if="task.collapsed">

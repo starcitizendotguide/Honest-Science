@@ -47,7 +47,14 @@
 
 <script type="text-javascript">
 export default {
-    props: ['childid'],
+    props: {
+        objectid: {
+            required: true,
+        },
+        standalone: {
+            required: true,
+        }
+    },
     data: function() {
         return {
             sources: [],
@@ -60,12 +67,12 @@ export default {
         };
     },
     mounted: function() {
-        axios.get(route('children.sources.show', {id: this.childid}))
+        axios.get(route('children.sources.show', {id: this.objectid, standalone: this.standalone}))
             .then(response => {
                 this.sources = response.data;
 
                 this.sources.forEach(function(item) {
-                    item.delete_url = route('manage.content.source.delete', {'id': item.id});
+                    item.delete_url = route('manage.content.source.delete', {id: item.id});
                 });
 
                 this.settings.isLoading = false;

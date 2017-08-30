@@ -18,8 +18,8 @@ import ManageUserItem from './components/ManageUserItem.vue';
 
 import ManageTasksItem from './components/ManageTasksItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
-import ManageChildSourcesItem from './components/ManageChildSourcesItem.vue';
 
+import ManageSourcesItem from './components/ManageSourcesItem.vue';
 import ManageGroupsItem from './components/ManageGroupsItem.vue';
 
 Vue.use(Vue2Filters);
@@ -40,8 +40,8 @@ Vue.component('manage-user-item', ManageUserItem);
 
 Vue.component('manage-tasks-item', ManageTasksItem);
 Vue.component('manage-tasks-children-item', ManageTasksChildrenItem);
-Vue.component('manage-child-sources-item', ManageChildSourcesItem);
 
+Vue.component('manage-sources-item', ManageSourcesItem);
 Vue.component('manage-groups-item', ManageGroupsItem);
 
 //-- Filter

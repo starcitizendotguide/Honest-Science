@@ -11,9 +11,16 @@
 
 <manage-tasks-item></manage-tasks-item>
 
-<div>
-    <a href="{{ route('manage.content.tasks.create') }}">
-        <button class="button is-primary is-outlined is-fullwidth m-t-5">Add New Task</button>
-    </a>
+<div class="field is-grouped is-pulled-right">
+    <p class="control">
+        <a class="button is-primary is-outlined is-fullwidth m-t-5" href="{{ route('manage.content.tasks.create_standalone') }}">
+            New Standalone Task
+        </a>
+    </p>
+    <p class="control">
+        <a class="control button is-primary is-outlined is-fullwidth m-t-5" href="{{ route('manage.content.tasks.create') }}">
+            New Subject Task
+        </a>
+    </p>
 </div>
 @endsection

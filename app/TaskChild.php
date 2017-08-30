@@ -34,7 +34,7 @@ class TaskChild extends Model
     }
 
     public function sources() {
-        return $this->hasMany('App\TaskChildSource', 'child_id', 'id');
+        return $this->hasMany('App\TaskSource', 'child_id', 'id');
     }
 
 }

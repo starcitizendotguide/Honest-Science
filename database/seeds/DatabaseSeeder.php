@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(TaskStatusSeeder::class);
         $this->call(TaskTypeSeeder::class);
 
-        if(env('APP_DEBUG') === true) {
+        //if(env('APP_ENV') === 'local') {
             $this->call(TasksSeeder::class);
             $this->call(DebugSeeder::class);
-        }
+        //}
 
     }
 }

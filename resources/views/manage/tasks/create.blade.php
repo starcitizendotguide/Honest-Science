@@ -1,7 +1,7 @@
 @extends('layouts.manage')
 
 @section('content')
-    <h1 class="title has-text-centered">Create a new task</h1>
+    <h1 class="title has-text-centered">Create a new Subject Task</h1>
     <form class="form" action="{{ route('manage.content.tasks.create.store') }}" method="POST">
 
         {{ csrf_field() }}
