@@ -253,6 +253,21 @@ export default {
             return false;
 
         },
+        hasTaskTypesActive(task) {
+
+            if(task.type === null) {
+                return false;
+            }
+
+            for(var i = 0; i < this.meta.types.length; i++) {
+                if(this.meta.types[i].id === task.type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
     },
     computed: {
         filteredItems: function () {
@@ -293,7 +308,7 @@ export default {
                 //       and casting it doesn't help for some reason, weird...
                 if(
                     (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
-                    (self.hasChildTypesActive(item) || !typeMode) &&
+                    (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
                         item.description.toLowerCase().indexOf(search) !== -1
