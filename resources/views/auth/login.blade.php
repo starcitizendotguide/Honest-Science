@@ -41,11 +41,13 @@
                 </div>
             </div>
 
+            @if(env('AUTH_RESET') === true)
             <div class="m-t-5">
                 <h5 class="has-text-centered">
                     <a href="{{ route('password.request') }}" class="is-muted">Forgot Your Password?</a>
                 </h5>
             </div>
+            @endif
 
         </div>
     </div>

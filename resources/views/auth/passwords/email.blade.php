@@ -36,11 +36,13 @@
                 </div>
             </div>
 
-            <div class="m-t-5">
-                <h5 class="has-text-centered">
-                    <a href="{{ route('login') }}" class="is-muted">Back To Login</a>
-                </h5>
-            </div>
+            @if(env('AUTH_LOGIN') === true)
+                <div class="m-t-5">
+                    <h5 class="has-text-centered">
+                        <a href="{{ route('login') }}" class="is-muted">Back To Login</a>
+                    </h5>
+                </div>
+            @endif
 
         </div>
     </div>

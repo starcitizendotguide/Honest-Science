@@ -8,8 +8,12 @@
 
         <div class="nav-right" style="overflow: visible;">
             @if (Auth::guest())
+                @if(env('AUTH_LOGIN') === true)
                 <a href="{{ route('login') }}" class="nav-item is-tab">Login</a>
+                @endif
+                @if(env('AUTH_REGISTER') === true)
                 <a href="{{ route('register') }}" class="nav-item is-tab">Sign Up</a>
+                @endif
             @else
                 <b-dropdown v-model="navigation" position="is-bottom-left" class="dropdown nav-item is-tab">
                     <a class="nav-item" slot="trigger">
