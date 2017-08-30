@@ -94,7 +94,16 @@ class Task extends Model
 
         $tasks = [];
 
-        foreach(\App\Task::where('updated_at', '<', \Carbon\Carbon::now()->subMonths(1.5)->toDateTimeString())->get() as $entry) {
+        $entries = \App\Task::where([
+            ['updated_at', '<', \Carbon\Carbon::now()->subMonths(1.5)->toDateTimeString()]
+        ])->get();
+        foreach($entries as $entry) {
+
+            //--- Only non-released tasks
+            if($entry->status()->id === 0) {
+                continue;
+            }
+
             $tasks[] = [
                 'id'            => $entry->id,
                 'name'          => $entry->name,

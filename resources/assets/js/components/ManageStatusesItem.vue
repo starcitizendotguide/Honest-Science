@@ -34,10 +34,6 @@
                 {{ props.row.updated_at }}
             </b-table-column>
 
-            <b-table-column label="Action">
-                <a href="#"><span><i class="fa fa-pencil"></i></span></a>
-            </b-table-column>
-
         </template>
     </b-table>
 </template>
