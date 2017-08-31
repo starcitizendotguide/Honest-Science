@@ -40,6 +40,7 @@ class ManageContentController extends Controller
 
         $task->delete();
         //--- Redirect
+        \Session::flash('flash', ('You successfully deleted \'' . $task->name . '\' and all related data!'));
         return redirect()->route('manage.content.tasks');
     }
 
@@ -75,6 +76,8 @@ class ManageContentController extends Controller
             $task->description = $request->input('description');
             $task->save();
 
+            \Session::flash('flash', ('Update successfully executed!'));
+
         }
 
         return view('manage.tasks.edit', [
@@ -95,6 +98,8 @@ class ManageContentController extends Controller
         $task->name = $request->input('name');
         $task->description = $request->input('description');
         $task->save();
+
+        \Session::flash('flash', ('You successfully added a new subject task.'));
 
         //--- Redirect
         return view('manage.tasks.edit', [
@@ -137,6 +142,8 @@ class ManageContentController extends Controller
             $task->progress = ($request->input('progress') / 100);
             $task->save();
 
+            \Session::flash('flash', ('Update successfully executed!'));
+
         }
 
         return view('manage.tasks.standalone.edit', [
@@ -164,6 +171,8 @@ class ManageContentController extends Controller
         $task->standalone = true;
         $task->save();
 
+        \Session::flash('flash', ('You successfully added a new standalone task.'));
+
         //--- Redirect
         return redirect()->route('manage.content.tasks.edit.update_standalone', [
             'id' => $task->id
@@ -180,6 +189,7 @@ class ManageContentController extends Controller
     public function childCreate(Request $request, $parent) {
 
         $parent = \App\Task::byId($parent)->first();
+
 
         return view('manage.child.create', [
             'parent'    => $parent,
@@ -211,6 +221,8 @@ class ManageContentController extends Controller
             $child->progress = ($request->input('progress') / 100);
             $child->save();
 
+            \Session::flash('flash', ('Update successfully executed!'));
+
         }
 
         return view('manage.child.edit', [
@@ -240,6 +252,8 @@ class ManageContentController extends Controller
         $task->progress = ($request->input('progress') / 100);
         $task->save();
 
+        \Session::flash('flash', ('You successfully added a child.'));
+
         return redirect()->route('manage.content.child.edit', ['id' => $task->id]);
     }
 
@@ -257,6 +271,7 @@ class ManageContentController extends Controller
         $child->delete();
 
         //--- Redirect
+        \Session::flash('flash', ('You successfully deleted \'' . $child->name . '\' and all related data!'));
         return redirect()->route('manage.content.tasks.edit', ['id' => $parent]);
     }
 
@@ -302,6 +317,8 @@ class ManageContentController extends Controller
         $source->save();
 
 
+        \Session::flash('flash', ('You successfully added a source.'));
+
         //--- Redirect
         if($standalone == '1') {
             return redirect()->route('manage.content.tasks.edit.update_standalone', [
@@ -319,6 +336,8 @@ class ManageContentController extends Controller
      */
     public function sourceDelete(Request $request, $id) {
         $source = \App\TaskSource::findOrFail($id);
+
+        \Session::flash('flash', ('You successfully deleted \'' . $source->link . '\' and all related data!'));
 
         //--- Standalone Task
         if($source->child_id === null) {
@@ -406,6 +425,8 @@ class ManageContentController extends Controller
         $task = \App\Task::findOrFail($id);
         $task->updated_at = \Carbon\Carbon::now();
         $task->save(['timestamps' => true]);
+
+        \Session::flash('flash', ('Marked ' . $task->name . ' (' . $task->id . ') as up-to-date.'));
 
         return redirect()->route('manage.content.tasks.queue');
 

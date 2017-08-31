@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -13,6 +14,11 @@
     </head>
     <body>
         <div id="app">
+
+            @if(!session('flash') == null)
+                <flash-item message="{{ session('flash') }}" notifier="snackbar"></flash-item>
+            @endif
+
             @include('includes.navigation')
 
             <div class="columns m-t-20">

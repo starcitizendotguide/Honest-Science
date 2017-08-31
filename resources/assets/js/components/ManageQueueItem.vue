@@ -33,7 +33,7 @@
                 <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
                     title="Mark Task as Update-to-Date"
-                    :message="'Is all of the available for ' + props.row.name + ' (' + props.row.id + ') up to date?'"
+                    :message="'Is all of the available data for ' + props.row.name + ' (' + props.row.id + ') up to date?'"
                     positive="Yes"
                     negative="No"
                     :url="props.row.checked_url"

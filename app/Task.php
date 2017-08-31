@@ -95,8 +95,9 @@ class Task extends Model
         $tasks = [];
 
         $entries = \App\Task::where([
-            ['updated_at', '<', \Carbon\Carbon::now()->subMonths(1.5)->toDateTimeString()]
+            ['updated_at', '<', \Carbon\Carbon::now()->subMinutes(1)->toDateTimeString()]
         ])->get();
+
         foreach($entries as $entry) {
 
             //--- Only non-released tasks
