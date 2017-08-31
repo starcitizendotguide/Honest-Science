@@ -15,8 +15,12 @@
     <body>
         <div id="app">
 
-            @if(!session('flash') == null)
-                <flash-item message="{{ session('flash') }}" notifier="snackbar"></flash-item>
+            @if(!session('flash') == null || $queue_amount > 0)
+                @if(session('flash') == null && $queue_amount > 0)
+                    <flash-item message="There are waiting {{ $queue_amount }} task(s) in the queue to be checked!" type="is-danger" duration=6000 notifier="snackbar"></flash-item>
+                @else
+                    <flash-item message="{{ Session('flash') }}" notifier="snackbar"></flash-item>
+                @endif
             @endif
 
             @include('includes.navigation')
