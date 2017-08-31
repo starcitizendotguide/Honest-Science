@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            @if(env('AUTH_LOGIN') === true)
+            @if(\Config::get('custom.auth.login') === true)
                 <div class="m-t-5">
                     <h5 class="has-text-centered"><a href="{{ route('login') }}" class="is-muted">Already Have An Account?</a></h5>
                 </div>

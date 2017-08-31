@@ -68,7 +68,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $user->attachRole(env('PERMISSION_DEFAULT_USER'));
+        $user->attachRole(\Config::get('custom.permission.default_user'));
 
         return $user;
     }

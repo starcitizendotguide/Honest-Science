@@ -8,10 +8,10 @@
 
         <div class="nav-right" style="overflow: visible;">
             @if (Auth::guest())
-                @if(env('AUTH_LOGIN') === true)
+                @if(\Config::get('custom.auth.login') === true)
                 <a href="{{ route('login') }}" class="nav-item is-tab">Login</a>
                 @endif
-                @if(env('AUTH_REGISTER') === true)
+                @if(\Config::get('custom.auth.register') === true)
                 <a href="{{ route('register') }}" class="nav-item is-tab">Sign Up</a>
                 @endif
             @else
