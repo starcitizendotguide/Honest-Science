@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <div :id="task.id" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                <div :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
                             <div class="content">
@@ -47,14 +47,14 @@
                                         <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
                                     </b-tooltip>
 
-                                    <span><i v-on:click="triggerCollapse(task)" class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
+                                    <span><i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
 
                                     <p v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
                                     <p v-if="task.collapsed">{{ task.description }}</p>
 
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
 
-                                    <span v-if="task.standalone" class="is-pulled-right">
+                                    <span v-if="task.standalone" class="is-pulled-right ignore-click">
                                         <confirm-item
                                             v-for="(source, index) in task.sources"
                                             :key="source.id"
@@ -72,15 +72,14 @@
                                     </span>
                                 </p>
                                 <transition name="fade">
-                                    <div v-if="task.collapsed">
-
+                                    <div v-if="task.collapsed" class="ignore-click">
                                         <div class="box highlighted-element" v-for="child in task.children">
                                             <article class="media">
                                                 <div class="media-content">
                                                     <div class="content">
-                                                        <strong>{{ child.name }}</strong> -
+                                                        <strong class="">{{ child.name }}</strong> -
                                                         <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
+                                                            <span class="icon is-small "><i :class="child.status.css_icon"></i></span>
                                                         </b-tooltip>
                                                         <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
                                                             <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
@@ -180,7 +179,23 @@ export default {
         },
         //--- Called when the user clicks on the arrow next to a task to collapse it.
         //    It collapse all other tasks and resets or loads the interaction bar.
-        triggerCollapse(task) {
+        triggerCollapse(evt, task) {
+
+            var isIgnoringTriggerEvent = function(element) {
+                if(typeof element === 'undefined' || element === null) {
+                    return false;
+                } else if(element.classList.contains('ignore-click')) {
+                     return true;
+                 }
+
+                return isIgnoringTriggerEvent(element.parentElement);
+            };
+
+            if(isIgnoringTriggerEvent(evt.target) === true) {
+                return;
+            }
+
+
             //--- Reset Collapse & Reset Interaction Bar
             this.tasks.map(v => { if(v != task) v.collapsed = false;  });
 
@@ -217,19 +232,21 @@ export default {
 
                     s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
 
+
                     s.setAttribute('data-timestamp', +new Date());
                     (d.head || d.body).appendChild(s);
-                })();
-            }
 
-            DISQUS.reset({
-                reload: true,
-                config: function () {
-                    this.page.identifier = id;
-                    this.page.url = disqus_url;
-                }
-            });
-        },
+                })();
+            } else {
+                DISQUS.reset({
+                    reload: true,
+                    config: function () {
+                        this.page.identifier = id;
+                        this.page.url = disqus_url;
+                    }
+                });
+            }
+         },
         //---- Help function: returns the default value of the interaction bar.
         defaultInteractionBar() {
             return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';

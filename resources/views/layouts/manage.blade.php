@@ -33,7 +33,6 @@
                     @yield('content')
                 </div>
             </div>
-
         </div>
         @routes
         <script src="{{ mix('assets/js/app.js') }}" ></script>

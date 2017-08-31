@@ -71,4 +71,4 @@ Vue.filter('toFixed', function (text, digits) {
     return parseFloat(text).toFixed(digits);
 });
 
-new Vue({ el: '#app', data: { navigation: {}, activeTab: null, } });
+new Vue({ el: '#app', data: { navigation: {} } });

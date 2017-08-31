@@ -13,8 +13,8 @@
         <!-- <script src="http:// \Config::get('custom.disqus.shortname') .disqus.com/embed.js" charset="utf-8"></script> -->
 
     </head>
-    <body>
-        <div class="grid">
+    <body class="grid">
+        <div >
             <div id="app">
                 @include('includes.navigation')
                 @yield('content')
