@@ -34,7 +34,20 @@
                         <p class="help is-danger">{{ $errors->first('description') }}</p>
                     @endif
                 </div>
-                <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
+                <div class="field">
+                    <p class="control select">
+                        <select name="visibility">
+                            @foreach($visibilities as $entry)
+                                <option value="{{ $entry->id }}" {{ $entry->id === $task->visibility ? 'selected' : '' }}>{{ $entry->name }}</option>
+                            @endforeach
+                        </select>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
+                    </p>
+                </div>
             </form>
         </b-tab-item>
 

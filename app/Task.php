@@ -12,6 +12,7 @@ class Task extends Model
     protected $fillable = [
         'name',
         'description',
+        'visibility',
         'status',
         'type',
         'progress',
@@ -19,13 +20,18 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'standalone' => 'boolean',
+        'standalone'    => 'boolean',
+        'published'     => 'boolean',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at'
     ];
+
+    public function visibility() {
+        return $this->hasOne('App\Visibility', 'id', 'visibility');
+    }
 
     public function children() {
         return $this->hasMany('App\TaskChild');

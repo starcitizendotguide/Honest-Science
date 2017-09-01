@@ -16,13 +16,24 @@ class TasksController extends Controller
 
         //--- Build data
         $data = [];
+        $user = \Auth::user();
 
         $tasks = Task::all();
         foreach ($tasks as $task) {
+
+            //--- Visibility
+            if(
+                ($user === null || !($user->hasPermission('read-task'))) &&
+                ($task->visibility === -1)
+            ) {
+                continue;
+            }
+
             $tmp = [
                 'id'            => $task->id,
                 'name'          => $task->name,
                 'standalone'    => $task->standalone,
+                'visibility'    => $task->visibility()->first(),
                 'description'   => $task->description,
                 'sources'       => $task->sources,
                 'status'        => $task->status(),
@@ -89,6 +100,7 @@ class TasksController extends Controller
             'id'            => null,
             'name'          => null,
             'standalone'    => false,
+            'visibility'    => null,
             'description'   => null,
             'status'        => null,
             'type'          => null,
@@ -107,6 +119,7 @@ class TasksController extends Controller
         $data['id']             = $task->id;
         $data['name']           = $task->name;
         $data['standalone']     = $task->standalone;
+        $data['visibility']     = $task->visibility()->first();
         $data['description']    = $task->description;
         $data['sources']        = $task->sources;
         $data['status']         = $task->status();

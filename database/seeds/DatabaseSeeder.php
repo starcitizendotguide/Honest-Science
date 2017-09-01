@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LaratrustSeeder::class);
         $this->call(TaskStatusSeeder::class);
         $this->call(TaskTypeSeeder::class);
+        $this->call(VisibilitySeeder::class);
 
         if(\App::environment('local')) {
             $this->call(TasksSeeder::class);

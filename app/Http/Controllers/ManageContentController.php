@@ -72,8 +72,11 @@ class ManageContentController extends Controller
 
             $task = \App\Task::findOrFail($id);
 
+
             $task->name = $request->input('name');
             $task->description = $request->input('description');
+            $task->visibility = $request->input('visibility');
+
             $task->save();
 
             \Session::flash('flash', ('Update successfully executed!'));
@@ -81,7 +84,8 @@ class ManageContentController extends Controller
         }
 
         return view('manage.tasks.edit', [
-            'task' => $task,
+            'task'          => $task,
+            'visibilities'  => \App\Visibility::all(),
         ]);
     }
 
@@ -97,6 +101,7 @@ class ManageContentController extends Controller
         $task = new \App\Task;
         $task->name = $request->input('name');
         $task->description = $request->input('description');
+
         $task->save();
 
         \Session::flash('flash', ('You successfully added a new subject task.'));

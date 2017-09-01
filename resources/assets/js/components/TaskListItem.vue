@@ -47,7 +47,9 @@
                                         <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
                                     </b-tooltip>
 
-                                    <span><i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
+                                    <span>
+                                        <i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i>
+                                    </span>
 
                                     <p v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
                                     <transition name="fade">
@@ -372,13 +374,10 @@ export default {
             .then(response => {
 
                 var data = response.data;
-
                 data.forEach(function(e) {
                     e.collapsed = false;
                 });
-
                 this.tasks = data;
-
             });
 
         axios.get(route('types.index'))
