@@ -55,6 +55,19 @@
                     </div>
 
                     <div class="field">
+                        <label class="label">Visibility<label>
+                        <p class="control">
+                            <div class="select">
+                                <select name="visibility">
+                                    @foreach($visibilities as $entry)
+                                        <option value="{{ $entry->id }}" {{ $entry->id === $task->visibility ? 'selected' : '' }}>{{ $entry->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="field">
                         <label class="label">Type<label>
                         <p class="control">
                             <div class="select">
@@ -73,7 +86,6 @@
                             <p class="help is-danger">{{ $errors->first('type') }}</p>
                         @endif
                     </div>
-
                     <div class="field">
                         <label class="label">Progress<label>
                         <p class="control">

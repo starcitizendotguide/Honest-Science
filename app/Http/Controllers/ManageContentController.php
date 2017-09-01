@@ -143,6 +143,7 @@ class ManageContentController extends Controller
             $task->name = $request->input('name');
             $task->description = $request->input('description');
             $task->status = $request->input('status');
+            $task->visibility = $request->input('visibility');
             $task->type = $request->input('type');
             $task->progress = ($request->input('progress') / 100);
             $task->save();
@@ -154,7 +155,8 @@ class ManageContentController extends Controller
         return view('manage.tasks.standalone.edit', [
             'task'      => $task,
             'statuses'  => \App\TaskStatus::all(),
-            'types'     => \App\TaskType::all()
+            'types'     => \App\TaskType::all(),
+            'visibilities'  => \App\Visibility::all(),
         ]);
     }
 
