@@ -27,10 +27,6 @@ class Task extends Model
         'updated_at'
     ];
 
-    public function scopeById($query, $id) {
-        return $query->where('id', $id);
-    }
-
     public function children() {
         return $this->hasMany('App\TaskChild');
     }
@@ -47,7 +43,7 @@ class Task extends Model
 
         //--- Standalone Status
         if($this->standalone === true) {
-            return TaskStatus::byId($this->status)->first();
+            return TaskStatus::find($this->status);
         }
 
         $DEFAULT_STATUS = 3;
@@ -56,7 +52,7 @@ class Task extends Model
         $children = null;
 
         if(!($children = $this->children())->exists()) {
-            return TaskStatus::byId($DEFAULT_STATUS)->first();
+            return TaskStatus::find($DEFAULT_STATUS);
         }
 
         //--- Score
@@ -86,7 +82,7 @@ class Task extends Model
         // the highest impact. - The idea behind this is that a task doesn't get flagged
         // as e.g. 'released' just because it has the same amount of items than a
         // worse group.
-        return TaskStatus::byId($table->keys()->first())->first();
+        return TaskStatus::find($table->keys()->first());
     }
 
     //--- All Tasks which require a status check

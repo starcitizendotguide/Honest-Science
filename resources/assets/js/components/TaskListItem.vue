@@ -50,7 +50,9 @@
                                     <span><i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i></span>
 
                                     <p v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
-                                    <p v-if="task.collapsed">{{ task.description }}</p>
+                                    <transition name="fade">
+                                        <p v-if="task.collapsed">{{ task.description }}</p>
+                                    </transition>
 
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
 
@@ -131,7 +133,6 @@ export default {
             meta: {
                 search: '',
                 interactionBar: {
-                    id: null,
                     task: null,
                     content: this.defaultInteractionBar()
                 },
@@ -213,6 +214,7 @@ export default {
         },
         //--- Loads the Disqus section for an task.
         loadDisqus(task) {
+
             this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
 
             var CONF_URL            = (location.protocol + '//' + window.location.hostname),

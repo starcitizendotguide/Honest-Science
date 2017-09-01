@@ -27,7 +27,7 @@
 
             <b-table-column field="children" label="Children">
                 <span v-if="props.row.standalone">-</span>
-                <span v-else>{{ props.row.children.length }} Children</span>
+                <span v-else>{{ props.row.children.length }} {{ props.row.children.length > 1 ? 'Children' : 'Child' }}</span>
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>

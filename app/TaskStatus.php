@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Task;
 use App\TaskChild;
 
 class TaskStatus extends Model
@@ -30,15 +31,16 @@ class TaskStatus extends Model
             return 0;
         }
 
-        return (TaskChild::all()->where('status', '=', $this->id)->count() / TaskChild::count());
-    }
+        $childTotal = TaskChild::where('status', '=', $this->id)->count();
+        $childCount = TaskChild::count();
 
-    public function tasks() {
-        return $this->hasMany('App\Task', 'status', 'id');
-    }
+        $standaloneTotal = Task::where([
+            ['status', '=', $this->id],
+            ['standalone', '=', true]
+        ])->count();
+        $standaloneCount = Task::where('standalone', '=', true)->count();
 
-    public function scopeById($query, $id) {
-        return $query->where('id', '=', $id);
+        return (($childTotal + $standaloneTotal) / ($childCount + $standaloneCount));
     }
 
 }
