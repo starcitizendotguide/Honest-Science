@@ -17,7 +17,9 @@
 
             @if(!session('flash') == null || $queue_amount > 5)
                 @if(session('flash') == null && $queue_amount > 5)
-                    <flash-item message="There are waiting {{ $queue_amount }} task(s) in the queue to be checked!" type="is-danger" duration=6000 notifier="snackbar"></flash-item>
+                    @if(\Laratrust::can('mark-as-updated-task'))
+                        <flash-item message="There are waiting {{ $queue_amount }} task(s) in the queue to be checked!" type="is-danger" duration=6000 notifier="snackbar"></flash-item>
+                    @endif
                 @else
                     <flash-item message="{{ Session('flash') }}" notifier="snackbar"></flash-item>
                 @endif

@@ -16,13 +16,29 @@ class DebugSeeder extends Seeder
     {
 
         //--- Dev User
-        $yonas = new User;
-        $yonas->name = 'Yonas';
-        $yonas->email = 'test@example.com';
-        $yonas->password = Hash::make('testing');
-        $yonas->save();
+        $general = new User;
+        $general->name = 'General';
+        $general->email = 'general@example.com';
+        $general->password = Hash::make('general');
+        $general->save();
+        $general->attachRole('general');
 
-        $yonas->attachRole('general');
+        //--- Dev User
+        $contributor = new User;
+        $contributor->name = 'Contributor';
+        $contributor->email = 'contributor@example.com';
+        $contributor->password = Hash::make('contributor');
+        $contributor->save();
+        $contributor->attachRole('contributor');
+
+        //--- Dev User
+        $recruit = new User;
+        $recruit->name = 'recruit';
+        $recruit->email = 'recruit@example.com';
+        $recruit->password = Hash::make('recruit');
+        $recruit->save();
+        $recruit->attachRole('recruit');
+
 
     }
 

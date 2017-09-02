@@ -8,11 +8,16 @@ class TasksChildrenController extends Controller
 {
 
     public function index() {
+
         $children = \App\TaskChild::all();
 
         $data = collect([]);
 
         foreach ($children as $child) {
+
+            if($child->parent->visibility < 0 && !\Laratrust::can('read-child')) {
+                continue;
+            }
 
             $tmp = [];
             $tmp['id']          = $child->id;
@@ -33,9 +38,24 @@ class TasksChildrenController extends Controller
     }
 
     public function show($id) {
-        $child = \App\TaskChild::where('id', '=', $id)->first();
 
         $data = [];
+
+        $data['id']             = null;
+        $data['name']           = null;
+        $data['progress']       = 0;
+        $data['type']           = null;
+        $data['description']    = null;
+        $data['status']         = null;
+        $data['parent']         = null;
+        $data['created_at']     = null;
+        $data['updated_at']     = null;
+
+        if(!\Laratrust::can('read-child')) {
+            return [];
+        }
+
+        $child = \App\TaskChild::find('id', '=', $id);
 
         $data['id']             = $child->id;
         $data['name']           = $child->name;

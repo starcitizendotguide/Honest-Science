@@ -8,7 +8,10 @@ class ManageContentController extends Controller
 {
 
     public function __construct() {
-        \View::share('queue_amount', count(\App\Task::queue()));
+
+        //--- Variable: queue_amount
+        \View::share('queue_amount', count(\App\Task::queue(true)));
+
     }
 
     //------------
@@ -27,20 +30,25 @@ class ManageContentController extends Controller
     */
     public function tasksDelete(Request $request, $id) {
 
-        $task = \App\Task::findOrFail($id);
+        if(\Laratrust::can('delete-task')) {
+            $task = \App\Task::findOrFail($id);
 
-        if($task->standalone === true) {
-            \App\TaskSource::where('parent_id', '=', $task->id)->delete();
-        } else {
-            foreach($task->children()->get() as $child) {
-                \App\TaskSource::where('child_id', '=', $child->id)->delete();
-                $child->delete();
+            if($task->standalone === true) {
+                \App\TaskSource::where('parent_id', '=', $task->id)->delete();
+            } else {
+                foreach($task->children()->get() as $child) {
+                    \App\TaskSource::where('child_id', '=', $child->id)->delete();
+                    $child->delete();
+                }
             }
-        }
 
-        $task->delete();
+            $task->delete();
+            \Session::flash('flash', ('You successfully deleted \'' . $task->name . '\' and all related data!'));
+        } else {
+            \Session::flash('flash', ('You cannot delete this task.'));
+        }
+        
         //--- Redirect
-        \Session::flash('flash', ('You successfully deleted \'' . $task->name . '\' and all related data!'));
         return redirect()->route('manage.content.tasks');
     }
 
@@ -64,23 +72,25 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $task = \App\Task::findOrfail($id);
+            $task = \App\Task::findOrFail($id);
         } else if($request->isMethod('POST')) {
 
-            //--- Validate
-            $this->validateTask($request);
+            if(\Laratrust::can('update-task')) {
+                //--- Validate
+                $this->validateTask($request);
 
-            $task = \App\Task::findOrFail($id);
+                $task = \App\Task::findOrFail($id);
 
+                $task->name = $request->input('name');
+                $task->description = $request->input('description');
+                $task->visibility = $request->input('visibility');
 
-            $task->name = $request->input('name');
-            $task->description = $request->input('description');
-            $task->visibility = $request->input('visibility');
+                $task->save();
 
-            $task->save();
-
-            \Session::flash('flash', ('Update successfully executed!'));
-
+                \Session::flash('flash', ('Update successfully executed!'));
+            } else {
+                \Session::flash('flash', ('You cannot edit this task.'));
+            }
         }
 
         return view('manage.tasks.edit', [
@@ -94,22 +104,26 @@ class ManageContentController extends Controller
      */
     public function taskStore(Request $request) {
 
-        //--- Validate
-        $this->validateTask($request);
+        if(\Laratrust::can('create-task')) {
+            //--- Validate
+            $this->validateTask($request);
 
-        //--- Store
-        $task = new \App\Task;
-        $task->name = $request->input('name');
-        $task->description = $request->input('description');
+            //--- Store
+            $task = new \App\Task;
+            $task->name = $request->input('name');
+            $task->description = $request->input('description');
 
-        $task->save();
+            $task->save();
 
-        \Session::flash('flash', ('You successfully added a new subject task.'));
+            \Session::flash('flash', ('You successfully added a new subject task.'));
+            //--- Redirect
+            return redirect()->route('manage.content.tasks.edit', ['id' => $task->id]);
+        } else {
+            \Session::flash('flash', ('You cannot create a new task.'));
+            //--- Redirect
+            return redirect()->route('manage.content.tasks');
+        }
 
-        //--- Redirect
-        return view('manage.tasks.edit', [
-            'task' => $task
-        ]);
     }
 
     //------------------------
@@ -137,19 +151,22 @@ class ManageContentController extends Controller
             $task = \App\Task::findOrfail($id);
         } else if($request->isMethod('POST')) {
 
-            //--- Validate
-            $this->validateStandaloneTask($request);
-            $task = \App\Task::findOrFail($id);
-            $task->name = $request->input('name');
-            $task->description = $request->input('description');
-            $task->status = $request->input('status');
-            $task->visibility = $request->input('visibility');
-            $task->type = $request->input('type');
-            $task->progress = ($request->input('progress') / 100);
-            $task->save();
+            if(\Laratrust::can('update-task')) {
+                //--- Validate
+                $this->validateStandaloneTask($request);
+                $task = \App\Task::findOrFail($id);
+                $task->name = $request->input('name');
+                $task->description = $request->input('description');
+                $task->status = $request->input('status');
+                $task->visibility = $request->input('visibility');
+                $task->type = $request->input('type');
+                $task->progress = ($request->input('progress') / 100);
+                $task->save();
 
-            \Session::flash('flash', ('Update successfully executed!'));
-
+                \Session::flash('flash', ('Update successfully executed!'));
+            } else {
+                \Session::flash('flash', ('You cannot edit this task.'));
+            }
         }
 
         return view('manage.tasks.standalone.edit', [
@@ -169,23 +186,28 @@ class ManageContentController extends Controller
         $this->validateStandaloneTask($request);
 
         //--- Store
-        $task = new \App\Task;
-        $task->name = $request->input('name');
-        $task->description = $request->input('description');
-        $task->status = $request->input('status');
-        $task->type = $request->input('type');
-        $task->progress = ($request->input('progress') / 100);
-        $task->standalone = true;
-        $task->save();
+        if(\Laratrust::can('create-task')) {
+            $task = new \App\Task;
+            $task->name = $request->input('name');
+            $task->description = $request->input('description');
+            $task->status = $request->input('status');
+            $task->type = $request->input('type');
+            $task->progress = ($request->input('progress') / 100);
+            $task->standalone = true;
+            $task->save();
 
-        \Session::flash('flash', ('You successfully added a new standalone task.'));
+            \Session::flash('flash', ('You successfully added a new standalone task.'));
 
-        //--- Redirect
-        return redirect()->route('manage.content.tasks.edit.update_standalone', [
-            'id' => $task->id
-        ]);
+            //--- Redirect
+            return redirect()->route('manage.content.tasks.edit.update_standalone', [
+                'id' => $task->id
+            ]);
+        } else {
+            \Session::flash('flash', ('You cannot create a new task.'));
+            return redirect()->route('manage.content.tasks');
+        }
+
     }
-
 
     //----------------
     //--- Children ---
@@ -215,19 +237,23 @@ class ManageContentController extends Controller
             $child = \App\TaskChild::findOrFail($id);
         } else if($request->isMethod('POST')) {
 
-            //--- Validate
-            $this->validateChild($request);
+            if(\Laratrust::can('update-child')) {
+                //--- Validate
+                $this->validateChild($request);
 
-            $child = \App\TaskChild::findOrFail($id);
+                $child = \App\TaskChild::findOrFail($id);
 
-            $child->name = $request->input('name');
-            $child->description = $request->input('description');
-            $child->status = $request->input('status');
-            $child->type = $request->input('type');
-            $child->progress = ($request->input('progress') / 100);
-            $child->save();
+                $child->name = $request->input('name');
+                $child->description = $request->input('description');
+                $child->status = $request->input('status');
+                $child->type = $request->input('type');
+                $child->progress = ($request->input('progress') / 100);
+                $child->save();
 
-            \Session::flash('flash', ('Update successfully executed!'));
+                \Session::flash('flash', ('Update successfully executed!'));
+            } else {
+                \Session::flash('flash', ('You cannot edit this task!'));
+            }
 
         }
 
@@ -245,28 +271,37 @@ class ManageContentController extends Controller
      */
     public function childStore(Request $request) {
 
-        //--- Validate
-        $this->validateChild($request);
+        if(\Laratrust::can('update-child')) {
+            //--- Validate
+            $this->validateChild($request);
 
-        //--- Store
-        $child = new \App\TaskChild;
-        $child->task_id = $request->input('parent');
-        $child->name = $request->input('name');
-        $child->description = $request->input('description');
-        $child->status = $request->input('status');
-        $child->type = $request->input('type');
-        $child->progress = ($request->input('progress') / 100);
-        $child->save();
+            //--- Store
+            $child = new \App\TaskChild;
+            $child->task_id = $request->input('parent');
+            $child->name = $request->input('name');
+            $child->description = $request->input('description');
+            $child->status = $request->input('status');
+            $child->type = $request->input('type');
+            $child->progress = ($request->input('progress') / 100);
+            $child->save();
 
-        \Session::flash('flash', ('You successfully added a child.'));
+            \Session::flash('flash', ('You successfully added a child.'));
+            return redirect()->route('manage.content.child.edit', ['id' => $child->id]);
 
-        return redirect()->route('manage.content.child.edit', ['id' => $child->id]);
+        } else {
+            \Session::flash('flash', ('You cannot create a new child.'));
+            $parent = \App\Task::findOrFail($request->input('parent'));
+
+            //--- Redirect
+            return redirect()->route('manage.content.tasks.edit', ['id' => $parent->id]);
+        }
     }
 
     /**
      * Delete: Delete a child.
      */
     public function childDelete(Request $request, $id) {
+
         $child = \App\TaskChild::findOrFail($id);
 
         //--- Delete Sources
@@ -274,10 +309,15 @@ class ManageContentController extends Controller
 
         //--- Delete
         $parent = $child->task_id;
-        $child->delete();
+
+        if(\Laratrust::can('delete-child')) {
+            $child->delete();
+            \Session::flash('flash', ('You successfully deleted \'' . $child->name . '\' and all related data!'));
+        } else {
+            \Session::flash('flash', ('You cannot delete this child.'));
+        }
 
         //--- Redirect
-        \Session::flash('flash', ('You successfully deleted \'' . $child->name . '\' and all related data!'));
         return redirect()->route('manage.content.tasks.edit', ['id' => $parent]);
     }
 
@@ -296,6 +336,7 @@ class ManageContentController extends Controller
             $object = \App\TaskChild::findOrFail($id);
         }
 
+        //--- Redirect
         return view('manage.source.create', [
             'object'        => $object,
             'standalone'    => $standalone
@@ -307,33 +348,43 @@ class ManageContentController extends Controller
      */
     public function sourceStore(Request $request, $id, $standalone) {
 
-        //--- Validate
-        $this->validateSource($request);
+        if(\Laratrust::can('create-source')) {
+            //--- Validate
+            $this->validateSource($request);
 
-        //--- Store
-        $source = new \App\TaskSource;
+            //--- Store
+            $source = new \App\TaskSource;
 
-        if($standalone == '1') {
-            $source->parent_id = $id;
+            if($standalone == '1') {
+                $source->parent_id = $id;
+            } else {
+                $source->child_id = $id;
+            }
+
+            $source->link = $request->input('link');
+            $source->save();
+
+
+            \Session::flash('flash', ('You successfully added a source.'));
+
+            //--- Redirect
+            if($standalone == '1') {
+                return redirect()->route('manage.content.tasks.edit.update_standalone', [
+                    'id' => $source->parent_id
+                ]);
+            } else {
+                return redirect()->route('manage.content.child.edit', [
+                    'id' => $source->child_id
+                ]);
+            }
         } else {
-            $source->child_id = $id;
-        }
-
-        $source->link = $request->input('link');
-        $source->save();
-
-
-        \Session::flash('flash', ('You successfully added a source.'));
-
-        //--- Redirect
-        if($standalone == '1') {
-            return redirect()->route('manage.content.tasks.edit.update_standalone', [
-                'id' => $source->parent_id
-            ]);
-        } else {
-            return redirect()->route('manage.content.child.edit', [
-                'id' => $source->child_id
-            ]);
+            \Session::flash('flash', ('You cannot create a new source.'));
+            //--- Redirect
+            if($standalone == '1') {
+                return redirect()->route('manage.content.tasks.edit.update_standalone', ['id' => $id]);
+            } else {
+                return redirect('manage.content.child.edit')->route(['id' => $id]);
+            }
         }
     }
 
@@ -341,25 +392,35 @@ class ManageContentController extends Controller
      * Delete: Delete a child.
      */
     public function sourceDelete(Request $request, $id) {
+
         $source = \App\TaskSource::findOrFail($id);
 
-        \Session::flash('flash', ('You successfully deleted \'' . $source->link . '\' and all related data!'));
+        if(\Laratrust::can('delete-source')) {
+            \Session::flash('flash', ('You successfully deleted \'' . $source->link . '\' and all related data!'));
 
-        //--- Standalone Task
-        if($source->child_id === null) {
-            $task = $source->parent_id;
-            $source->delete();
+            //--- Standalone Task
+            if($source->child_id === null) {
+                $task = $source->parent_id;
+                $source->delete();
 
-            //--- Redirect
-            return redirect()->route('manage.content.tasks.edit_standalone', ['id' => $task]);
-        }
-        //--- Subject Task
-        else {
-            $child = $source->child_id;
-            $source->delete();
+                //--- Redirect
+                return redirect()->route('manage.content.tasks.edit_standalone', ['id' => $task]);
+            }
+            //--- Subject Task
+            else {
+                $child = $source->child_id;
+                $source->delete();
 
-            //--- Redirect
-            return redirect()->route('manage.content.child.edit', ['id' => $child]);
+                //--- Redirect
+                return redirect()->route('manage.content.child.edit', ['id' => $child]);
+            }
+        } else {
+            \Session::flash('flash', ('You cannot delete this source.'));
+            if($source->child_id === null) {
+                return redirect()->route('manage.content.tasks.edit_standalone', ['id' => $source->parent_id]);
+            } else {
+                return redirect()->route('manage.content.child.edit', ['id' => $source->child_id]);
+            }
         }
 
     }

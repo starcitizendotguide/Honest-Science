@@ -30,6 +30,10 @@
                 <span v-else>{{ props.row.children.length }} {{ props.row.children.length > 1 ? 'Children' : 'Child' }}</span>
             </b-table-column>
 
+            <b-table-column field="verified" label="Verified" sortable>
+                {{ props.row.verified ? 'Yes' : 'No' }}
+            </b-table-column>
+
             <b-table-column field="visibility" label="Visibility" sortable>
                 {{ props.row.visibility.name }}
             </b-table-column>

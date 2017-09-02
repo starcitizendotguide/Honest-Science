@@ -21,20 +21,17 @@ class TasksController extends Controller
         $tasks = Task::all();
         foreach ($tasks as $task) {
 
-            //--- Visibility
-            if(
-                ($user === null || !($user->hasPermission('read-task'))) &&
-                ($task->visibility === -1)
-            ) {
+            if(!\Laratrust::can('read-task') && $task->visibility < 0) {
                 continue;
             }
 
             $tmp = [
                 'id'            => $task->id,
                 'name'          => $task->name,
+                'description'   => $task->description,
                 'standalone'    => $task->standalone,
                 'visibility'    => $task->visibility()->first(),
-                'description'   => $task->description,
+                'verified'      => $task->verified,
                 'sources'       => $task->sources,
                 'status'        => $task->status(),
                 'type'          => $task->type(),
@@ -102,6 +99,7 @@ class TasksController extends Controller
             'standalone'    => false,
             'visibility'    => null,
             'description'   => null,
+            'verified'      => false,
             'status'        => null,
             'type'          => null,
             'progress'      => 0,
@@ -112,15 +110,18 @@ class TasksController extends Controller
 
         $task = Task::find($id);
 
-        if($task === null) {
+        if(
+            $task === null ||
+            (!\Laratrust::can('read-task') && $task->visibility < 0)
+        ) {
             return $data;
         }
 
         $data['id']             = $task->id;
         $data['name']           = $task->name;
+        $data['description']    = $task->description;
         $data['standalone']     = $task->standalone;
         $data['visibility']     = $task->visibility()->first();
-        $data['description']    = $task->description;
         $data['sources']        = $task->sources;
         $data['status']         = $task->status();
         $data['type']           = $task->type();
@@ -172,6 +173,11 @@ class TasksController extends Controller
     }
 
     public function queue() {
+
+        if(!\Laratrust::can('update-task')) {
+            return [];
+        }
+
         return \App\Task::queue();
     }
 

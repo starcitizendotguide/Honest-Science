@@ -37,7 +37,7 @@ Route::get('/', 'HomeController@index')->name('home.index');
 Route::get('settings', 'SettingsController@index')->name('settings.index');
 
 Route::prefix('manage')
-    ->middleware('permission:read-managment')
+    ->middleware('auth', 'permission:read-managment')
     ->group(function() {
         Route::get('dashboard', 'ManageController@dashboard')->name('manage.dashboard');
 
@@ -100,9 +100,9 @@ Route::prefix('manage')
                         //------------------
                         //--- Task Queue ---
                         //------------------
-                        Route::get('/queue', 'ManageContentController@tasksQueue')
+                        Route::get('/maintenance', 'ManageContentController@tasksQueue')
                             ->middleware('permission:read-task')
-                            ->name('manage.content.tasks.queue');
+                            ->name('manage.content.tasks.deprecated');
 
                         Route::get('/checked/{id}', 'ManageContentController@tasksChecked')
                             ->middleware('permission:update-task')

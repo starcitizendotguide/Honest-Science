@@ -5,17 +5,25 @@ return [
         'general' => [
             'profile'   => 'c,r,u,d',
             'managment' => 'r',
-            'task'      => 'c,r,u,d',
-            'child'     => 'c,r,u,d',
+            'task'      => 'c,r,u,d,v,m',
+            'child'     => 'c,r,u,d,v,m',
             'source'    => 'c,r,d',
-            'user'      => 'c,r,u,d'
+            'user'      => 'c,r,u,d',
+            'visibility'=> 'b',
         ],
-        'recruiter' => [
+        'contributor' => [
+            'profile'   => 'r,u',
+            'managment' => 'r',
+            'task'      => 'c,r,u',
+            'child'     => 'c,r,u',
+            'source'    => 'c,r',
+            'visibility'=> 'b',
+        ],
+        'recruit' => [
             'profile'   => 'r,u',
             'task'      => 'r',
             'child'     => 'r',
             'source'    => 'r',
-            'user'      => ''
         ],
     ],
     'permission_structure' => [],
@@ -23,6 +31,9 @@ return [
         'c' => 'create',
         'r' => 'read',
         'u' => 'update',
-        'd' => 'delete'
+        'd' => 'delete',
+        'v' => 'mark-as-verified',
+        'm' => 'mark-as-updated',
+        'b' => 'bypass',
     ]
 ];
