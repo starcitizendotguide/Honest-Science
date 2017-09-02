@@ -13,9 +13,10 @@ class GroupsController extends Controller
 
     public function index()
     {
+        $data = [];
+
         $all = \App\Role::all();
 
-        $data = [];
 
         foreach($all as $role) {
 
@@ -31,7 +32,6 @@ class GroupsController extends Controller
         }
 
         return $data;
-
     }
 
 }

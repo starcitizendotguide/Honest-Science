@@ -26,10 +26,11 @@
             </ul>
         @endif
 
-
-        <p class="menu-label">Permission System</p>
-        <ul class="menu-list">
-            <li><a href="{{ route('manage.content.users') }}" class="{{ Request::is('manage/content/users*') ? 'is-active' : '' }}">Users</a></li>
-            <li><a href="{{ route('manage.content.groups') }}" class="{{ Request::is('manage/content/groups*') ? 'is-active' : '' }}">Groups</a></li>
-        </ul>
+        @if(\Laratrust::can('read-user'))
+            <p class="menu-label">Permission System</p>
+            <ul class="menu-list">
+                <li><a href="{{ route('manage.content.users') }}" class="{{ Request::is('manage/content/users*') ? 'is-active' : '' }}">Users</a></li>
+                <li><a href="{{ route('manage.content.groups') }}" class="{{ Request::is('manage/content/groups*') ? 'is-active' : '' }}">Groups</a></li>
+            </ul>
+        @endif
     </aside>
