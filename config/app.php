@@ -181,7 +181,8 @@ return [
          * Custom Service Providers
          */
         Laratrust\LaratrustServiceProvider::class,
-        Tightenco\Ziggy\ZiggyServiceProvider::class
+        Tightenco\Ziggy\ZiggyServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 

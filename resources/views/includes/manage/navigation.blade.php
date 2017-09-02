@@ -14,13 +14,13 @@
             <p class="menu-label">Queues</p>
             <ul class="menu-list">
                 @if(\Laratrust::can('mark-as-updated-task'))
-                    <li><a href="{{ route('manage.content.tasks.deprecated') }}" class="@if($deprecated_amount > 0) has-text-danger @endif {{ Request::is('manage/content/tasks/deprecated*') ? 'is-active' : '' }}">
-                        @if($deprecated_amount > 0) Deprecated ({{ $deprecated_amount }}) @else Deprecated @endif
+                    <li><a href="{{ route('manage.content.tasks.deprecated') }}" class="{ Request::is('manage/content/tasks/deprecated*') ? 'is-active' : '' }}">
+                        Deprecated
                     </a></li>
                 @endif
                 @if(\Laratrust::can('mark-as-verified-task'))
-                    <li><a href="{{ route('manage.content.tasks.verify') }}" class="@if($verify_amount > 0) has-text-danger @endif {{ Request::is('manage/content/tasks/verify*') ? 'is-active' : '' }}">
-                        @if($verify_amount > 0) Verify ({{ $verify_amount }}) @else Verify @endif
+                    <li><a href="{{ route('manage.content.tasks.verify') }}" class="{{ Request::is('manage/content/tasks/verify*') ? 'is-active' : '' }}">
+                        Verify
                     </a></li>
                 @endif
             </ul>

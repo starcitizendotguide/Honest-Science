@@ -39,11 +39,11 @@
             </b-table-column>
 
             <b-table-column field="created_at" label="Created At" sortable>
-                {{ props.row.created_at.date }}
+                {{ props.row.created_at }}
             </b-table-column>
 
             <b-table-column field="updated_at" label="Updated At" sortable>
-                {{ props.row.updated_at.date }}
+                {{ props.row.updated_at }}
             </b-table-column>
 
             <b-table-column label="Action">

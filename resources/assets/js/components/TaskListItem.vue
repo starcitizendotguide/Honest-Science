@@ -34,6 +34,7 @@
                     </p>
                 </div>
 
+                <b-loading :active.sync="isLoading"></b-loading>
                 <div :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
@@ -132,6 +133,7 @@ export default {
     data: function() {
         return {
             tasks: [],
+            isLoading: true,
             meta: {
                 search: '',
                 interactionBar: {
@@ -370,16 +372,6 @@ export default {
 
             });
 
-        axios.get(route('tasks.index'))
-            .then(response => {
-
-                var data = response.data;
-                data.forEach(function(e) {
-                    e.collapsed = false;
-                });
-                this.tasks = data;
-            });
-
         axios.get(route('types.index'))
             .then(response => {
                 var data = response.data;
@@ -404,6 +396,18 @@ export default {
 
                 });
             });
+
+            axios.get(route('tasks.index'))
+                .then(response => {
+                    var data = response.data;
+                    console.log(data.length);
+                    data.forEach(function(e) {
+                        e.collapsed = false;
+                    });
+                    this.tasks = data;
+
+                    this.isLoading = false;
+                });
     },
 }
 </script>

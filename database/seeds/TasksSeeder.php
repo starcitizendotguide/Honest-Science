@@ -99,36 +99,39 @@ class TasksSeeder extends Seeder
             ],
         ];
 
-        foreach($data as $parent) {
+        for($i = 0; $i < 50; $i++) {
+            foreach($data as $parent) {
 
 
-            $task = new App\Task;
-            $task->name = $parent['name'];
-            $task->description = $parent['description'];
-            $task->save();
+                $task = new App\Task;
+                $task->name = $parent['name'];
+                $task->description = $parent['description'];
+                $task->save();
 
-            foreach ($parent['children'] as $child) {
+                foreach ($parent['children'] as $child) {
 
-                $tmp = new App\TaskChild;
-                $tmp->task_id = $task->id;
-                $tmp->name = $child['name'];
-                $tmp->description = $child['description'];
-                $tmp->status = $child['status'];
-                $tmp->progress = $child['progress'];
-                $tmp->type = $child['type'];
-                $tmp->save();
+                    $tmp = new App\TaskChild;
+                    $tmp->task_id = $task->id;
+                    $tmp->name = $child['name'];
+                    $tmp->description = $child['description'];
+                    $tmp->status = $child['status'];
+                    $tmp->progress = $child['progress'];
+                    $tmp->type = $child['type'];
+                    $tmp->save();
 
-                if(isset($child['sources'])) {
-                    foreach($child['sources'] as $source) {
-                        $source_tmp = new App\TaskSource;
-                        $source_tmp->child_id = $tmp->id;
-                        $source_tmp->link = $source;
-                        $source_tmp->save();
+                    if(isset($child['sources'])) {
+                        foreach($child['sources'] as $source) {
+                            $source_tmp = new App\TaskSource;
+                            $source_tmp->child_id = $tmp->id;
+                            $source_tmp->link = $source;
+                            $source_tmp->save();
+                        }
                     }
+
                 }
 
             }
-
         }
+
     }
 }

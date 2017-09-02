@@ -52,6 +52,13 @@ class Task extends Model
             return TaskStatus::find($this->status);
         }
 
+        $CACHE_KEY = 'task-' . $this->id . '-status';
+        $CACHE_TIME = 2;
+
+        //if(\Cache::has($CACHE_KEY)) {
+        //    return \Cache::get($CACHE_KEY);
+        //}
+
         $DEFAULT_STATUS = 3;
 
         //--- No children is or should be invalid, so we return the default status
@@ -88,7 +95,9 @@ class Task extends Model
         // the highest impact. - The idea behind this is that a task doesn't get flagged
         // as e.g. 'released' just because it has the same amount of items than a
         // worse group.
-        return TaskStatus::find($table->keys()->first());
+        $result = TaskStatus::find($table->keys()->first());
+        //\Cache::put($CACHE_KEY, $result, \Carbon\Carbon::now()->addMinutes($CACHE_TIME));
+        return $result;
     }
 
     //--- All Tasks which require a status check

@@ -25,6 +25,10 @@
                 {{ props.row.description | truncate(50) }}
             </b-table-column>
 
+            <b-table-column field="created_at" label="Created At" sortable>
+                {{ props.row.created_at.date }}
+            </b-table-column>
+
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
@@ -81,7 +85,6 @@ export default {
         axios.get(route('tasks.verifyQueue'))
             .then(response => {
                 this.tasks = response.data;
-
                 this.tasks.forEach(function(item) {
                     if(item.standalone === true) {
                         item.edit_url = route('manage.content.tasks.edit_standalone', {'id': item.id});
