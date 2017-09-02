@@ -10,7 +10,7 @@
             <li><a href="{{ route('manage.content.statuses') }}" class="{{ Request::is('manage/content/statuses*') ? 'is-active' : '' }}">Status</a></li>
         </ul>
 
-        @if(!\Laratrust::can('mark-as-updated-task') && \Laratrust::can('mark-as-verified-task'))
+        @if(!\Laratrust::can('mark-as-updated-task') && !\Laratrust::can('mark-as-verified-task'))
             <p class="menu-label">Queues</p>
         @endif
         <ul class="menu-list">
