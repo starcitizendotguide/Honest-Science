@@ -195,8 +195,7 @@ class ManageContentController extends Controller
      */
     public function childCreate(Request $request, $parent) {
 
-        $parent = \App\Task::byId($parent)->first();
-
+        $parent = \App\Task::find($parent);
 
         return view('manage.child.create', [
             'parent'    => $parent,
@@ -250,18 +249,18 @@ class ManageContentController extends Controller
         $this->validateChild($request);
 
         //--- Store
-        $task = new \App\TaskChild;
-        $task->task_id = $request->input('parent');
-        $task->name = $request->input('name');
-        $task->description = $request->input('description');
-        $task->status = $request->input('status');
-        $task->type = $request->input('type');
-        $task->progress = ($request->input('progress') / 100);
-        $task->save();
+        $child = new \App\TaskChild;
+        $child->task_id = $request->input('parent');
+        $child->name = $request->input('name');
+        $child->description = $request->input('description');
+        $child->status = $request->input('status');
+        $child->type = $request->input('type');
+        $child->progress = ($request->input('progress') / 100);
+        $child->save();
 
         \Session::flash('flash', ('You successfully added a child.'));
 
-        return redirect()->route('manage.content.child.edit', ['id' => $task->id]);
+        return redirect()->route('manage.content.child.edit', ['id' => $child->id]);
     }
 
     /**
