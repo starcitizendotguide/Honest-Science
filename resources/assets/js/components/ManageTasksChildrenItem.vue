@@ -40,8 +40,9 @@
             </b-table-column>
 
             <b-table-column label="Action">
-                <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
+                <a v-if="permissions.canEdit" :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
+                    v-if="permissions.canDelete"
                     title="Delete Child"
                     :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
                     positive="Delete"
@@ -52,6 +53,7 @@
                 >
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
+                <span v-if="!permissions.canEdit && !permissions.canDelete">-</span>
             </b-table-column>
 
         </template>
@@ -63,10 +65,24 @@
 
 <script type="text-javascript">
 export default {
-    props: ['taskid'],
+    props: {
+        taskid: {
+            required: true,
+        },
+        canedit: {
+            required: true,
+        },
+        candelete: {
+            required: true,
+        }
+    },
     data: function() {
         return {
             children: [],
+            permissions: {
+                canEdit: this.canedit,
+                canDelete: this.candelete,
+            },
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,

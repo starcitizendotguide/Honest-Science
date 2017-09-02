@@ -30,10 +30,11 @@
             </b-table-column>
 
             <b-table-column label="Action">
-                <a :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
+                <a v-if="permissions.canEdit" :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
-                    title="Mark Task as Update-to-Date"
-                    :message="'Is all of the available data for ' + props.row.name + ' (' + props.row.id + ') up to date?'"
+                    v-if="permissions.canVerify"
+                    title="Mark Task as Verified"
+                    :message="'Did you verify the content of ' + props.row.name + ' (' + props.row.id + ')?'"
                     positive="Yes"
                     negative="No"
                     :url="props.row.checked_url"
@@ -53,9 +54,21 @@
 
 <script type="text-javascript">
 export default {
+    props: {
+        canedit: {
+            required: true,
+        },
+        canverify: {
+            required: true,
+        }
+    },
     data: function() {
         return {
             tasks: [],
+            permissions: {
+                canEdit: this.canedit,
+                canVerify: this.canverify
+            },
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,
@@ -65,7 +78,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get(route('tasks.queue'))
+        axios.get(route('tasks.verifyQueue'))
             .then(response => {
                 this.tasks = response.data;
 
@@ -76,7 +89,7 @@ export default {
                         item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
                     }
 
-                    item.checked_url = route('manage.content.tasks.checked', {'id': item.id});
+                    item.checked_url = route('manage.content.tasks.verify.checked', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;

@@ -8,10 +8,8 @@ class ManageContentController extends Controller
 {
 
     public function __construct() {
-
-        //--- Variable: queue_amount
-        \View::share('queue_amount', count(\App\Task::queue(true)));
-
+        \View::share('deprecated_amount', count(\App\Task::deprecatedQueue(true)));
+        \View::share('verify_amount', count(\App\Task::verifyQueue(true)));
     }
 
     //------------
@@ -47,7 +45,7 @@ class ManageContentController extends Controller
         } else {
             \Session::flash('flash', ('You cannot delete this task.'));
         }
-        
+
         //--- Redirect
         return redirect()->route('manage.content.tasks');
     }
@@ -480,22 +478,61 @@ class ManageContentController extends Controller
         ]);
     }
 
-    //-------------
-    //--- Queue ---
-    //-------------
-    public function tasksQueue(Request $request) {
-        return view('manage.tasks.queue');
+    //------------------------
+    //--- Deprecated Queue ---
+    //------------------------
+    public function tasksDeprecatedQueue(Request $request) {
+        return view('manage.tasks.deprecated');
     }
 
-    public function tasksChecked(Request $request, $id) {
+    public function taskDeprecatedChecked(Request $request, $id) {
 
         $task = \App\Task::findOrFail($id);
         $task->updated_at = \Carbon\Carbon::now();
         $task->save(['timestamps' => true]);
 
-        \Session::flash('flash', ('Marked ' . $task->name . ' (' . $task->id . ') as up-to-date.'));
+        \Session::flash('flash', ($task->name . ' (' . $task->id . ') is no longer deprecated.'));
 
-        return redirect()->route('manage.content.tasks.queue');
+        return redirect()->route('manage.content.tasks.deprecated');
+
+    }
+
+    //------------------------
+    //--- Deprecated Queue ---
+    //------------------------
+    public function tasksVerifyQueue(Request $request) {
+        return view('manage.tasks.verify');
+    }
+
+    public function taskVerifyChecked(Request $request, $id) {
+
+        if(\Laratrust::can('mark-as-verified-task')) {
+            $task = \App\Task::findOrFail($id);
+            $task->verified = true;
+            $task->save();
+
+            \Session::flash('flash', ('Is ' . $task->name . ' (' . $task->id . ') now verified.'));
+        } else {
+            \Session::flash('flash', ('You cannot mark this task as verified.'));
+        }
+
+        return redirect()->route('manage.content.tasks.verify');
+
+    }
+
+    public function taskVerifyUncheck(Request $request, $id) {
+
+        if(\Laratrust::can('mark-as-verified-task')) {
+            $task = \App\Task::findOrFail($id);
+            $task->verified = false;
+            $task->save();
+
+            \Session::flash('flash', ('Is ' . $task->name . ' (' . $task->id . ') no longer verified.'));
+        } else {
+            \Session::flash('flash', ('You cannot mark this task as unverified.'));
+        }
+
+        return redirect()->route('manage.content.tasks');
 
     }
 

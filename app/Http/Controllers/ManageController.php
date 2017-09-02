@@ -9,7 +9,8 @@ class ManageController extends Controller
 
     public function __construct()
     {
-        \View::share('queue_amount', count(\App\Task::queue(true)));
+        \View::share('deprecated_amount', count(\App\Task::deprecatedQueue(true)));
+        \View::share('verify_amount', count(\App\Task::verifyQueue(true)));
     }
 
     public function dashboard(Request $request)

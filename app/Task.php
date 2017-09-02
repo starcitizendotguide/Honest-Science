@@ -92,18 +92,14 @@ class Task extends Model
     }
 
     //--- All Tasks which require a status check
-    public static function queue($bypassPermission = false) {
+    public static function deprecatedQueue() {
 
         $tasks = [];
 
-        if(!\Laratrust::can('mark-as-updated-task') && !($bypassPermission)) {
-            return $tasks;
-        }
-
         $entries = \App\Task::where([
             ['updated_at', '<', \Carbon\Carbon::now()->subMinutes(1)->toDateTimeString()],
+            ['verified', '=', true],
         ])->get();
-
 
         foreach($entries as $entry) {
 
@@ -128,35 +124,32 @@ class Task extends Model
         return $tasks;
     }
 
-    public function check(\App\User $user, $permissions) {
+    //--- All Tasks which require a status check
+    public static function verifyQueue() {
 
-        //---
-        if($user === null || $permissions === null) {
-            return false;
+        $tasks = [];
+
+        $entries = \App\Task::where([
+            ['verified', '=', false],
+        ])->get();
+
+        foreach($entries as $entry) {
+
+            $tasks[] = [
+                'id'            => $entry->id,
+                'name'          => $entry->name,
+                'description'   => $entry->description,
+                'status'        => $entry->status(),
+                'type'          => $entry->type,
+                'progress'      => $entry->progress,
+                'standalone'    => $entry->standalone,
+                'updated_at'    => $entry->updated_at,
+                'created_at'    => $entry->created_at
+            ];
         }
 
-        $tmp = [];
-        if(is_string($permissions)) {
-            $tmp[] = $permissions;
-        } else if(is_array($permissions)) {
-            $tmp = $permissions;
-        } else {
-            return false;
-        }
-
-        foreach($permissions as $entry) {
-            switch (strtolower($entry)) {
-                case 'read': return $user->hasPermission('read-task');
-                case 'update': return $user->hasPermission('update-task');
-                case 'create': return $user->hasPermission('create-task');
-                case 'delete': return $user->hasPermission('delete-task');
-                case 'verify': return $user->hasPermission('verify-task');
-                case 'bypass': return $user->hasPermission('bypass-visibility');
-
-                default: return false;
-            }
-        }
-
+        return $tasks;
     }
+
 
 }

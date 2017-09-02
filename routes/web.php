@@ -53,7 +53,6 @@ Route::prefix('manage')
 
                         //--- Delete
                         Route::get('/delete/{id}', 'ManageContentController@tasksDelete')
-                            ->middleware('permission:delete-task')
                             ->name('manage.content.tasks.delete');
 
                         //--------------------
@@ -61,52 +60,54 @@ Route::prefix('manage')
                         //--------------------
 
                         Route::get('/create', 'ManageContentController@tasksCreate')
-                            ->middleware('permission:create-task')
                             ->name('manage.content.tasks.create');
 
                         Route::get('/edit/{id}', 'ManageContentController@tasksEdit')
-                            ->middleware('permission:update-task')
                             ->name('manage.content.tasks.edit');
 
                         //--- Post
                         Route::post('/create', 'ManageContentController@taskStore')
-                            ->middleware('permission:create-task')
                             ->name('manage.content.tasks.create.store');
 
                         Route::post('/edit/{id}', 'ManageContentController@tasksEdit')
-                            ->middleware('permission:update-task')
                             ->name('manage.content.tasks.edit.update');
 
                         //-----------------------
                         //--- Standalone Task ---
                         //-----------------------
                         Route::get('/create-standalone', 'ManageContentController@tasksCreateStandalone')
-                            ->middleware('permission:create-task')
                             ->name('manage.content.tasks.create_standalone');
 
                         Route::get('/edit-standalone/{id}', 'ManageContentController@tasksEditStandalone')
-                            ->middleware('permission:update-task')
                             ->name('manage.content.tasks.edit_standalone');
 
                         //--- Post
                         Route::post('/create-standalone', 'ManageContentController@taskStoreStandalone')
-                            ->middleware('permission:create-task')
                             ->name('manage.content.tasks.create.store_standalone');
 
                         Route::post('/edit-standalone/{id}', 'ManageContentController@tasksEditStandalone')
-                            ->middleware('permission:update-task')
                             ->name('manage.content.tasks.edit.update_standalone');
 
-                        //------------------
-                        //--- Task Queue ---
-                        //------------------
-                        Route::get('/maintenance', 'ManageContentController@tasksQueue')
-                            ->middleware('permission:read-task')
+                        //-----------------------------
+                        //--- Task Deprecated Queue ---
+                        //-----------------------------
+                        Route::get('/deprecated', 'ManageContentController@tasksDeprecatedQueue')
                             ->name('manage.content.tasks.deprecated');
 
-                        Route::get('/checked/{id}', 'ManageContentController@tasksChecked')
-                            ->middleware('permission:update-task')
-                            ->name('manage.content.tasks.checked');
+                        Route::get('/deprecated/checked/{id}', 'ManageContentController@taskDeprecatedChecked')
+                            ->name('manage.content.tasks.deprecated.checked');
+
+                        //-------------------------
+                        //--- Task Verify Queue ---
+                        //-------------------------
+                        Route::get('/verify', 'ManageContentController@tasksVerifyQueue')
+                            ->name('manage.content.tasks.verify');
+
+                        Route::get('/verify/checked/{id}', 'ManageContentController@taskVerifyChecked')
+                            ->name('manage.content.tasks.verify.checked');
+                        Route::get('/verify/uncheck/{id}', 'ManageContentController@taskVerifyUncheck')
+                            ->name('manage.content.tasks.verify.uncheck');
+
 
                     });
 
@@ -120,7 +121,6 @@ Route::prefix('manage')
 
                             //--- Delete
                             Route::get('/delete/{id}', 'ManageContentController@childDelete')
-                                ->middleware('permission:delete-child')
                                 ->name('manage.content.child.delete');
 
                             //--- Post
@@ -135,7 +135,6 @@ Route::prefix('manage')
 
                                     //--- Delete
                                     Route::get('/delete/{id}', 'ManageContentController@sourceDelete')
-                                        ->middleware('permission:delete-source')
                                         ->name('manage.content.source.delete');
 
                                     //--- Post
@@ -176,8 +175,10 @@ Route::prefix('manage')
 
 Route::group(['prefix' => 'api/v1'], function() {
 
-        Route::get('tasks/queue', 'TasksController@queue')
-            ->name('tasks.queue');
+        Route::get('tasks/deprecatedQueue', 'TasksController@deprecatedQueue')
+            ->name('tasks.deprecatedQueue');
+        Route::get('tasks/verifyQueue', 'TasksController@verifyQueue')
+            ->name('tasks.verifyQueue');
         Route::resource('tasks',  'TasksController', [
             'only' => [
                 'index', 'show'

@@ -25,23 +25,6 @@
                 {{ props.row.description | truncate(50) }}
             </b-table-column>
 
-            <b-table-column field="children" label="Children">
-                <span v-if="props.row.standalone">-</span>
-                <span v-else>{{ props.row.children.length }} {{ props.row.children.length > 1 ? 'Children' : 'Child' }}</span>
-            </b-table-column>
-
-            <b-table-column field="verified" label="Verified" sortable>
-                {{ props.row.verified ? 'Yes' : 'No' }}
-            </b-table-column>
-
-            <b-table-column field="visibility" label="Visibility" sortable>
-                {{ props.row.visibility.name }}
-            </b-table-column>
-
-            <b-table-column field="created_at" label="Created At" sortable>
-                {{ props.row.created_at.date }}
-            </b-table-column>
-
             <b-table-column field="updated_at" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
@@ -49,37 +32,22 @@
             <b-table-column label="Action">
                 <a v-if="permissions.canEdit" :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
                 <confirm-item
-                    v-if="permissions.canDelete"
-                    title="Delete Task"
-                    :message="'Are you sure you want to delete ' + props.row.name + ' (' + props.row.id + ')?'"
-                    positive="Delete"
-                    negative="Cancel"
-                    :url="props.row.delete_url"
-                    theme="is-danger"
-                    width=480
-                >
-                    <span><i class="fa fa-trash"></i></span>
-                </confirm-item>
-                <confirm-item
-                    v-if="permissions.canVerify"
-                    title="Mark Task as Unverified"
-                    :message="'Do you really wanna mark ' + props.row.name + ' (' + props.row.id + ') as unverified?'"
+                    v-if="permissions.canCheck"
+                    title="Mark Task as Update-to-Date"
+                    :message="'Is all of the available data for ' + props.row.name + ' (' + props.row.id + ') up to date?'"
                     positive="Yes"
                     negative="No"
-                    :url="props.row.uncheck_url"
-                    theme="is-danger"
+                    :url="props.row.checked_url"
+                    theme="is-success"
                     width=300
                 >
-                    <span><i class="fa fa-times"></i></span>
+                    <span><i class="fa fa-check"></i></span>
                 </confirm-item>
-                <i v-if="!permissions.canEdit && !permissions.canDelete && !permissions.canVerify">
-                    -
-                </i>
             </b-table-column>
         </template>
 
         <div slot="empty" class="has-text-centered">
-            No tasks available.
+            No tasks in the queue. Awesome!
         </div>
     </b-table>
 </template>
@@ -87,13 +55,10 @@
 <script type="text-javascript">
 export default {
     props: {
-        'candelete': {
+        canedit: {
             required: true,
         },
-        'canedit': {
-            required: true,
-        },
-        'canverify': {
+        cancheck: {
             required: true,
         }
     },
@@ -101,9 +66,8 @@ export default {
         return {
             tasks: [],
             permissions: {
-                canDelete: this.candelete,
                 canEdit: this.canedit,
-                canVerify: this.canverify,
+                canCheck: this.cancheck
             },
             settings: {
                 isStriped: true,
@@ -114,7 +78,7 @@ export default {
         };
     },
     mounted: function() {
-        axios.get(route('tasks.index'))
+        axios.get(route('tasks.deprecatedQueue'))
             .then(response => {
                 this.tasks = response.data;
 
@@ -125,8 +89,7 @@ export default {
                         item.edit_url = route('manage.content.tasks.edit', {'id': item.id});
                     }
 
-                    item.delete_url = route('manage.content.tasks.delete', {'id': item.id});
-                    item.uncheck_url = route('manage.content.tasks.verify.uncheck', {'id': item.id});
+                    item.checked_url = route('manage.content.tasks.deprecated.checked', {'id': item.id});
                 });
 
                 this.settings.isLoading = false;

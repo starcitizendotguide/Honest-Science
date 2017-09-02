@@ -10,11 +10,18 @@
             <li><a href="{{ route('manage.content.statuses') }}" class="{{ Request::is('manage/content/statuses*') ? 'is-active' : '' }}">Status</a></li>
         </ul>
 
-        <p class="menu-label">Queues</p>
+        @if(!\Laratrust::can('mark-as-updated-task') && \Laratrust::can('mark-as-verified-task'))
+            <p class="menu-label">Queues</p>
+        @endif
         <ul class="menu-list">
             @if(\Laratrust::can('mark-as-updated-task'))
-                <li><a href="{{ route('manage.content.tasks.deprecated') }}" class="@if($queue_amount > 0) has-text-danger @endif {{ Request::is('manage/content/tasks/maintenance*') ? 'is-active' : '' }}">
-                    @if($queue_amount > 0) Deprecated ({{ $queue_amount }}) @else Deprecated @endif
+                <li><a href="{{ route('manage.content.tasks.deprecated') }}" class="@if($deprecated_amount > 0) has-text-danger @endif {{ Request::is('manage/content/tasks/deprecated*') ? 'is-active' : '' }}">
+                    @if($deprecated_amount > 0) Deprecated ({{ $deprecated_amount }}) @else Deprecated @endif
+                </a></li>
+            @endif
+            @if(\Laratrust::can('mark-as-verified-task'))
+                <li><a href="{{ route('manage.content.tasks.verify') }}" class="@if($verify_amount > 0) has-text-danger @endif {{ Request::is('manage/content/tasks/verify*') ? 'is-active' : '' }}">
+                    @if($verify_amount > 0) Verify ({{ $verify_amount }}) @else Verify @endif
                 </a></li>
             @endif
         </ul>

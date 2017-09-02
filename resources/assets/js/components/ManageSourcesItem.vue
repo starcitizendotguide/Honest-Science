@@ -26,6 +26,7 @@
 
             <b-table-column label="Action">
                 <confirm-item
+                    v-if="permissions.canDelete"
                     title="Delete Source"
                     :message="'Are you sure you want to delete ' + props.row.link + ' (' + props.row.id + ')?'"
                     positive="Delete"
@@ -36,6 +37,7 @@
                 >
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
+                <span v-if="!permissions.canDelete">-</span>
             </b-table-column>
 
         </template>
@@ -53,11 +55,17 @@ export default {
         },
         standalone: {
             required: true,
-        }
+        },
+        candelete: {
+            required: true,
+        },
     },
     data: function() {
         return {
             sources: [],
+            permissions: {
+                canDelete: this.candelete
+            },
             settings: {
                 isStriped: true,
                 isPaginatedSimple: true,

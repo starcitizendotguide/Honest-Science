@@ -43,16 +43,22 @@
                         </select>
                     </p>
                 </div>
-                <div class="field">
-                    <p class="control">
-                        <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
-                    </p>
-                </div>
+                @if(\Laratrust::can('update-task'))
+                    <div class="field">
+                        <p class="control">
+                            <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
+                        </p>
+                    </div>
+                @endif
             </form>
         </b-tab-item>
 
         <b-tab-item label="Children">
-            <manage-tasks-children-item taskid="{{ $task->id }}"></manage-tasks-children-item>
+            <manage-tasks-children-item
+                taskid="{{ $task->id }}"
+                canedit="{{ \Laratrust::can('update-child') }}"
+                candelete="{{ \Laratrust::can('delete-child') }}"
+            ></manage-tasks-children-item>
             <a href="{{ route('manage.content.child.create', ['parent' => $task->id]) }}" class="button is-primary is-outlined is-fullwidth m-t-5">Add New Child</a>
         </b-tab-item>
 

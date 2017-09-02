@@ -98,13 +98,22 @@
                         @endif
                     </div>
                 </div>
-                <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
+                @if(\Laratrust::can('update-task'))
+                    <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>
+                @endif
             </form>
         </b-tab-item>
 
         <b-tab-item label="Sources">
-            <manage-sources-item objectid="{{ $task->id }}" standalone="true"></manage-sources-item>
-            <a href="{{ route('manage.content.source.create', ['id' => $task->id, 'standalone' => $task->standalone]) }}" class="button is-primary is-outlined is-fullwidth m-t-5">Add New Source</a>
+            <manage-sources-item
+                objectid="{{ $task->id }}"
+                candelete="{{ \Laratrust::can('delete-source') }}"
+                standalone="true"
+            >
+            </manage-sources-item>
+            @if(\Laratrust::can('create-source'))
+                <a href="{{ route('manage.content.source.create', ['id' => $task->id, 'standalone' => $task->standalone]) }}" class="button is-primary is-outlined is-fullwidth m-t-5">Add New Source</a>
+            @endif
         </b-tab-item>
 
     </b-tabs>

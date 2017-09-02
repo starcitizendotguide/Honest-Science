@@ -20,7 +20,8 @@ import ManageUserItem from './components/ManageUserItem.vue';
 import ManageTasksItem from './components/ManageTasksItem.vue';
 import ManageTasksChildrenItem from './components/ManageTasksChildrenItem.vue';
 
-import ManageQueueItem from './components/ManageQueueItem.vue';
+import ManageDeprecatedQueueItem from './components/ManageDeprecatedQueueItem.vue';
+import ManageVerifyQueueItem from './components/ManageVerifyQueueItem.vue';
 import ManageSourcesItem from './components/ManageSourcesItem.vue';
 import ManageGroupsItem from './components/ManageGroupsItem.vue';
 
@@ -44,7 +45,8 @@ Vue.component('manage-user-item', ManageUserItem);
 Vue.component('manage-tasks-item', ManageTasksItem);
 Vue.component('manage-tasks-children-item', ManageTasksChildrenItem);
 
-Vue.component('manage-queue-item', ManageQueueItem);
+Vue.component('manage-deprecated-queue-item', ManageDeprecatedQueueItem);
+Vue.component('manage-verify-queue-item', ManageVerifyQueueItem);
 Vue.component('manage-sources-item', ManageSourcesItem);
 Vue.component('manage-groups-item', ManageGroupsItem);
 

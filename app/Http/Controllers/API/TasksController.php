@@ -21,7 +21,13 @@ class TasksController extends Controller
         $tasks = Task::all();
         foreach ($tasks as $task) {
 
-            if(!\Laratrust::can('read-task') && $task->visibility < 0) {
+            if(
+                !\Laratrust::can('read-task') &&
+                (
+                    $task->visibility < 0 ||
+                    $task->verified === false
+                )
+            ) {
                 continue;
             }
 
@@ -112,7 +118,11 @@ class TasksController extends Controller
 
         if(
             $task === null ||
-            (!\Laratrust::can('read-task') && $task->visibility < 0)
+            !\Laratrust::can('read-task') &&
+            (
+                $task->visibility < 0 ||
+                $task->verified === false
+            )
         ) {
             return $data;
         }
@@ -172,13 +182,22 @@ class TasksController extends Controller
         return $data;
     }
 
-    public function queue() {
+    public function deprecatedQueue() {
 
-        if(!\Laratrust::can('update-task')) {
+        if(!\Laratrust::can('mark-as-updated-task')) {
             return [];
         }
 
-        return \App\Task::queue();
+        return \App\Task::deprecatedQueue();
+    }
+
+    public function verifyQueue() {
+
+        if(!\Laratrust::can('mark-as-verified-task')) {
+            return [];
+        }
+
+        return \App\Task::verifyQueue();
     }
 
 }
