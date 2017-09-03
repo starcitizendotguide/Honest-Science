@@ -24,11 +24,11 @@
                 </b-tooltip>
             </b-table-column>
 
-            <b-table-column field="created_at" label="Created At" sortable>
+            <b-table-column field="created_at.date" label="Created At" sortable>
                 {{ props.row.created_at.date }}
             </b-table-column>
 
-            <b-table-column field="updated_at" label="Updated At" sortable>
+            <b-table-column field="updated_at.date" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
 

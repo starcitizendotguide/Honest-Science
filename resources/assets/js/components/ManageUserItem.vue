@@ -17,19 +17,19 @@
                 {{ props.row.name }}
             </b-table-column>
 
-            <b-table-column field="Email" label="email" sortable>
+            <b-table-column field="email" label="Email" sortable>
                 {{ props.row.email }}
             </b-table-column>
 
-            <b-table-column field="groups" label="Role" sortable>
+            <b-table-column label="Role">
                 {{ props.row.roles[0].display_name }}
             </b-table-column>
 
-            <b-table-column field="created_at" label="Created At" sortable>
+            <b-table-column field="created_at.date" label="Created At" sortable>
                 {{ props.row.created_at.date }}
             </b-table-column>
 
-            <b-table-column field="updated_at" label="Updated At" sortable>
+            <b-table-column field="updated_at.date" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
 

@@ -15,11 +15,11 @@
             <b-table-column field="name" label="Name" sortable>
                 {{ props.row.name }}
             </b-table-column>
-            <b-table-column field="status" label="Status" sortable>
+            <b-table-column field="status.id" label="Status" sortable>
                 {{ props.row.status.name }}
             </b-table-column>
 
-            <b-table-column field="type" label="Type" sortable>
+            <b-table-column field="type.id" label="Type" sortable>
                 {{ props.row.type.name }}
             </b-table-column>
 
@@ -27,15 +27,15 @@
                 {{ props.row.description | truncate(50) }}
             </b-table-column>
 
-            <b-table-column field="progres" label="Progress">
+            <b-table-column field="progress" label="Progress">
                 {{ props.row.progress * 100 | toFixed(2) }}%
             </b-table-column>
 
-            <b-table-column field="created_at" label="Created At" sortable>
+            <b-table-column field="created_at.date" label="Created At" sortable>
                 {{ props.row.created_at.date }}
             </b-table-column>
 
-            <b-table-column field="updated_at" label="Updated At" sortable>
+            <b-table-column field="updated_at.date" label="Updated At" sortable>
                 {{ props.row.updated_at.date }}
             </b-table-column>
 
