@@ -39,8 +39,7 @@
                     negative="No"
                     :url="props.row.checked_url"
                     theme="is-success"
-                    width=300
-                >
+                    width=300>
                     <span><i class="fa fa-check"></i></span>
                 </confirm-item>
             </b-table-column>

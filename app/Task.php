@@ -131,13 +131,14 @@ class Task extends Model
                 'id'            => $entry->id,
                 'name'          => $entry->name,
                 'description'   => $entry->description,
-                'status'        => $entry->status(),
+                'status'        => $entry->status()->first(),
                 'type'          => $entry->type,
                 'progress'      => $entry->progress,
                 'standalone'    => $entry->standalone,
                 'updated_at'    => $entry->updated_at,
                 'created_at'    => $entry->created_at
             ];
+
         }
 
         return $tasks;

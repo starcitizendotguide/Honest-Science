@@ -1,18 +1,30 @@
 <template>
     <span>
-        <a href="#" @click="meta.isActive = true"><slot></slot></a>
-        <b-modal :active.sync="meta.isActive" :width="width">
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">{{ title }}</p>
-                </header>
-                <section class="modal-card-body">
-                    <p :class="theme">{{ message }}</p>
-                </section>
-                <footer class="modal-card-foot">
-                    <a :href="url" class="button" :class="theme">{{ positive }}</a>
-                    <button class="button" type="button" @click="meta.isActive = false">{{ negative }}</button>
-                </footer>
+        <a href="#" @click="open"><slot></slot></a>
+        <b-modal :active.sync="isActive">
+            <div class="card">
+                <div v-if="loadedData" class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ task.name }}</p>
+                            <p class="subtitle is-6">{{ task.status.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        {{ task.description }}
+                        <br>
+                        <small>{{ task.created_at.date }}</small>
+                    </div>
+                </div>
+                <div v-else class="card-content">
+                    <div class="content is-centered">
+                        <span>
+                            Loading...
+                            <i class="loader"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
         </b-modal>
     </span>
@@ -20,14 +32,39 @@
 
 <script type="text-javascript">
     export default {
-
         props: {
-            data: function() {
-                return {
-                meta: {
-                    isActive: false
-                }
+            taskid: {
+                required: true,
+            }
+        },
+        data: function() {
+            return {
+                task: {
+                    name: '-',
+                    status: { name: '-' },
+                    description: '-',
+                    created_at: { date: '-' },
+                },
+                loadedData: false,
+                isActive: false,
             };
+        },
+        methods: {
+            open: function() {
+
+                if(this.loadedData === false) {
+                    this.loadData();
+                }
+
+                this.isActive = true;
+            },
+            loadData: function() {
+                axios.get(route('tasks.show', { task: this.taskid }))
+                    .then(response => {
+                        this.task = response.data;
+                        this.loadedData = true;
+                    });
+            }
         },
     }
 </script>

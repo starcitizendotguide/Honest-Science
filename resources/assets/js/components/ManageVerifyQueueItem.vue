@@ -35,6 +35,7 @@
 
             <b-table-column label="Action">
                 <a v-if="permissions.canEdit" :href="props.row.edit_url"><span><i class="fa fa-pencil"></i></span></a>
+                <task-preview-item :taskid="props.row.id"><span><i class="fa fa-eye"></i></span></task-preview-item>
                 <confirm-item
                     v-if="permissions.canVerify"
                     title="Mark Task as Verified"
@@ -43,8 +44,7 @@
                     negative="No"
                     :url="props.row.checked_url"
                     theme="is-success"
-                    width=300
-                >
+                    width=300>
                     <span><i class="fa fa-check"></i></span>
                 </confirm-item>
             </b-table-column>

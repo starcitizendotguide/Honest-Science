@@ -9,6 +9,7 @@ import Vue2Filters from 'vue2-filters'
 
 import ConfirmItem from './components/ConfirmItem.vue';
 import FlashItem from './components/FlashItem.vue';
+import TaskPreviewItem from './components/TaskPreviewItem.vue';
 
 import TaskListItem from './components/TaskListItem.vue';
 import StudioListItem from './components/StudioListItem.vue';
@@ -34,6 +35,7 @@ Vue.use(VueClipboard);
 
 Vue.component('confirm-item', ConfirmItem);
 Vue.component('flash-item', FlashItem);
+Vue.component('task-preview-item', TaskPreviewItem);
 
 Vue.component('task-list-item', TaskListItem);
 Vue.component('studio-list-item', StudioListItem);
