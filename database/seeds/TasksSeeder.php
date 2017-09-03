@@ -99,7 +99,7 @@ class TasksSeeder extends Seeder
             ],
         ];
 
-        for($i = 0; $i < 50; $i++) {
+        for($i = 0; $i < 20; $i++) {
             foreach($data as $parent) {
 
 

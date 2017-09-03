@@ -17,7 +17,7 @@
                 {{ props.row.name }}
             </b-table-column>
 
-            <b-table-column field="status" label="Status" sortable>
+            <b-table-column field="status.id" label="Status" sortable>
                 {{ props.row.status.name }}
             </b-table-column>
 
@@ -34,7 +34,7 @@
                 {{ props.row.verified ? 'Yes' : 'No' }}
             </b-table-column>
 
-            <b-table-column field="visibility" label="Visibility" sortable>
+            <b-table-column field="visibility.id" label="Visibility" sortable>
                 {{ props.row.visibility.name }}
             </b-table-column>
 

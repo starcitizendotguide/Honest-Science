@@ -110,7 +110,7 @@ class TasksController extends Controller
                         'description'   => $entry->childDescription,
                         'progress'      => $entry->childProgress,
                         'status'        => $childStatus,
-                        'type'          => $types->where('id', $entry->taskType)->first(),
+                        'type'          => $types->where('id', $entry->childType)->first(),
                         'sources'       => $sources->where('parent_id', $entry->childId),
                         'created_at'    => $entry->childCreatedAt,
                         'updated_at'    => $entry->childUpdatedAt
@@ -121,8 +121,6 @@ class TasksController extends Controller
                     $_sources = $sources->where('parent_id', $entry->taskId);
                 }
 
-                $taskStatus = $types->where('id', $entry->childType);
-
                 $model = [
                     'id'            => $entry->taskId,
                     'name'          => $entry->taskName,
@@ -130,7 +128,7 @@ class TasksController extends Controller
                     'standalone'    => (bool) $entry->taskStandalone,
                     'verified'      => (bool) $entry->taskVerified,
                     'status'        => $statuses->where('id', $entry->taskStatus)->first(),
-                    'type'          => $taskStatus->isEmpty() ? null : $taskStatus->first(),
+                    'type'          => $types->where('id', $entry->taskType)->first(),
                     'progress'      => $entry->taskProgress,
                     'visibility'    => [
                         'id'            => $entry->visibilityId,
@@ -197,7 +195,7 @@ class TasksController extends Controller
         $data['standalone']     = $task->standalone;
         $data['visibility']     = $task->visibility()->first();
         $data['sources']        = $task->sources;
-        $data['status']         = $task->status();
+        $data['status']         = $task->status()->first();
         $data['type']           = $task->type();
         $data['progress']       = ($task->standalone === true ? $task->progress : 0);
 
