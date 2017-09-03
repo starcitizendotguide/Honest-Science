@@ -29,31 +29,53 @@ class Task extends Model
         'updated_at'
     ];
 
+    /**
+     * The visibility of the task.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function visibility() {
         return $this->hasOne('App\Visibility', 'id', 'visibility');
     }
 
+    /**
+     * All children of the task.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function children() {
         return $this->hasMany('App\TaskChild');
     }
 
+    /**
+     * The type of the task. Is null if it is not a standalone Task.
+     *
+     * @return mixed
+     */
     public function type() {
         return $this->hasOne('App\TaskType', 'id', 'type')->first();
     }
 
+    /**
+     * All sources of the task if it is a standalone Task, otherwise empty.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function sources() {
         return $this->hasMany('App\TaskSource', 'parent_id', 'id');
     }
 
+    /**
+     * The status of the task.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|Model|null|static|static[]
+     */
     public function status() {
 
         //--- Standalone Status
         if($this->standalone === true) {
             return TaskStatus::find($this->status);
         }
-
-        $CACHE_KEY = 'task-' . $this->id . '-status';
-        $CACHE_TIME = 2;
 
         //if(\Cache::has($CACHE_KEY)) {
         //    return \Cache::get($CACHE_KEY);
@@ -95,12 +117,15 @@ class Task extends Model
         // the highest impact. - The idea behind this is that a task doesn't get flagged
         // as e.g. 'released' just because it has the same amount of items than a
         // worse group.
-        $result = TaskStatus::find($table->keys()->first());
-        //\Cache::put($CACHE_KEY, $result, \Carbon\Carbon::now()->addMinutes($CACHE_TIME));
-        return $result;
+        return TaskStatus::find($table->keys()->first());
     }
 
-    //--- All Tasks which require a status check
+    /**
+     * All tasks which require to be check by a member of the team if they are up-to-date or
+     * deprecated.
+     *
+     * @return array
+     */
     public static function deprecatedQueue() {
 
         $tasks = [];
@@ -133,7 +158,11 @@ class Task extends Model
         return $tasks;
     }
 
-    //--- All Tasks which require a status check
+    /**
+     * All tasks which were created by users which cannot verify tasks!
+     *
+     * @return array
+     */
     public static function verifyQueue() {
 
         $tasks = [];

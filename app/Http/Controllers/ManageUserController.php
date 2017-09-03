@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 class ManageUserController extends Controller
 {
 
-    public function __construct()
-    {
-    }
-
     /**
-     * The view of all users.
+     * Returns a view displaying all users.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function users() {
         return view('manage.user.show');

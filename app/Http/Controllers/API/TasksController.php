@@ -11,6 +11,11 @@ use App\TaskStatus;
 class TasksController extends Controller
 {
 
+    /**
+     * A list of all tasks and their children the user can see.
+     *
+     * @return array
+     */
     public function index()
     {
 
@@ -145,83 +150,16 @@ class TasksController extends Controller
         }
 
         return array_values($computed);
-        /*
-
-        //--- Build data
-        $data = [];
-        $user = \Auth::user();
-
-        $tasks = Task::all();
-        foreach ($tasks as $task) {
-
-
-
-            $tmp = [
-                'id'            => $task->id,
-                'name'          => $task->name,
-                'description'   => $task->description,
-                'standalone'    => $task->standalone,
-                'visibility'    => $task->visibility()->first(),
-                'verified'      => $task->verified,
-                'sources'       => $task->sources,
-                'status'        => $task->status(),
-                'type'          => $task->type(),
-                'progress'      => ($task->standalone === true ? $task->progress : 0),
-                'children'      => [],
-
-                'created_at'    => $task->created_at,
-                'updated_at'    => $task->updated_at
-            ];
-
-            if($task->standalone === false) {
-                //--- Append Children
-                $children = $task->children();
-
-                if(!($children->exists())) {
-                    //--- Add without children
-                    $data[] = $tmp;
-                    continue;
-                }
-
-                $children = $children->get();
-
-                $childrenArray = [];
-                $progress = 0;
-
-
-                foreach ($children as $child) {
-
-                    //--- Build
-                    $childrenArray[] = [
-                        'id'            => $child->id,
-                        'name'          => $child->name,
-                        'description'   => $child->description,
-                        'status'        => $child->status()->first(),
-                        'progress'      => $child->progress,
-                        'type'          => $child->type()->first(),
-                        'sources'       => $child->sources()->get(),
-                        'created_at'    => $child->created_at,
-                        'updated_at'    => $child->updated_at
-                    ];
-
-                    $progress += $child['progress'];
-                }
-
-                //@TODO Is the overall progress of the parent task just the average
-                //of all sub tasks? There should be some kind of weight be assigned
-                // to each task...
-                $tmp['progress'] = ($progress / count($childrenArray));
-                $tmp['children'] = $childrenArray;
-            }
-
-            $data[] = $tmp;
-        }
-
-        return $data;
-        */
 
     }
 
+    /**
+     * Returns a specific task and its children,
+     * if the user can see it.
+     *
+     * @param $id The id of the task.
+     * @return array
+     */
     public function show($id)
     {
 
@@ -308,6 +246,11 @@ class TasksController extends Controller
         return $data;
     }
 
+    /**
+     * A list of tasks which are deprecated.
+     *
+     * @return array
+     */
     public function deprecatedQueue() {
 
         if(!\Laratrust::can('mark-as-updated-task')) {
@@ -317,6 +260,11 @@ class TasksController extends Controller
         return \App\Task::deprecatedQueue();
     }
 
+    /**
+     * A list of tasks which require verification.
+     *
+     * @return array
+     */
     public function verifyQueue() {
 
         if(!\Laratrust::can('mark-as-verified-task')) {

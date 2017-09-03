@@ -11,6 +11,11 @@ class GroupsController extends Controller
         $this->middleware('permission:read-user');
     }
 
+    /**
+     * A list of all permission groups.
+     *
+     * @return array
+     */
     public function index()
     {
         $data = [];

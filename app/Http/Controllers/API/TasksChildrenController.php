@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 class TasksChildrenController extends Controller
 {
 
+    /**
+     * A list of all TaskChilds which the user can see.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function index() {
 
         $children = \App\TaskChild::all();
@@ -37,6 +42,13 @@ class TasksChildrenController extends Controller
         return $data;
     }
 
+    /**
+     * Shows a specific child but only if the user has the permission
+     * to see it.
+     *
+     * @param $id The id of the child.
+     * @return array
+     */
     public function show($id) {
 
         $data = [];
@@ -70,6 +82,12 @@ class TasksChildrenController extends Controller
         return $data;
     }
 
+    /**
+     * Returns all children (TaskChild) related to a task.
+     *
+     * @param $task_id The task id.
+     * @return \Illuminate\Support\Collection
+     */
     public function task($task_id) {
 
         $children = \App\TaskChild::where('task_id', $task_id);
@@ -96,6 +114,14 @@ class TasksChildrenController extends Controller
         return $data;
     }
 
+    /**
+     * A list of all sources related to a Task, if it is standalone,
+     * and to a TaskChild, if it is not standalone.
+     *
+     * @param $id The id of the Task or TaskChild.
+     * @param $standalone If it is a standalone task (true) or a TaskChild (false).
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function sources($id, $standalone) {
         if(strtolower($standalone) == 'true') {
             return \App\Task::find($id)->sources()->get();

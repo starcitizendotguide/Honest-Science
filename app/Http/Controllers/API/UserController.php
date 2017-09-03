@@ -12,6 +12,11 @@ class UserController extends Controller
         $this->middleware('permission:read-user');
     }
 
+    /**
+     * A list of all users.
+     *
+     * @return array
+     */
     public function index()
     {
         $all = User::all();

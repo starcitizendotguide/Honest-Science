@@ -15,15 +15,21 @@ class ManageContentController extends Controller
     //------------
 
     /**
-     * The view of all tasks.
+     * The view showing a list of all tasks.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasks() {
         return view('manage.tasks.show');
     }
 
     /**
-    * Delete: Delete a task.
-    */
+     * Deletes a task.
+     *
+     * @param Request $request
+     * @param $id The id of the task.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function tasksDelete(Request $request, $id) {
 
         if(\Laratrust::can('delete-task')) {
@@ -53,7 +59,9 @@ class ManageContentController extends Controller
     //--------------------
 
     /**
-     * The view of creating a new task.
+     * The view showing a form to create a 'Subject Task'.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasksCreate() {
         return view('manage.tasks.create');
@@ -61,8 +69,13 @@ class ManageContentController extends Controller
 
 
     /**
-     * GET: The view of updating a task.
-     * POST: Updating the edited task.
+     * This method supports two different HTTP methods:
+     *  - GET: Returns the appropriate view to edit the task.
+     *  - POST: Expects inputs which are used to update the task.
+     *
+     * @param Request $request
+     * @param $id The id of the task.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasksEdit(Request $request, $id) {
 
@@ -96,7 +109,12 @@ class ManageContentController extends Controller
     }
 
     /**
-     * POST: Creating a new task.
+     * This method stores a new 'Subject Task' in the database and
+     * marks it as verified if the user creating the task has
+     * the required permission.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function taskStore(Request $request) {
 
@@ -108,6 +126,10 @@ class ManageContentController extends Controller
             $task = new \App\Task;
             $task->name = $request->input('name');
             $task->description = $request->input('description');
+
+            if(\Laratrust::can('mark-as-verified-task')) {
+                $task->verified = true;
+            }
 
             $task->save();
 
@@ -127,7 +149,9 @@ class ManageContentController extends Controller
     //------------------------
 
     /**
-     * The view of creating a new task.
+     * Returns the view for creating 'Standalone Task'.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasksCreateStandalone() {
         return view('manage.tasks.standalone.create', [
@@ -137,8 +161,13 @@ class ManageContentController extends Controller
     }
 
     /**
-     * GET: The view of updating a task.
-     * POST: Updating the edited task.
+     * This method supports two different HTTP methods:
+     *  - GET: Returns the appropriate view to edit the task.
+     *  - POST: Expects inputs which are used to update the task.
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasksEditStandalone(Request $request, $id) {
 
@@ -174,7 +203,10 @@ class ManageContentController extends Controller
     }
 
     /**
-     * POST: Creating a new task.
+     * This method stores a new 'Standalone Task' in the database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function taskStoreStandalone(Request $request) {
 
@@ -190,6 +222,12 @@ class ManageContentController extends Controller
             $task->type = $request->input('type');
             $task->progress = ($request->input('progress') / 100);
             $task->standalone = true;
+
+
+            if(\Laratrust::can('mark-as-verified-task')) {
+                $task->verified = true;
+            }
+
             $task->save();
 
             \Session::flash('flash', ('You successfully added a new standalone task.'));
@@ -208,8 +246,13 @@ class ManageContentController extends Controller
     //----------------
     //--- Children ---
     //----------------
+
     /**
-     * The view of creating a new task.
+     * This method returns the view for creating a new child task for a 'Subject Task'.
+     *
+     * @param Request $request
+     * @param $parent The parent task of the child.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function childCreate(Request $request, $parent) {
 
@@ -223,8 +266,13 @@ class ManageContentController extends Controller
     }
 
     /**
-     * GET: The view of updating a task.
-     * POST: Updating the edited task.
+     * This method supports two different HTTP methods:
+     *  - GET: Returns the appropriate view to edit the child.
+     *  - POST: Expects inputs which are used to update the child.
+     *
+     * @param Request $request
+     * @param $id The id of the child.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function childEdit(Request $request, $id) {
 
@@ -263,7 +311,10 @@ class ManageContentController extends Controller
     }
 
     /**
-     * POST: Creating a new task.
+     * This method stores a new child in the database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function childStore(Request $request) {
 
@@ -294,7 +345,11 @@ class ManageContentController extends Controller
     }
 
     /**
-     * Delete: Delete a child.
+     * This method deletes a child from the database.
+     *
+     * @param Request $request
+     * @param $id The id of the child.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function childDelete(Request $request, $id) {
 
@@ -320,8 +375,14 @@ class ManageContentController extends Controller
     //---------------
     //--- Sources ---
     //---------------
+
     /**
-     * The view of creating a new task.
+     * This method returns the view for creating a new database.
+     *
+     * @param Request $request
+     * @param $id The id of the task, if it is standalone, otherwise the id of the child.
+     * @param $standalone If it is a standalone task or a child to append the task to.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function sourceCreate(Request $request, $id, $standalone) {
 
@@ -340,7 +401,12 @@ class ManageContentController extends Controller
     }
 
     /**
-     * POST: Creating a new task.
+     * This method stores a new source in the database.
+     *
+     * @param Request $request
+     * @param $id The id of the task, if it is standalone, otherwise the id of the child.
+     * @param $standalone If it is a standalone task or a child to append the task to.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function sourceStore(Request $request, $id, $standalone) {
 
@@ -385,7 +451,11 @@ class ManageContentController extends Controller
     }
 
     /**
-     * Delete: Delete a child.
+     * This method deletes a source from the database.
+     *
+     * @param Request $request
+     * @param $id The id of the source.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function sourceDelete(Request $request, $id) {
 
@@ -422,14 +492,18 @@ class ManageContentController extends Controller
     }
 
     /**
-     * GET: A list of all available statuses.
+     * Returns a view displaying all available task statuses.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function statuses() {
         return view('manage.statuses');
     }
 
     /**
-     * The method to validate requests bind to 'Task Topic'.
+     * This method validates the input for 'Subject Task'.
+     *
+     * @param $request
      */
     public function validateTask($request) {
         //--- Validate
@@ -440,7 +514,9 @@ class ManageContentController extends Controller
     }
 
     /**
-     * The method to validate requests bind to 'TaskChild'.
+     * This method validates the input for a child.
+     *
+     * @param $request
      */
     public function validateChild($request) {
         //--- Validate
@@ -452,9 +528,10 @@ class ManageContentController extends Controller
         ]);
     }
 
-
     /**
-     * The method to validate requests bind to 'Task Standalone'.
+     * This method validates the input for a 'Standalone Task'.
+     *
+     * @param $request
      */
     public function validateStandaloneTask($request) {
         //--- Validate
@@ -467,7 +544,9 @@ class ManageContentController extends Controller
     }
 
     /**
-     * The method to validate requests bind to 'TaskSource'.
+     * This method validates the input for a source.
+     *
+     * @param $request
      */
     public function validateSource($request) {
         //--- Validate
@@ -479,29 +558,62 @@ class ManageContentController extends Controller
     //------------------------
     //--- Deprecated Queue ---
     //------------------------
+
+    /**
+     * Returns the view displaying the deprecated queue.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function tasksDeprecatedQueue(Request $request) {
         return view('manage.tasks.deprecated');
     }
 
-    public function taskDeprecatedChecked(Request $request, $id) {
+    /**
+     * Marks a task as up-to-date.
+     *
+     * @param Request $request
+     * @param $id The id of the task.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function taskDeprecatedChecked(Request $request, $id)
+    {
 
-        $task = \App\Task::findOrFail($id);
-        $task->updated_at = \Carbon\Carbon::now();
-        $task->save(['timestamps' => true]);
+        if (\Laratrust::can('mark-as-updated-task')) {
+            $task = \App\Task::findOrFail($id);
+            $task->updated_at = \Carbon\Carbon::now();
+            $task->save(['timestamps' => true]);
 
-        \Session::flash('flash', ($task->name . ' (' . $task->id . ') is no longer deprecated.'));
+            \Session::flash('flash', ($task->name . ' (' . $task->id . ') is no longer deprecated.'));
+        } else {
+            \Session::flash('flash', ('You cannot mark this task as up-to-date.'));
+        }
 
         return redirect()->route('manage.content.tasks.deprecated');
 
     }
 
-    //------------------------
-    //--- Deprecated Queue ---
-    //------------------------
+    //--------------------
+    //--- Verify Queue ---
+    //--------------------
+
+    /**
+     * Returns the view displaying all tasks waiting to verified.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function tasksVerifyQueue(Request $request) {
         return view('manage.tasks.verify');
     }
 
+    /**
+     * Marks a task as verified.
+     *
+     * @param Request $request
+     * @param $id The id of the task.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function taskVerifyChecked(Request $request, $id) {
 
         if(\Laratrust::can('mark-as-verified-task')) {
@@ -518,6 +630,13 @@ class ManageContentController extends Controller
 
     }
 
+    /**
+     * Marks a task as unverified.
+     *
+     * @param Request $request
+     * @param $id The id of the task.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function taskVerifyUncheck(Request $request, $id) {
 
         if(\Laratrust::can('mark-as-verified-task')) {

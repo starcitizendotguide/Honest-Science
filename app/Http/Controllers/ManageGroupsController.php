@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 class ManageGroupsController extends Controller
 {
 
-    public function __construct()
-    {
-    }
-
     /**
-     * The view of all groups.
+     * Returns a view displaying all permission groups.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function groups() {
         return view('manage.groups.show');
