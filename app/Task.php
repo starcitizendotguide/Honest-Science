@@ -92,7 +92,7 @@ class Task extends Model
         foreach($entries as $entry) {
 
             //--- Only non-released tasks
-            if($entry->status()->id === 0) {
+            if($entry->status === 0) {
                 continue;
             }
 

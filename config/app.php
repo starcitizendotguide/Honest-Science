@@ -182,7 +182,6 @@ return [
          */
         Laratrust\LaratrustServiceProvider::class,
         Tightenco\Ziggy\ZiggyServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
