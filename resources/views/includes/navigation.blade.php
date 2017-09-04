@@ -23,7 +23,7 @@
 
                     <!--<b-dropdown-option class="has-text-centered"><a href="#">Profile</a></b-dropdown-option>
                     <b-dropdown-option class="has-text-centered"><a href=" route('settings.index') ">Settings</a></b-dropdown-option>-->
-                    @if(Laratrust::can('read-managment'))
+                    @if(\Laratrust\LaratrustFacade::can('read-managment'))
                     <b-dropdown-option class="has-text-centered" name="navigation.dashboard"><a href="{{ route('manage.dashboard') }}">Management</a></b-dropdown-option>
                     <div class="seperator"></div>
                     @endif

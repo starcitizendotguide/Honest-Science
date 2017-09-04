@@ -100,7 +100,7 @@ class Task extends Model
                 'id'            => $entry->id,
                 'name'          => $entry->name,
                 'description'   => $entry->description,
-                'status'        => $entry->status(),
+                'status'        => $entry->status()->first(),
                 'type'          => $entry->type,
                 'progress'      => $entry->progress,
                 'standalone'    => $entry->standalone,
