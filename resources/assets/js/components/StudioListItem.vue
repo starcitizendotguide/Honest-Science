@@ -5,6 +5,7 @@
         :loading="settings.isLoading"
         class="dark-table highlighted-element studio-table"
         detailed
+        @details-open="(row, index) => openStudioDetails(row, index)"
     >
 
         <template scope="props">
@@ -62,6 +63,11 @@ export default {
                 isLoading: true,
             }
         };
+    },
+    methods: {
+        openStudioDetails: function(row, index) {
+            console.log(row);
+        }
     },
     mounted: function() {
 

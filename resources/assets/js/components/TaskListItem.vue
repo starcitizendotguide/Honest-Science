@@ -34,12 +34,14 @@
                     </p>
                 </div>
 
-                <b-loading :active.sync="isLoading"></b-loading>
-                <div :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                <div v-if="loading.active">
+                    <i class="loader"></i>
+                </div>
+                <div v-if="!loading.active" :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
                             <div class="content">
-                                <p>
+                                <div class="m-b-10">
                                     <strong>{{ task.name }}</strong> -
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
                                         <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
@@ -70,12 +72,11 @@
                                             negative="Cancel"
                                             :url="source.link"
                                             theme="is-danger"
-                                            width=960
-                                        >
+                                            width=960>
                                             [{{ index + 1 }}]
                                         </confirm-item>
                                     </span>
-                                </p>
+                                </div>
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
                                         <div class="box highlighted-element" v-for="child in task.children">
@@ -133,9 +134,12 @@ export default {
     data: function() {
         return {
             tasks: [],
-            isLoading: true,
+            loading: {
+                active: true,
+            },
             meta: {
                 search: '',
+                isLoading: true,
                 interactionBar: {
                     task: null,
                     content: this.defaultInteractionBar()
@@ -399,14 +403,16 @@ export default {
 
             axios.get(route('tasks.index'))
                 .then(response => {
+
                     var data = response.data;
-                    console.log(data.length);
+
                     data.forEach(function(e) {
                         e.collapsed = false;
                     });
-                    this.tasks = data;
 
-                    this.isLoading = false;
+                    this.tasks = data;
+                    this.loading.active = false;
+
                 });
     },
 }

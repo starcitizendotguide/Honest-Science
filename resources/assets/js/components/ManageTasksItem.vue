@@ -56,8 +56,7 @@
                     negative="Cancel"
                     :url="props.row.delete_url"
                     theme="is-danger"
-                    width=480
-                >
+                    width=480>
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
                 <confirm-item
@@ -68,8 +67,7 @@
                     negative="No"
                     :url="props.row.uncheck_url"
                     theme="is-danger"
-                    width=300
-                >
+                    width=300>
                     <span><i class="fa fa-times"></i></span>
                 </confirm-item>
                 <i v-if="!permissions.canEdit && !permissions.canDelete && !permissions.canVerify">
