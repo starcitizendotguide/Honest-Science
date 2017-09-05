@@ -99,7 +99,7 @@ class UpdateTasks extends Command
         $x = 1;
         foreach($entries as $entry) {
             if($x > 10) {
-                $entry->delete();
+                \App\LogEntry::find($entry->id)->delete();
             }
             $x++;
         }
