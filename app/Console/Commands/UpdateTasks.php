@@ -87,13 +87,23 @@ class UpdateTasks extends Command
         }
 
         //--- Log
-        $logEntry = new \App\LogEntry();
+        $logEntry = new \App\LogEntry;
         $logEntry->entry    = 'update_tasks';
         $logEntry->name     = 'Update Tasks';
         $logEntry->message  = sprintf('Updated %d tasks.', $_count);
         $logEntry->logged   = \Carbon\Carbon::now();
         $logEntry->save();
-        //@TODO Delete old log entries
+
+        //@TODO Hack - Delete old log entries
+        $entries = \App\LogEntry::where('update_tasks')->orderByDesc('logged')->get();
+        $x = 1;
+        foreach($entries as $entry) {
+            if($x > 10) {
+                $entry->delete();
+            }
+            $x++;
+        }
+
 
     }
 
