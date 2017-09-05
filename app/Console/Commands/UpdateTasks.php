@@ -43,6 +43,8 @@ class UpdateTasks extends Command
 
         $DEFAULT_STATUS = \App\TaskStatus::find(3);
 
+        $_count = 0;
+
         foreach ($tasks as $task) {
 
             //--- No children is or should be invalid, so we return the default status
@@ -50,6 +52,7 @@ class UpdateTasks extends Command
 
             if(!($children = $task->children())->exists()) {
                 \DB::table('tasks')->where('id', $task->id)->update(['status' => $DEFAULT_STATUS->id]);
+                $_count++;
                 continue;
             }
 
@@ -78,9 +81,19 @@ class UpdateTasks extends Command
             // worse group.
             $statusId = \App\TaskStatus::find($table->keys()->first())->id;
             \DB::table('tasks')->where('id', $task->id)->update(['status' => $statusId]);
+            $_count++;
             //---
 
         }
+
+        //--- Log
+        $logEntry = new \App\LogEntry();
+        $logEntry->entry    = 'update_tasks';
+        $logEntry->name     = 'Update Tasks';
+        $logEntry->message  = sprintf('Updated %d tasks.', $_count);
+        $logEntry->logged   = \Carbon\Carbon::now();
+        $logEntry->save();
+        //@TODO Delete old log entries
 
     }
 

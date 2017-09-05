@@ -10,6 +10,7 @@ return [
             'source'    => 'c,r,d',
             'user'      => 'c,r,u,d',
             'visibility'=> 'b',
+            'log'       => 'r',
         ],
         'contributor' => [
             'profile'   => 'r,u',

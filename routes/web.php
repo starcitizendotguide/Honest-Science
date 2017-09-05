@@ -217,5 +217,7 @@ Route::group(['prefix' => 'api/v1'], function() {
             ]
         ]);
 
+        Route::get('log/entries/{entry}/{limit}', 'LogController@entries')->name('log.entries');
+
     }
 );
