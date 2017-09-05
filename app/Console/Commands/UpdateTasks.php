@@ -2,6 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\LogEntry;
+use App\Task;
+use App\TaskStatus;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Console\Command;
 
 class UpdateTasks extends Command
@@ -39,9 +44,9 @@ class UpdateTasks extends Command
 
         //--- All non-standalone tasks since standalone tasks have a status value assigned
         // by hand to them.
-        $tasks = \App\Task::where('standalone', '=', false)->get();
+        $tasks = Task::where('standalone', '=', false)->get();
 
-        $DEFAULT_STATUS = \App\TaskStatus::find(3);
+        $DEFAULT_STATUS = TaskStatus::find(3);
 
         $_count = 0;
 
@@ -51,7 +56,7 @@ class UpdateTasks extends Command
             $children = null;
 
             if(!($children = $task->children())->exists()) {
-                \DB::table('tasks')->where('id', $task->id)->update(['status' => $DEFAULT_STATUS->id]);
+                DB::table('tasks')->where('id', $task->id)->update(['status' => $DEFAULT_STATUS->id]);
                 $_count++;
                 continue;
             }
@@ -79,22 +84,26 @@ class UpdateTasks extends Command
             // the highest impact. - The idea behind this is that a task doesn't get flagged
             // as e.g. 'released' just because it has the same amount of items than a
             // worse group.
-            $statusId = \App\TaskStatus::find($table->keys()->first())->id;
-            \DB::table('tasks')->where('id', $task->id)->update(['status' => $statusId]);
+            $statusId = TaskStatus::find($table->keys()->first())->id;
+            DB::table('tasks')->where('id', $task->id)->update(['status' => $statusId]);
             $_count++;
             //---
 
         }
 
         //--- Log
-        $logEntry = new \App\LogEntry;
+        $logEntry = new LogEntry;
         $logEntry->entry    = 'update_tasks';
         $logEntry->name     = 'Update Tasks';
         $logEntry->message  = sprintf('Updated %d tasks.', $_count);
-        $logEntry->logged   = \Carbon\Carbon::now();
+        $logEntry->logged   = Carbon::now();
         $logEntry->save();
 
         //@TODO Hack - Delete old log entries
+        LogEntry::where([
+            ['entry', '=', 'update_tasks'],
+            ['logged', '<=', Carbon::now()->subMinutes(10)]
+        ])->delete();
 
     }
 
