@@ -95,15 +95,6 @@ class UpdateTasks extends Command
         $logEntry->save();
 
         //@TODO Hack - Delete old log entries
-        $entries = \App\LogEntry::where('update_tasks')->orderByDesc('logged')->get();
-        $x = 1;
-        foreach($entries as $entry) {
-            if($x > 10) {
-                \App\LogEntry::find($entry->id)->delete();
-            }
-            $x++;
-        }
-
 
     }
 
