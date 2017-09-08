@@ -164,8 +164,8 @@ class TasksIndexResponse implements Responsable
         ) {
             $computed = collect($computed);
 
-            if($this->sortByUpdated) {
-                $computed->sortBy(function($entry, $key) {
+            if($this->sortByUpdated === true) {
+                $computed = $computed->sortByDesc(function($entry, $key) {
                    return Carbon::parse($entry['updated_at'])->getTimestamp();
                 });
             }
