@@ -101,7 +101,8 @@ class TasksIndexResponse implements Responsable
                     'type'          => $types->where('id', $entry->childType)->first(),
                     'sources'       => $sources->where('parent_id', $entry->childId),
                     'created_at'    => $entry->childCreatedAt,
-                    'updated_at'    => $entry->childUpdatedAt
+                    'updated_at'    => $entry->childUpdatedAt,
+                    'updated_at_diff' => Carbon::parse($entry->childUpdatedAt)->diffForHumans(),
                 ];
             }
             //--- Add new parent task
@@ -124,7 +125,8 @@ class TasksIndexResponse implements Responsable
                         'type'          => $types->where('id', $entry->childType)->first(),
                         'sources'       => $sources->where('parent_id', $entry->childId),
                         'created_at'    => $entry->childCreatedAt,
-                        'updated_at'    => $entry->childUpdatedAt
+                        'updated_at'    => $entry->childUpdatedAt,
+                        'updated_at_diff' => Carbon::parse($entry->childUpdatedAt)->diffForHumans(),
                     ];
                 }
                 //--- If it is standalone it has sources
@@ -150,7 +152,8 @@ class TasksIndexResponse implements Responsable
                     'children'      => $_children,
                     'sources'       => $_sources,
                     'created_at'    => $entry->taskCreatedAt,
-                    'updated_at'    => $entry->taskUpdatedAt
+                    'updated_at'    => $entry->taskUpdatedAt,
+                    'updated_at_diff' => Carbon::parse($entry->taskUpdatedAt)->diffForHumans(),
                 ];
 
                 $computed[$entry->taskId] = $model;
