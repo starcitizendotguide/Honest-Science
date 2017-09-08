@@ -175,15 +175,22 @@ Route::prefix('manage')
 
 Route::group(['prefix' => 'api/v1'], function() {
 
-        Route::get('tasks/deprecatedQueue', 'TasksController@deprecatedQueue')
-            ->name('tasks.deprecatedQueue');
-        Route::get('tasks/verifyQueue', 'TasksController@verifyQueue')
-            ->name('tasks.verifyQueue');
-        Route::resource('tasks',  'TasksController', [
-            'only' => [
-                'index', 'show'
-            ]
-        ]);
+        Route::group(['prefix' => 'tasks'], function() {
+
+
+            Route::get('/', 'TasksController@index')
+                    ->name('tasks.index');
+            Route::get('/p/{page}/{size}', 'TasksController@paginatedIndex')
+                    ->name('tasks.paginatedIndex');
+            Route::get('/{id}', 'TasksController@show')
+                    ->name('tasks.show');
+
+            Route::get('deprecatedQueue', 'TasksController@deprecatedQueue')
+                ->name('tasks.deprecatedQueue');
+            Route::get('verifyQueue', 'TasksController@verifyQueue')
+                ->name('tasks.verifyQueue');
+
+        });
 
         Route::get('children/task/{id}', 'TasksChildrenController@task')->name('children.task.show');
         Route::get('children/sources/{id}/{standalone}', 'TasksChildrenController@sources')->name('children.sources.show');

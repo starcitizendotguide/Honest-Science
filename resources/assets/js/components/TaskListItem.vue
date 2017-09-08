@@ -34,21 +34,12 @@
                     </p>
                 </div>
 
-                <div v-if="loading.active">
-                    <i class="loader"></i>
-                </div>
                 <div v-if="!loading.active" :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media">
                         <div class="media-content">
                             <div class="content">
                                 <div class="m-b-10">
                                     <strong>{{ task.name }}</strong> -
-                                    <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
-                                    </b-tooltip>
-                                    <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
-                                    </b-tooltip>
 
                                     <span>
                                         <i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i>
@@ -60,6 +51,21 @@
                                     </transition>
 
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+
+                                    <div>
+                                        <div>
+                                            <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
+                                                Status: <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
+                                            </b-tooltip>
+                                        </div>
+                                        <div>
+                                            <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
+                                                Type: <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
+                                            </b-tooltip>
+                                        </div>
+                                    </div>
+
+
 
                                     <span v-if="task.standalone" class="is-pulled-right ignore-click">
                                         <confirm-item
@@ -104,8 +110,7 @@
                                                                 negative="Cancel"
                                                                 :url="source.link"
                                                                 theme="is-danger"
-                                                                width=960
-                                                            >
+                                                                width=960>
                                                                 [{{ index + 1 }}]
                                                             </confirm-item>
                                                         </span>
@@ -120,6 +125,19 @@
                         </div>
                     </article>
                 </div>
+
+                <div class="has-text-centered">
+                    <div v-if="loading.active">
+                        <i class="loader"></i>
+                    </div>
+                    <div v-if="loading.available">
+                        <a class="button is-fullwidth highlighted-element highlighted-text" @click="loadTasksPaginated()">Expand the universe.</a>
+                    </div>
+                    <div v-if="!loading.available" class="highlighted-element highlighted-text">
+                         You have reached the end of the universe.
+                    </div>
+                </div>
+
             </div>
         </div>
         <!-- Interaction Bar -->
@@ -129,13 +147,16 @@
     </div>
 </template>
 
-<script type="text-javascript">
+<script type="text/javascript">
 export default {
     data: function() {
         return {
             tasks: [],
             loading: {
+                available: true,
                 active: true,
+                page: 0,
+                size: 5,
             },
             meta: {
                 search: '',
@@ -257,6 +278,30 @@ export default {
                 });
             }
          },
+        //---
+        loadTasksPaginated() {
+
+            this.loading.page++;
+
+            axios.get(route('tasks.paginatedIndex', {page: this.loading.page, size: this.loading.size}))
+                .then(response => {
+
+                    var data = response.data;
+
+                    data.forEach(function(e) {
+                        e.collapsed = false;
+                    });
+
+                    if(data.length < this.loading.size) {
+                        this.loading.available = false;
+                    }
+
+                    this.tasks = this.tasks.concat(data);
+                    this.loading.active = false;
+
+                });
+
+        },
         //---- Help function: returns the default value of the interaction bar.
         defaultInteractionBar() {
             return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
@@ -401,19 +446,9 @@ export default {
                 });
             });
 
-            axios.get(route('tasks.index'))
-                .then(response => {
+        //--- Load inital page
+        this.loadTasksPaginated();
 
-                    var data = response.data;
-
-                    data.forEach(function(e) {
-                        e.collapsed = false;
-                    });
-
-                    this.tasks = data;
-                    this.loading.active = false;
-
-                });
     },
 }
 </script>
