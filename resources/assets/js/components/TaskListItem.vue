@@ -53,13 +53,13 @@
                                     <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
 
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
+                                        <span class="icon is-small is-muted"><i :class="task.status.css_icon"></i></span>
                                     </b-tooltip>
                                     <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
+                                        <span class="icon is-small is-muted"><i :class="task.type.css_icon"></i></span>
                                     </b-tooltip>
 
-                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                    <span class="is-pulled-right is-muted is-muted">Last Updated: {{ task.updated_at_diff }}</span>
 
                                 </div>
                                 <transition name="fade">
@@ -74,13 +74,13 @@
                                                         <br />
 
                                                         <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small "><i :class="child.status.css_icon"></i></span>
+                                                            <span class="icon is-small is-muted"><i :class="child.status.css_icon"></i></span>
                                                         </b-tooltip>
                                                         <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
+                                                            <span class="icon is-small is-muted"><i :class="child.type.css_icon"></i></span>
                                                         </b-tooltip>
 
-                                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                                        <span class="is-pulled-right is-muted">Last Updated: {{ task.updated_at_diff }}</span>
 
                                                     </div>
                                                 </div>
@@ -105,57 +105,68 @@
 
             </div>
         </div>
+
         <!-- Interaction Bar -->
-        <div class="column is-3 m-t-100">
-            <div class="card card-content interaction-bar highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
+        <div v-if="" class="interaction-bar container">
+                <div class="bar-content">
 
-                <div v-if="!meta.interactionBar.pages.isDefault">
+                    <div class="column is-3 m-t-100">
+                        <div class="card card-content highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
 
-                    <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
+                            <div v-if="!meta.interactionBar.pages.isDefault">
 
-                    <p v-if="!meta.interactionBar.pages.isOverview" class="m-b-10">
-                        <span class="icon is-small" @click="interactionBarSwitchPage('isOverview')"><i class="fa fa-chevron-left"></i></span>
-                        Go Back
-                    </p>
-                </div>
+                                <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
 
-                <div v-if="meta.interactionBar.pages.isDefault">
-                    <p>This is our interactive bar. You can open any task to test its behaviour.</p>
-                </div>
+                                <p v-if="!meta.interactionBar.pages.isOverview" class="m-b-10">
+                                    <span class="icon is-small" @click="interactionBarSwitchPage('isOverview')"><i class="fa fa-chevron-left"></i></span>
+                                    Go Back
+                                </p>
+                            </div>
 
-                <div v-if="meta.interactionBar.pages.isOverview">
-                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
-                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5">Share</a>
-                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">Sources</a>
-                </div>
+                            <div v-if="meta.interactionBar.pages.isDefault">
+                                <p>This is our interactive bar. You can open any task to test its behaviour.</p>
+                            </div>
 
-                <div v-if="meta.interactionBar.pages.isComment">
-                    <div class="disquscard-content" id="disqus_thread"></div>
-                </div>
+                            <div v-if="meta.interactionBar.pages.isOverview">
+                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
+                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5">Share</a>
+                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">Sources</a>
+                            </div>
 
-                <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
-                    <ul>
-                        <confirm-item
-                                v-for="(source, index) in meta.interactionBar.task.sources"
-                                :key="source.id"
+                            <div v-if="meta.interactionBar.pages.isComment">
+                                <div class="disquscard-content" id="disqus_thread"></div>
+                            </div>
 
-                                title="You are leaving Star Citizen - Honest Science."
-                                :message="source.link + ' is not an official Honest Science site.'"
-                                positive="Continue to external site."
-                                negative="Cancel"
-                                :url="source.link"
-                                theme="is-danger"
-                                width=960>
-                            <li>{{ source.link | truncate(50)  }}</li>
-                        </confirm-item>
-                    </ul>
-                    <span v-if="meta.interactionBar.task.sources.length == 0">
+                            <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
+                                <ul>
+                                    <confirm-item
+                                            v-for="(source, index) in meta.interactionBar.task.sources"
+                                            :key="source.id"
+
+                                            title="You are leaving Star Citizen - Honest Science."
+                                            :message="source.link + ' is not an official Honest Science site.'"
+                                            positive="Continue to external site."
+                                            negative="Cancel"
+                                            :url="source.link"
+                                            theme="is-danger"
+                                            width=960>
+                                        <li>{{ source.link | truncate(50)  }}</li>
+                                    </confirm-item>
+                                </ul>
+                                <span v-if="meta.interactionBar.task.sources.length == 0">
                         No sources available.
                     </span>
-                </div>
+                            </div>
 
-            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
         </div>
+
+        <!-- Interaction Bar End -->
     </div>
 </template>
 
@@ -172,7 +183,7 @@ export default {
                 available: true,
                 disabled: false,
                 page: 0,
-                size: 2,
+                size: 5,
             },
             meta: {
                 search: '',
@@ -491,6 +502,7 @@ export default {
 
                 this.container.all = data;
                 //--- Load initial
+                this.loadTasksPaginated();
                 this.interactionBarSwitchPage('isDefault');
             });
 
