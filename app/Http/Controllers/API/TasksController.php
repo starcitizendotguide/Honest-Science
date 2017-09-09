@@ -20,7 +20,7 @@ class TasksController extends Controller
     public function index()
     {
 
-        return new TasksIndexResponse(-1, -1, false);
+        return new TasksIndexResponse;
 
     }
 

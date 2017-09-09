@@ -382,7 +382,25 @@ export default {
 
             return false;
 
-        }
+        },
+        hasChildKeyword(item) {
+
+            var children = item.children;
+            var _search = this.meta.search.toLowerCase();
+
+            for(var i = 0; i < children.length; i++) {
+                var child = children[i];
+                if (
+                    child.name.toLowerCase().indexOf(_search) !== -1 ||
+                    child.description.toLowerCase().indexOf(_search) !== -1
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+
+        },
     },
     computed: {
         filteredItems: function () {
@@ -411,6 +429,7 @@ export default {
                 }
             }
 
+            //---
             if(!search && !statusMode && !typeMode){
                 this.loading.disabled = false;
                 return this.container.paginated;
@@ -428,7 +447,8 @@ export default {
                     (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
                     (
                         item.name.toLowerCase().indexOf(search) !== -1 ||
-                        item.description.toLowerCase().indexOf(search) !== -1
+                        item.description.toLowerCase().indexOf(search) !== -1 ||
+                        self.hasChildKeyword(item) === true
                     )
                 ){
                     return item;

@@ -18,7 +18,7 @@ class TasksIndexResponse implements Responsable
     private $size;
     private $sortByUpdated;
 
-    public function __construct(int $page, int $size, bool $sortByUpdated)
+    public function __construct(int $page = -1, int $size = -1, bool $sortByUpdated = false)
     {
         $this->page = $page;
         $this->size = $size;
