@@ -60,22 +60,7 @@
                                     </b-tooltip>
 
                                     <p class="has-text-right">Last Updated: {{ task.updated_at_diff }}</p>
-
-                                    <span v-if="task.standalone" class="is-pulled-right ignore-click">
-                                        <confirm-item
-                                            v-for="(source, index) in task.sources"
-                                            :key="source.id"
-
-                                            title="You are leaving Star Citizen - Honest Science."
-                                            :message="source.link + ' is not an official Honest Science site.'"
-                                            positive="Continue to external site."
-                                            negative="Cancel"
-                                            :url="source.link"
-                                            theme="is-danger"
-                                            width=960>
-                                            [{{ index + 1 }}]
-                                        </confirm-item>
-                                    </span>
+                                    
                                 </div>
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
@@ -87,22 +72,6 @@
                                                         <br />
                                                         {{ child.description }}
                                                         <br />
-
-                                                        <span class="is-pulled-right">
-                                                            <confirm-item
-                                                                v-for="(source, index) in child.sources"
-                                                                :key="source.id"
-
-                                                                title="You are leaving Star Citizen - Honest Science."
-                                                                :message="source.link + ' is not an official Honest Science site.'"
-                                                                positive="Continue to external site."
-                                                                negative="Cancel"
-                                                                :url="source.link"
-                                                                theme="is-danger"
-                                                                width=960>
-                                                                [{{ index + 1 }}]
-                                                            </confirm-item>
-                                                        </span>
 
                                                         <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
                                                             <span class="icon is-small "><i :class="child.status.css_icon"></i></span>
@@ -140,7 +109,54 @@
         </div>
         <!-- Interaction Bar -->
         <div class="column is-3 m-t-100">
-            <div class="card card-content interaction-bar highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}" v-html="meta.interactionBar.content"></div>
+            <div class="card card-content interaction-bar highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
+
+                <div v-if="!meta.interactionBar.pages.isDefault">
+
+                    <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
+
+                    <p v-if="!meta.interactionBar.pages.isOverview" class="m-b-10">
+                        <span class="icon is-small" @click="interactionBarSwitchPage('isOverview')"><i class="fa fa-chevron-left"></i></span>
+                        Go Back
+                    </p>
+                </div>
+
+                <div v-if="meta.interactionBar.pages.isDefault">
+                    <p>This is our interactive bar. You can open any task to test its behaviour.</p>
+                </div>
+
+                <div v-if="meta.interactionBar.pages.isOverview">
+                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
+                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5">Share</a>
+                    <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">Sources</a>
+                </div>
+
+                <div v-if="meta.interactionBar.pages.isComment">
+                    <div class="disquscard-content" id="disqus_thread"></div>
+                </div>
+
+                <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
+                    <ul>
+                        <confirm-item
+                                v-for="(source, index) in meta.interactionBar.task.sources"
+                                :key="source.id"
+
+                                title="You are leaving Star Citizen - Honest Science."
+                                :message="source.link + ' is not an official Honest Science site.'"
+                                positive="Continue to external site."
+                                negative="Cancel"
+                                :url="source.link"
+                                theme="is-danger"
+                                width=960>
+                            <li>{{ source.link | truncate(50)  }}</li>
+                        </confirm-item>
+                    </ul>
+                    <span v-if="meta.interactionBar.task.sources.length == 0">
+                        No sources available.
+                    </span>
+                </div>
+
+            </div>
         </div>
     </div>
 </template>
@@ -161,7 +177,13 @@ export default {
                 isLoading: true,
                 interactionBar: {
                     task: null,
-                    content: this.defaultInteractionBar()
+                    pageTitle: null,
+                    pages: {
+                        isDefault: false,
+                        isOverview: false,
+                        isComment: false,
+                        isSources: false,
+                    },
                 },
                 statuses: [],
                 types: [],
@@ -189,11 +211,6 @@ export default {
 
             //--- Reset Interaction Bar
             this.resetInteractionBar();
-        },
-        //--- Resets the interaction bar to its default status.
-        resetInteractionBar() {
-            this.meta.interactionBar.task = null;
-            this.meta.interactionBar.content = this.defaultInteractionBar();
         },
         //--- Called when the user clicks on the "status" button to enable or disable
         //    it.
@@ -233,16 +250,39 @@ export default {
             //--- Trigger
             if(task.collapsed === true) {
                 this.meta.interactionBar.task = task;
-                this.loadDisqus(task);
+                this.interactionBarSwitchPage('isOverview');
             } else {
                 this.resetInteractionBar();
             }
 
         },
-        //--- Loads the Disqus section for an task.
-        loadDisqus(task) {
+        //--- Resets the interaction bar to its default status.
+        resetInteractionBar() {
+            this.interactionBarSwitchPage('isDefault');
+            this.meta.interactionBar.task = null;
+            this.meta.interactionBar.content = null;
+        },
+        //--- Switch page
+        interactionBarSwitchPage(name) {
+            for (var page in this.meta.interactionBar.pages) {
+                // skip loop if the property is from prototype
+                if(!this.meta.interactionBar.pages.hasOwnProperty(page)) continue;
 
-            this.meta.interactionBar.content = '<div class="disquscard-content" id="disqus_thread"></div>';
+                this.meta.interactionBar.pages[page] = (page == name);
+            }
+
+            this.meta.interactionBar.pageTitle = name.substr(2);
+        },
+        //--- Loads the Disqus section for an task.
+        interactionBarComments() {
+
+            var task = this.meta.interactionBar.task;
+
+            if(task === null || task === undefined) {
+                return;
+            }
+
+            this.interactionBarSwitchPage('isComment');
 
             var CONF_URL            = (location.protocol + '//' + window.location.hostname),
                 CONF_SHORTNAME      = 'star-citizen-honest-tracker',
@@ -260,9 +300,7 @@ export default {
                     var d = document, s = d.createElement('script');
 
                     s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
-
-
-                    s.setAttribute('data-timestamp', +new Date());
+                    s.setAttribute('data-timestamp', + new Date());
                     (d.head || d.body).appendChild(s);
 
                 })();
@@ -276,6 +314,9 @@ export default {
                 });
             }
          },
+        interactionBarSources() {
+            this.interactionBarSwitchPage('isSources');
+        },
         //---
         loadTasksPaginated() {
 
@@ -300,11 +341,7 @@ export default {
                 });
 
         },
-        //---- Help function: returns the default value of the interaction bar.
-        defaultInteractionBar() {
-            return '<p>This is our interactive bar. You can open any task to test its behaviour.</p>';
-        },
-        //--- Help Fuction: formations a number using fixed-point notation.
+        //--- Help Function: formations a number using fixed-point notation.
         toFixed(value, digits) {
             return value.toFixed(digits);
         },
@@ -446,6 +483,7 @@ export default {
 
         //--- Load inital page
         this.loadTasksPaginated();
+        this.interactionBarSwitchPage('isDefault');
 
     },
 }
