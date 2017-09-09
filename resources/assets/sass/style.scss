@@ -177,3 +177,19 @@ nav {
 	border-bottom: 1px dashed #b5b5b5;
 	cursor: default;
 }
+
+
+.progressbar {
+  background-color: grey;
+  border: none;
+  border-radius: 290486px;
+  display: blocK;
+  height: 1rem;
+  overflow: hidden;
+  width: 100%;
+
+  >div {
+    background-color: orange;
+    height: 100%;
+  }
+}

@@ -64,9 +64,11 @@ class UpdateTasks extends Command
             //--- Score
             $children = $children->get();
             $table = [];
+            $_average = 0;
 
-            $children->each(function($item, $key) use (&$table) {
+            $children->each(function($item, $key) use (&$table, &$_average) {
                 $status = $item->status()->first();
+                $_average += $item->progress;
 
                 if(array_key_exists($status['id'], $table)) {
                     $table[$status['id']] += (1 * $status['rating']);
@@ -77,6 +79,9 @@ class UpdateTasks extends Command
             $table = collect($table);
             $table = $table->sort();
 
+
+            $_average /= $children->count();
+
             // @Note The idea behind this is that the 'rating' field of TaskStatus
             // describes how 'good', in terms of progress, each state is; the higher
             // the value, the higher the impact on a positive progress.
@@ -85,7 +90,7 @@ class UpdateTasks extends Command
             // as e.g. 'released' just because it has the same amount of items than a
             // worse group.
             $statusId = TaskStatus::find($table->keys()->first())->id;
-            DB::table('tasks')->where('id', $task->id)->update(['status' => $statusId]);
+            DB::table('tasks')->where('id', $task->id)->update(['status' => $statusId, 'progress' => $_average]);
             $_count++;
             //---
 

@@ -45,21 +45,23 @@
                                         <i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i>
                                     </span>
 
-                                    <p v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
+                                    <p class="is-muted" v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
                                     <transition name="fade">
-                                        <p v-if="task.collapsed">{{ task.description }}</p>
+                                        <p class="is-muted" v-if="task.collapsed">{{ task.description }}</p>
                                     </transition>
 
-                                    <progress class="progress" :value="task.progress" max="1">{{ toFixed(task.progress * 100, 2) }}%</progress>
+                                    <div class="progressbar">
+                                        <div :style="progressBarStyle(task.progress)"></div>
+                                    </div>
 
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                        <span class="icon is-small is-muted"><i :class="task.status.css_icon"></i></span>
+                                        <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
                                     </b-tooltip>
                                     <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
-                                        <span class="icon is-small is-muted"><i :class="task.type.css_icon"></i></span>
+                                        <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
                                     </b-tooltip>
 
-                                    <span class="is-pulled-right is-muted is-muted">Last Updated: {{ task.updated_at_diff }}</span>
+                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
 
                                 </div>
                                 <transition name="fade">
@@ -70,17 +72,17 @@
                                                     <div class="content">
                                                         <strong class="">{{ child.name }}</strong>
                                                         <br />
-                                                        {{ child.description }}
+                                                        <span class="is-muted">{{ child.description }}</span>
                                                         <br />
 
                                                         <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small is-muted"><i :class="child.status.css_icon"></i></span>
+                                                            <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
                                                         </b-tooltip>
                                                         <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small is-muted"><i :class="child.type.css_icon"></i></span>
+                                                            <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
                                                         </b-tooltip>
 
-                                                        <span class="is-pulled-right is-muted">Last Updated: {{ task.updated_at_diff }}</span>
+                                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
 
                                                     </div>
                                                 </div>
@@ -203,6 +205,42 @@ export default {
         };
     },
     methods: {
+        progressBarStyle: function(progress) {
+
+            var interpolate = function(p, colors) {
+
+                var _worth = 1 / colors.length;
+                var x_1 = Math.min(parseInt(p / _worth), colors.length - 2);
+                var x_2 = parseInt(x_1 + 1);
+
+                var r_y_1 = colors[x_1][0];
+                var r_y_2 = colors[x_2][0];
+
+                var g_y_1 = colors[x_1][1];
+                var g_y_2 = colors[x_2][1];
+
+                var b_y_1 = colors[x_1][2];
+                var b_y_2 = colors[x_2][2];
+
+                return [
+                    (r_y_1 + ((r_y_2 - r_y_1) / (x_2 - x_1)) * p),
+                    (g_y_1 + ((g_y_2 - g_y_1) / (x_2 - x_1)) * p),
+                    (b_y_1 + ((b_y_2 - b_y_1) / (x_2 - x_1)) * p),
+                ];
+            };
+
+            var colors = [
+                [255,  56, 96],
+                [255, 221, 87],
+                [35 , 209, 96]
+            ];
+
+            var color = interpolate(progress, colors);
+            return {
+                'background-color': 'rgba(' + color[0] + ', ' + color[1] + ', ' + color[2] + ', 1)',
+                'width': ((progress * 100) + '%'),
+            };
+        },
         //--- Resets all the meta values. They are mainly used for the search function &
         //    the interaction bar.
         resetMeta: function() {
@@ -251,7 +289,6 @@ export default {
             if(isIgnoringTriggerEvent(evt.target) === true) {
                 return;
             }
-
 
             //--- Reset Collapse & Reset Interaction Bar
             this.tasks.map(v => { if(v != task) v.collapsed = false;  });

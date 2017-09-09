@@ -32,7 +32,8 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 .is-muted {
     color: lightgray;
 
-    &:hover {
+
+    a:hover {
         color: gray;
     }
 }
