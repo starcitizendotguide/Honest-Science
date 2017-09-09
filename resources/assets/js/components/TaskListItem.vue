@@ -34,8 +34,8 @@
                     </p>
                 </div>
 
-                <div v-if="!loading.active" :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
-                    <article class="media">
+                <div :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                    <article class="media media-fix">
                         <div class="media-content">
                             <div class="content">
                                 <div class="m-b-10">
@@ -59,13 +59,13 @@
                                         <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
                                     </b-tooltip>
 
-                                    <p class="has-text-right">Last Updated: {{ task.updated_at_diff }}</p>
-                                    
+                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+
                                 </div>
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
                                         <div class="box highlighted-element" v-for="child in task.children">
-                                            <article class="media">
+                                            <article class="media media-fix">
                                                 <div class="media-content">
                                                     <div class="content">
                                                         <strong class="">{{ child.name }}</strong>
@@ -80,7 +80,8 @@
                                                             <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
                                                         </b-tooltip>
 
-                                                        <p class="has-text-right">Last Updated: {{ child.updated_at_diff }}</p>
+                                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+
                                                     </div>
                                                 </div>
                                             </article>
@@ -93,15 +94,12 @@
                     </article>
                 </div>
 
-                <div class="has-text-centered">
-                    <div v-if="loading.active">
-                        <i class="loader"></i>
-                    </div>
+                <div v-if="!loading.disabled" class="has-text-centered">
                     <div v-if="loading.available">
                         <a class="button is-fullwidth highlighted-element highlighted-text" @click="loadTasksPaginated()">Expand the universe.</a>
                     </div>
-                    <div v-if="!loading.available" class="highlighted-element highlighted-text">
-                         You have reached the end of the universe.
+                    <div v-if="!loading.available">
+                         <span>You have reached the end of the universe.</span>
                     </div>
                 </div>
 
@@ -166,15 +164,18 @@ export default {
     data: function() {
         return {
             tasks: [],
+            container: {
+                all: [],
+                paginated: [],
+            },
             loading: {
                 available: true,
-                active: true,
+                disabled: false,
                 page: 0,
-                size: 5,
+                size: 2,
             },
             meta: {
                 search: '',
-                isLoading: true,
                 interactionBar: {
                     task: null,
                     pageTitle: null,
@@ -322,23 +323,19 @@ export default {
 
             this.loading.page++;
 
-            axios.get(route('tasks.paginatedIndex', {page: this.loading.page, size: this.loading.size}))
-                .then(response => {
+            //--- Note: Using this instead of Array.slice() because Vue doesn't detect the changes
+            // for some reason, even if I used the specified ways to trigger it.
+            var start   = (this.loading.page - 1 ) * this.loading.size;
+            var end     = Math.min((start + this.loading.size), this.container.all.length);
+            for(var i = start; i < end; i++) {
+                this.container.paginated.push(this.container.all[i]);
+            }
 
-                    var data = response.data;
+            if(this.container.paginated.length >= this.container.all.length) {
+                this.loading.available = false;
+            }
 
-                    data.forEach(function(e) {
-                        e.collapsed = false;
-                    });
-
-                    if(data.length < this.loading.size) {
-                        this.loading.available = false;
-                    }
-
-                    this.tasks = this.tasks.concat(data);
-                    this.loading.active = false;
-
-                });
+            this.tasks = Object.assign([], this.tasks, this.container.paginated);
 
         },
         //--- Help Function: formations a number using fixed-point notation.
@@ -378,7 +375,7 @@ export default {
     },
     computed: {
         filteredItems: function () {
-            var _tmp        = this.tasks,
+            var _tmp        = this.container.all,
                 self        = this,
                 search      = this.meta.search,
                 statuses    = this.meta.statuses,
@@ -404,9 +401,11 @@ export default {
             }
 
             if(!search && !statusMode && !typeMode){
-                return _tmp;
+                this.loading.disabled = false;
+                return this.container.paginated;
             }
 
+            this.loading.disabled = true;
             search = search.trim().toLowerCase();
 
             _tmp = _tmp.filter(function(item){
@@ -481,9 +480,19 @@ export default {
                 });
             });
 
-        //--- Load inital page
-        this.loadTasksPaginated();
-        this.interactionBarSwitchPage('isDefault');
+        axios.get(route('tasks.index'))
+            .then(response => {
+
+                var data = response.data;
+
+                data.forEach(function(e) {
+                    e.collapsed = false;
+                });
+
+                this.container.all = data;
+                //--- Load initial
+                this.interactionBarSwitchPage('isDefault');
+            });
 
     },
 }
