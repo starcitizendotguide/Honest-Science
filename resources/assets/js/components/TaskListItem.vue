@@ -137,9 +137,7 @@
                                 </a>
                             </div>
 
-                            <div v-if="meta.interactionBar.pages.isComment">
-                                <div class="disquscard-content" id="disqus_thread"></div>
-                            </div>
+                            <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment"></div>
 
                             <div v-if="meta.interactionBar.pages.isShare">
                                 <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
@@ -205,6 +203,9 @@ export default {
                         isShare: false,
                         isSources: false,
                     },
+                    content: {
+                        comment: null,
+                    }
                 },
                 statuses: [],
                 types: [],
@@ -216,8 +217,8 @@ export default {
 
             var interpolate = function(p, colors) {
 
-                var _worth = 1 / colors.length;
-                var x_1 = Math.min(parseInt(p / _worth), colors.length - 2);
+                var _w = (1 / colors.length);
+                var x_1 = Math.min(parseInt(p / _w), colors.length - 2);
                 var x_2 = parseInt(x_1 + 1);
 
                 var r_y_1 = colors[x_1][0];
@@ -229,14 +230,14 @@ export default {
                 var b_y_1 = colors[x_1][2];
                 var b_y_2 = colors[x_2][2];
 
+                var _p = (p / _w) % Math.max(1, parseInt(p / _w));
+
                 var x = [
-                    (r_y_1 + ((r_y_2 - r_y_1) / (x_2 - x_1)) * p),
-                    (g_y_1 + ((g_y_2 - g_y_1) / (x_2 - x_1)) * p),
-                    (b_y_1 + ((b_y_2 - b_y_1) / (x_2 - x_1)) * p),
+                    ((r_y_2 * _p) + (r_y_1 * (1 - _p))),
+                    ((g_y_2 * _p) + (g_y_1 * (1 - _p))),
+                    ((b_y_2 * _p) + (b_y_1 * (1 - _p))),
                 ];
 
-                //console.log(p + ' -> (' + x[0] + ', ' + x[1] + ', ' + x[2] + ')');
-                //console.log(p + " -> x_1: " + x_1 + " | x_2: " + x_2);
                 return x;
             };
 
@@ -253,11 +254,6 @@ export default {
                 'background-color': 'rgba(' + color[0] + ', ' + color[1] + ', ' + color[2] + ', 1)',
                 'width': ((task.progress * 100) + '%'),
             };
-
-            /*return {
-                'background-color': task.status.color,
-                'width': ((task.progress * 100) + '%'),
-            };*/
 
         },
         //--- Resets all the meta values. They are mainly used for the search function &
@@ -372,6 +368,8 @@ export default {
             if(task === null || task === undefined) {
                 return;
             }
+
+            this.meta.interactionBar.content.comment = '<div class="disquscard-content" id="disqus_thread"></div>';
 
             var IS_CHILD = (typeof task.standalone == 'undefined');
 

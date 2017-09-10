@@ -84,14 +84,14 @@ class TasksSeeder extends Seeder
                     [
                         'name' => 'Lambda',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                        'status' => 3,
+                        'status' => 0,
                         'type' => 3,
                         'progress' => 0.9999
                     ],
                     [
                         'name' => 'Mu',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
-                        'status' => 4,
+                        'status' => 0,
                         'type' => 4,
                         'progress' => 0.9537
                     ]
@@ -99,8 +99,18 @@ class TasksSeeder extends Seeder
             ],
         ];
 
+        for($i = 0; $i <= 100; $i++) {
+            $task = new App\Task;
+            $task->name = ('Task #' . $i);
+            $task->description = 'No Description.';
+            $task->standalone = true;
+            $task->type = $i % 8;
+            $task->status = $i % 4;
+            $task->progress = $i / 100;
+            $task->save();
+        }
 
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 0; $i++) {
             foreach($data as $parent) {
 
 
