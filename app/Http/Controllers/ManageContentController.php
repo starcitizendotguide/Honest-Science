@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
+use App\TaskChild;
+use App\TaskStatus;
+use App\TaskType;
 use Illuminate\Http\Request;
 
 class ManageContentController extends Controller
@@ -33,7 +37,7 @@ class ManageContentController extends Controller
     public function tasksDelete(Request $request, $id) {
 
         if(\Laratrust::can('delete-task')) {
-            $task = \App\Task::findOrFail($id);
+            $task = Task::findOrFail($id);
 
             if($task->standalone === true) {
                 \App\TaskSource::where('parent_id', '=', $task->id)->delete();
@@ -81,14 +85,14 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $task = \App\Task::findOrFail($id);
+            $task = Task::findOrFail($id);
         } else if($request->isMethod('POST')) {
 
             if(\Laratrust::can('update-task')) {
                 //--- Validate
                 $this->validateTask($request);
 
-                $task = \App\Task::findOrFail($id);
+                $task = Task::findOrFail($id);
 
                 $task->name = $request->input('name');
                 $task->description = $request->input('description');
@@ -123,7 +127,7 @@ class ManageContentController extends Controller
             $this->validateTask($request);
 
             //--- Store
-            $task = new \App\Task;
+            $task = new Task;
             $task->name = $request->input('name');
             $task->description = $request->input('description');
 
@@ -155,8 +159,8 @@ class ManageContentController extends Controller
      */
     public function tasksCreateStandalone() {
         return view('manage.tasks.standalone.create', [
-            'statuses'  => \App\TaskStatus::all(),
-            'types'     => \App\TaskType::all()
+            'statuses'  => TaskStatus::all(),
+            'types'     => TaskType::all()
         ]);
     }
 
@@ -173,19 +177,27 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $task = \App\Task::findOrfail($id);
+            $task = Task::findOrfail($id);
         } else if($request->isMethod('POST')) {
 
             if(\Laratrust::can('update-task')) {
                 //--- Validate
-                $this->validateStandaloneTask($request);
-                $task = \App\Task::findOrFail($id);
+                $this->validateStandaloneTaskEdit($request);
+                $task = Task::findOrFail($id);
                 $task->name = $request->input('name');
                 $task->description = $request->input('description');
                 $task->status = $request->input('status');
                 $task->visibility = $request->input('visibility');
                 $task->type = $request->input('type');
-                $task->progress = ($request->input('progress') / 100);
+
+                $status = TaskStatus::find($request->input('status'));
+                $progress = ($request->input('progress') / 100);
+                if($progress < $status->progress_value) {
+                    $task->progress = $status->progress_value;
+                } else {
+                    $task->progress = $progress;
+                }
+
                 $task->save();
 
                 \Session::flash('flash', ('Update successfully executed!'));
@@ -196,8 +208,8 @@ class ManageContentController extends Controller
 
         return view('manage.tasks.standalone.edit', [
             'task'      => $task,
-            'statuses'  => \App\TaskStatus::all(),
-            'types'     => \App\TaskType::all(),
+            'statuses'  => TaskStatus::all(),
+            'types'     => TaskType::all(),
             'visibilities'  => \App\Visibility::all(),
         ]);
     }
@@ -211,16 +223,19 @@ class ManageContentController extends Controller
     public function taskStoreStandalone(Request $request) {
 
         //--- Validate
-        $this->validateStandaloneTask($request);
+        $this->validateStandaloneTaskStore($request);
 
         //--- Store
         if(\Laratrust::can('create-task')) {
-            $task = new \App\Task;
+
+            $status = TaskStatus::find($request->input('status'));
+
+            $task = new Task;
             $task->name = $request->input('name');
             $task->description = $request->input('description');
             $task->status = $request->input('status');
             $task->type = $request->input('type');
-            $task->progress = ($request->input('progress') / 100);
+            $task->progress = $status->progress_value;
             $task->standalone = true;
 
 
@@ -256,12 +271,12 @@ class ManageContentController extends Controller
      */
     public function childCreate(Request $request, $parent) {
 
-        $parent = \App\Task::find($parent);
+        $parent = Task::find($parent);
 
         return view('manage.child.create', [
             'parent'    => $parent,
-            'statuses'  => \App\TaskStatus::all(),
-            'types'     => \App\TaskType::all()
+            'statuses'  => TaskStatus::all(),
+            'types'     => TaskType::all()
         ]);
     }
 
@@ -278,20 +293,30 @@ class ManageContentController extends Controller
 
         //--- Request Method
         if($request->isMethod('GET')) {
-            $child = \App\TaskChild::findOrFail($id);
+            $child = TaskChild::findOrFail($id);
         } else if($request->isMethod('POST')) {
 
             if(\Laratrust::can('update-child')) {
                 //--- Validate
-                $this->validateChild($request);
+                $this->validateChildEdit($request);
 
-                $child = \App\TaskChild::findOrFail($id);
+                $child = TaskChild::findOrFail($id);
+
 
                 $child->name = $request->input('name');
                 $child->description = $request->input('description');
                 $child->status = $request->input('status');
                 $child->type = $request->input('type');
-                $child->progress = ($request->input('progress') / 100);
+
+                $progress = ($request->input('progress') / 100);
+                $status = TaskStatus::find($request->input('status'));
+                if($progress < $status->progress_value) {
+                    $child->progress = $status->progress_value;
+                } else {
+                    $child->progress = $progress;
+                }
+
+
                 $child->save();
 
                 \Session::flash('flash', ('Update successfully executed!'));
@@ -304,8 +329,8 @@ class ManageContentController extends Controller
         return view('manage.child.edit', [
             'child'     => $child,
             'parent'    => $child->parent()->first(),
-            'statuses'  => \App\TaskStatus::all(),
-            'types'     => \App\TaskType::all()
+            'statuses'  => TaskStatus::all(),
+            'types'     => TaskType::all()
         ]);
 
     }
@@ -320,16 +345,18 @@ class ManageContentController extends Controller
 
         if(\Laratrust::can('update-child')) {
             //--- Validate
-            $this->validateChild($request);
+            $this->validateChildStore($request);
+
+            $status = TaskStatus::find($request->input('status'));
 
             //--- Store
-            $child = new \App\TaskChild;
+            $child = new TaskChild;
             $child->task_id = $request->input('parent');
             $child->name = $request->input('name');
             $child->description = $request->input('description');
             $child->status = $request->input('status');
             $child->type = $request->input('type');
-            $child->progress = ($request->input('progress') / 100);
+            $child->progress = $status->progress_value;
             $child->save();
 
             \Session::flash('flash', ('You successfully added a child.'));
@@ -337,7 +364,7 @@ class ManageContentController extends Controller
 
         } else {
             \Session::flash('flash', ('You cannot create a new child.'));
-            $parent = \App\Task::findOrFail($request->input('parent'));
+            $parent = Task::findOrFail($request->input('parent'));
 
             //--- Redirect
             return redirect()->route('manage.content.tasks.edit', ['id' => $parent->id]);
@@ -353,7 +380,7 @@ class ManageContentController extends Controller
      */
     public function childDelete(Request $request, $id) {
 
-        $child = \App\TaskChild::findOrFail($id);
+        $child = TaskChild::findOrFail($id);
 
         //--- Delete Sources
         \App\TaskSource::where('child_id', '=', $id)->delete();
@@ -388,9 +415,9 @@ class ManageContentController extends Controller
 
         $object = null;
         if($standalone == '1') {
-            $object = \App\Task::findOrFail($id);
+            $object = Task::findOrFail($id);
         } else {
-            $object = \App\TaskChild::findOrFail($id);
+            $object = TaskChild::findOrFail($id);
         }
 
         //--- Redirect
@@ -500,61 +527,6 @@ class ManageContentController extends Controller
         return view('manage.statuses');
     }
 
-    /**
-     * This method validates the input for 'Subject Task'.
-     *
-     * @param $request
-     */
-    public function validateTask($request) {
-        //--- Validate
-        $this->validate($request, [
-            'name'          => 'required|min:5',
-            'description'   => 'required|min:30',
-        ]);
-    }
-
-    /**
-     * This method validates the input for a child.
-     *
-     * @param $request
-     */
-    public function validateChild($request) {
-        //--- Validate
-        $this->validate($request, [
-            'name'          => 'required|min:5',
-            'description'   => 'required|min:30',
-            'type'          => 'required',
-            'progress'      => 'required|numeric|between:0,100'
-        ]);
-    }
-
-    /**
-     * This method validates the input for a 'Standalone Task'.
-     *
-     * @param $request
-     */
-    public function validateStandaloneTask($request) {
-        //--- Validate
-        $this->validate($request, [
-            'name'          => 'required|min:5',
-            'description'   => 'required|min:30',
-            'type'          => 'required',
-            'progress'      => 'required|numeric|between:0,100'
-        ]);
-    }
-
-    /**
-     * This method validates the input for a source.
-     *
-     * @param $request
-     */
-    public function validateSource($request) {
-        //--- Validate
-        $this->validate($request, [
-            'link'          => 'required|url',
-        ]);
-    }
-
     //------------------------
     //--- Deprecated Queue ---
     //------------------------
@@ -580,7 +552,7 @@ class ManageContentController extends Controller
     {
 
         if (\Laratrust::can('mark-as-updated-task')) {
-            $task = \App\Task::findOrFail($id);
+            $task = Task::findOrFail($id);
             $task->updated_at = \Carbon\Carbon::now();
             $task->save(['timestamps' => true]);
 
@@ -617,7 +589,7 @@ class ManageContentController extends Controller
     public function taskVerifyChecked(Request $request, $id) {
 
         if(\Laratrust::can('mark-as-verified-task')) {
-            $task = \App\Task::findOrFail($id);
+            $task = Task::findOrFail($id);
             $task->verified = true;
             $task->save();
 
@@ -640,7 +612,7 @@ class ManageContentController extends Controller
     public function taskVerifyUncheck(Request $request, $id) {
 
         if(\Laratrust::can('mark-as-verified-task')) {
-            $task = \App\Task::findOrFail($id);
+            $task = Task::findOrFail($id);
             $task->verified = false;
             $task->save();
 
@@ -652,5 +624,94 @@ class ManageContentController extends Controller
         return redirect()->route('manage.content.tasks');
 
     }
+
+    //------------------
+    //--- Validators ---
+    //------------------
+
+    /**
+     * This method validates the input for 'Subject Task'.
+     *
+     * @param $request
+     */
+    public function validateTask($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+        ]);
+    }
+
+    /**
+     * This method validates the input for a child.
+     *
+     * @param $request
+     */
+    public function validateChildEdit($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+            'type'          => 'required',
+            'progress'      => 'required|numeric|between:0,100',
+            'status'        => 'required',
+        ]);
+    }
+
+    /**
+     * This method validates the input for a child.
+     *
+     * @param $request
+     */
+    public function validateChildStore($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+            'type'          => 'required',
+        ]);
+    }
+
+    /**
+     * This method validates the input for a 'Standalone Task' store action.
+     *
+     * @param $request
+     */
+    public function validateStandaloneTaskStore($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+            'type'          => 'required',
+        ]);
+    }
+
+    /**
+     * This method validates the input for a 'Standalone Task'.
+     *
+     * @param $request
+     */
+    public function validateStandaloneTaskEdit($request) {
+        //--- Validate
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'description'   => 'required|min:30',
+            'progress'      => '|numeric|min:0|max:100',
+            'type'          => 'required',
+        ]);
+    }
+
+    /**
+     * This method validates the input for a source.
+     *
+     * @param $request
+     */
+    public function validateSource($request) {
+        //--- Validate
+        $this->validate($request, [
+            'link'          => 'required|url',
+        ]);
+    }
+
 
 }

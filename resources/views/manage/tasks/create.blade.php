@@ -21,7 +21,7 @@
             <p class="control">
                 <textarea class="textarea" type="text" name="description">{{ old('description') }}</textarea>
             </p>
-            @if ($errors->has('name'))
+            @if ($errors->has('description'))
                 <p class="help is-danger">{{ $errors->first('description') }}</p>
             @endif
         </div>

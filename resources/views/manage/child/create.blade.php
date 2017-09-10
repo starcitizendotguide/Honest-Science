@@ -30,7 +30,7 @@
 
         <div class="field is-grouped is-grouped-centered">
             <div class="field">
-                <label class="label">Status<label>
+                <label class="label">Status</label>
                 <p class="control">
                     <div class="select">
                         <select name="status">
@@ -50,7 +50,7 @@
             </div>
 
             <div class="field">
-                <label class="label">Type<label>
+                <label class="label">Type</label>
                 <p class="control">
                     <div class="select">
                         <select name="type">
@@ -69,17 +69,6 @@
                 @endif
             </div>
 
-            <div class="field">
-                <label class="label">Progress<label>
-                <p class="control">
-                    <div>
-                        <input class="input" name="progress" type="number" value="{{ old('progress', 0) }}">
-                    </div>
-                </p>
-                @if ($errors->has('progress'))
-                    <p class="help is-danger">{{ $errors->first('progress') }}</p>
-                @endif
-            </div>
         </div>
 
         <button class="button is-primary is-outlined is-fullwidth m-t-5">Create</button>

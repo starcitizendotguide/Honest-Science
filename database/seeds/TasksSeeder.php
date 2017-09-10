@@ -22,7 +22,7 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 1,
                         'type' => 0,
-                        'progress' => 0.3178,
+                        'progress' => 0.5,
                         'sources' => [
                             'http://google.com',
                             'http://reddit.com/r/starcitizen'
@@ -33,7 +33,7 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 2,
                         'type' => 1,
-                        'progress' => 0.0433
+                        'progress' => 0.2
                     ],
                 ]
             ],
@@ -46,7 +46,7 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 3,
                         'type' => 2,
-                        'progress' => 0.3178
+                        'progress' => 0
                     ],
                 ]
             ],
@@ -59,21 +59,21 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 4,
                         'type' => 3,
-                        'progress' => 0.3178
+                        'progress' => 0
                     ],
                     [
                         'name' => 'Theta',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 1,
                         'type' => 4,
-                        'progress' => 0.1457
+                        'progress' => 0.5
                     ],
                     [
                         'name' => 'Iota',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 2,
                         'type' => 5,
-                        'progress' => 0.0362
+                        'progress' => 0.2
                     ]
                 ]
             ],
@@ -86,31 +86,20 @@ class TasksSeeder extends Seeder
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 0,
                         'type' => 3,
-                        'progress' => 0.9999
+                        'progress' => 1
                     ],
                     [
                         'name' => 'Mu',
                         'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis repellendus consequuntur, quam nulla eum animi impedit odit ratione soluta necessitatibus.',
                         'status' => 0,
                         'type' => 4,
-                        'progress' => 0.9537
+                        'progress' => 1
                     ]
                 ]
             ],
         ];
 
-        for($i = 0; $i <= 100; $i++) {
-            $task = new App\Task;
-            $task->name = ('Task #' . $i);
-            $task->description = 'No Description.';
-            $task->standalone = true;
-            $task->type = $i % 8;
-            $task->status = $i % 4;
-            $task->progress = $i / 100;
-            $task->save();
-        }
-
-        for($i = 0; $i < 0; $i++) {
+        for($i = 0; $i < 1; $i++) {
             foreach($data as $parent) {
 
 

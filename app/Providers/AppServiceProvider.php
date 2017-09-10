@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
         // Custom Validatio Rules
         //@TODO Depending on how many people sign-up, we wanna move this to a queue-job system
         // to protect the RSI website from too many requests.
-        Validator::extend('rsi_handle', function($attribute, $value, $paramaters, $validator) {
+        Validator::extend('rsi_handle', function($attribute, $value, $parameters, $validator) {
 
             $client = new \GuzzleHttp\Client(['http_errors' => false]);
             $request = $client->request('GET', 'https://robertsspaceindustries.com/citizens/' . $value);

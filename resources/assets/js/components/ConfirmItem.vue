@@ -7,7 +7,7 @@
                     <p class="modal-card-title">{{ title }}</p>
                 </header>
                 <section class="modal-card-body">
-                    <p :class="theme">{{ message }}</p>
+                    <p class="has-text-black">{{ message }}</p>
                 </section>
                 <footer class="modal-card-foot">
                     <a :href="url" class="button" :class="theme">{{ positive }}</a>
@@ -22,10 +22,10 @@
 export default {
     props: {
         title: String,
-        message: String,
         positive: String,
         negative: String,
         url: String,
+        message: String,
         theme: {
             type: String,
             default: 'is-primary'

@@ -20,6 +20,7 @@ class CreateTaskStatusesTable extends Migration
             $table->string('name', 255);
             $table->double('rating');
             $table->string('css_icon', 255);
+            $table->double('progress_value', 10);
 
             $table->timestamps();
 

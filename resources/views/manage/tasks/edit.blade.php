@@ -34,14 +34,16 @@
                         <p class="help is-danger">{{ $errors->first('description') }}</p>
                     @endif
                 </div>
-                <div class="field">
-                    <p class="control select">
-                        <select name="visibility">
-                            @foreach($visibilities as $entry)
-                                <option value="{{ $entry->id }}" {{ $entry->id === $task->visibility ? 'selected' : '' }}>{{ $entry->name }}</option>
-                            @endforeach
-                        </select>
-                    </p>
+                <div class="field is-grouped is-grouped-centered">
+                    <div class="field">
+                        <p class="control select">
+                            <select name="visibility">
+                                @foreach($visibilities as $entry)
+                                    <option value="{{ $entry->id }}" {{ $entry->id === $task->visibility ? 'selected' : '' }}>{{ $entry->name }}</option>
+                                @endforeach
+                            </select>
+                        </p>
+                    </div>
                 </div>
                 @if(\Laratrust::can('update-task'))
                     <div class="field">

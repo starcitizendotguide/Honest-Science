@@ -35,7 +35,7 @@
 
                 <div class="field is-grouped is-grouped-centered">
                     <div class="field">
-                        <label class="label">Status<label>
+                        <label class="label">Status</label>
                         <p class="control">
                             <div class="select">
                                 <select name="status">
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Visibility<label>
+                        <label class="label">Visibility</label>
                         <p class="control">
                             <div class="select">
                                 <select name="visibility">
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Type<label>
+                        <label class="label">Type</label>
                         <p class="control">
                             <div class="select">
                                 <select name="type">
@@ -87,7 +87,7 @@
                         @endif
                     </div>
                     <div class="field">
-                        <label class="label">Progress<label>
+                        <label class="label">Progress</label>
                         <p class="control">
                             <div>
                                 <input class="input" type="number" step=any name="progress" value="{{ old('progress', $task->progress * 100) }}">
