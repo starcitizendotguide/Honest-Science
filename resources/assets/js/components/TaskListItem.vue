@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <div :id="task.id" @click="triggerCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                <div :id="task.id" @click="triggerTaskCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media media-fix">
                         <div class="media-content">
                             <div class="content">
@@ -51,7 +51,7 @@
                                     </transition>
 
                                     <div class="progressbar">
-                                        <div :style="progressBarStyle(task.progress)"></div>
+                                        <div :style="progressBarStyle(task)"></div>
                                     </div>
 
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
@@ -66,7 +66,7 @@
                                 </div>
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
-                                        <div class="box highlighted-element" v-for="child in task.children">
+                                        <div :id="child.id" @click="triggerChildCollapse($event, child)" class="box highlighted-element" v-for="child in task.children">
                                             <article class="media media-fix">
                                                 <div class="media-content">
                                                     <div class="content">
@@ -119,10 +119,10 @@
 
                                 <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
 
-                                <p v-if="!meta.interactionBar.pages.isOverview" class="m-b-10">
+                                <span v-if="!meta.interactionBar.pages.isOverview" class="m-b-10 highlighted-text">
                                     <span class="icon is-small" @click="interactionBarSwitchPage('isOverview')"><i class="fa fa-chevron-left"></i></span>
                                     Go Back
-                                </p>
+                                </span>
                             </div>
 
                             <div v-if="meta.interactionBar.pages.isDefault">
@@ -131,12 +131,18 @@
 
                             <div v-if="meta.interactionBar.pages.isOverview">
                                 <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
-                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5">Share</a>
-                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">Sources</a>
+                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
+                                <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
+                                    Sources
+                                </a>
                             </div>
 
                             <div v-if="meta.interactionBar.pages.isComment">
                                 <div class="disquscard-content" id="disqus_thread"></div>
+                            </div>
+
+                            <div v-if="meta.interactionBar.pages.isShare">
+                                <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
                             </div>
 
                             <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
@@ -156,8 +162,8 @@
                                     </confirm-item>
                                 </ul>
                                 <span v-if="meta.interactionBar.task.sources.length == 0">
-                        No sources available.
-                    </span>
+                                    No sources available.
+                                </span>
                             </div>
 
                         </div>
@@ -196,6 +202,7 @@ export default {
                         isDefault: false,
                         isOverview: false,
                         isComment: false,
+                        isShare: false,
                         isSources: false,
                     },
                 },
@@ -205,7 +212,7 @@ export default {
         };
     },
     methods: {
-        progressBarStyle: function(progress) {
+        progressBarStyle: function(task) {
 
             var interpolate = function(p, colors) {
 
@@ -222,24 +229,36 @@ export default {
                 var b_y_1 = colors[x_1][2];
                 var b_y_2 = colors[x_2][2];
 
-                return [
+                var x = [
                     (r_y_1 + ((r_y_2 - r_y_1) / (x_2 - x_1)) * p),
                     (g_y_1 + ((g_y_2 - g_y_1) / (x_2 - x_1)) * p),
                     (b_y_1 + ((b_y_2 - b_y_1) / (x_2 - x_1)) * p),
                 ];
+
+                //console.log(p + ' -> (' + x[0] + ', ' + x[1] + ', ' + x[2] + ')');
+                //console.log(p + " -> x_1: " + x_1 + " | x_2: " + x_2);
+                return x;
             };
 
             var colors = [
-                [255,  56, 96],
-                [255, 221, 87],
-                [35 , 209, 96]
+                [226,172,165],
+                [132,131,131],
+                [226,207,165],
+                [216,226,165],
+                [182,226,165]
             ];
 
-            var color = interpolate(progress, colors);
+            var color = interpolate(task.progress, colors);
             return {
                 'background-color': 'rgba(' + color[0] + ', ' + color[1] + ', ' + color[2] + ', 1)',
-                'width': ((progress * 100) + '%'),
+                'width': ((task.progress * 100) + '%'),
             };
+
+            /*return {
+                'background-color': task.status.color,
+                'width': ((task.progress * 100) + '%'),
+            };*/
+
         },
         //--- Resets all the meta values. They are mainly used for the search function &
         //    the interaction bar.
@@ -274,14 +293,16 @@ export default {
         },
         //--- Called when the user clicks on the arrow next to a task to collapse it.
         //    It collapse all other tasks and resets or loads the interaction bar.
-        triggerCollapse(evt, task) {
+        triggerTaskCollapse(evt, task) {
+
+            var current_task = this.meta.interactionBar.task;
 
             var isIgnoringTriggerEvent = function(element) {
                 if(typeof element === 'undefined' || element === null) {
                     return false;
                 } else if(element.classList.contains('ignore-click')) {
                      return true;
-                 }
+                }
 
                 return isIgnoringTriggerEvent(element.parentElement);
             };
@@ -291,10 +312,22 @@ export default {
             }
 
             //--- Reset Collapse & Reset Interaction Bar
-            this.tasks.map(v => { if(v != task) v.collapsed = false;  });
+            if(
+                (current_task === null) ||
+                !(typeof current_task.standalone == 'undefined') ||
+                (
+                    (typeof current_task.standalone == 'undefined') &&
+                    (typeof task.standalone == 'undefined')
+                )
+            ) {
+                this.tasks.map(v => {
+                    if (v != task) v.collapsed = false;
+                });
 
-            //--- Collapse or uncollapse children
-            task.collapsed = !task.collapsed;
+                //--- Collapse or uncollapse children
+                task.collapsed = !task.collapsed;
+
+            }
 
             //--- Trigger
             if(task.collapsed === true) {
@@ -303,6 +336,11 @@ export default {
             } else {
                 this.resetInteractionBar();
             }
+        },
+        triggerChildCollapse(evt, child) {
+
+            this.meta.interactionBar.task = child;
+            this.interactionBarSwitchPage('isOverview');
 
         },
         //--- Resets the interaction bar to its default status.
@@ -320,7 +358,11 @@ export default {
                 this.meta.interactionBar.pages[page] = (page == name);
             }
 
-            this.meta.interactionBar.pageTitle = name.substr(2);
+            if(this.meta.interactionBar.task === null) {
+                this.meta.interactionBar.pageTitle = name.substr(2);
+            } else {
+                this.meta.interactionBar.pageTitle = (this.meta.interactionBar.task.name + ' - ' + name.substr(2));
+            }
         },
         //--- Loads the Disqus section for an task.
         interactionBarComments() {
@@ -331,11 +373,11 @@ export default {
                 return;
             }
 
-            this.interactionBarSwitchPage('isComment');
+            var IS_CHILD = (typeof task.standalone == 'undefined');
 
             var CONF_URL            = (location.protocol + '//' + window.location.hostname),
                 CONF_SHORTNAME      = 'star-citizen-honest-tracker',
-                CONF_IDENTIFIER     = task.id,
+                CONF_IDENTIFIER     = (task.id + '-' + (IS_CHILD ? 'child' : 'parent')),
                 CONF_TITLE          = (task.name + ' - Discussion');
 
             var id = CONF_IDENTIFIER,
@@ -362,7 +404,12 @@ export default {
                     }
                 });
             }
-         },
+
+            this.interactionBarSwitchPage('isComment');
+        },
+        interactionBarShare() {
+            this.interactionBarSwitchPage('isShare');
+        },
         interactionBarSources() {
             this.interactionBarSwitchPage('isSources');
         },

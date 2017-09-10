@@ -43,12 +43,6 @@ class TasksIndexResponse implements Responsable
                 'tasks.progress as taskProgress',
                 'tasks.type as taskType',
                 'tasks.updated_at as taskUpdatedAt',
-                //--- Type
-                'task_types.id as typeId',
-                'task_types.name as typeName',
-                'task_types.css_icon as typeCssIcon',
-                'task_types.created_at as typeCreatedAt',
-                'task_types.updated_at as typeUpdatedAt',
                 //--- Visibility
                 'visibility.id as visibilityId',
                 'visibility.name as visibilityName',
