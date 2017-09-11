@@ -458,11 +458,20 @@ export default {
         //    the user is currently looking for
         hasChildTypesActive(task) {
 
-            for(var key in task.children) {
-                for(var i = 0; i < this.meta.types.length; i++) {
-                    if(this.meta.types[i].id === task.children[key].type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
-                        return true;
-                    }
+            var activeTypes = [];
+
+            for(var childKey in task.children) {
+                for(var typeKey in task.children[childKey].types) {
+                    activeTypes.push(parseInt(task.children[childKey].types[typeKey].id));
+                }
+            }
+            activeTypes = activeTypes.filter(function(elem, index, self) {
+                return index == self.indexOf(elem);
+            });
+
+            for(var i = 0; i < this.meta.types.length; i++) {
+                if(activeTypes.includes(this.meta.types[i].id) && this.meta.types[i].css.button_classes['is-active'] === true) {
+                    return true;
                 }
             }
 
@@ -471,12 +480,17 @@ export default {
         },
         hasTaskTypesActive(task) {
 
-            if(task.type === null) {
+            if(task.types.length === 0) {
                 return false;
             }
 
+            var activeTypes = [];
+            for(var typeKey in task.types) {
+                activeTypes.push(parseInt(task.types[typeKey].id));
+            }
+
             for(var i = 0; i < this.meta.types.length; i++) {
-                if(this.meta.types[i].id === task.type.id && this.meta.types[i].css.button_classes['is-active'] === true) {
+                if(activeTypes.includes(this.meta.types[i].id) && this.meta.types[i].css.button_classes['is-active'] === true) {
                     return true;
                 }
             }
