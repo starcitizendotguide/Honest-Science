@@ -27,7 +27,7 @@ class TaskStatusSeeder extends Seeder
                 'name'  => 'Partially Released',
                 'rating'=> 4,
                 'value_min' => 0.5,
-                'value_max' => (1 - 0.1),
+                'value_max' => (1 - 0.01),
                 'css'   => [
                     'icon'  => 'fa fa-battery-3',
                 ]

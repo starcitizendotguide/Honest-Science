@@ -86,7 +86,7 @@
                                                                 <span class="icon is-small"><i :class="type.css_icon"></i></span>
                                                             </b-tooltip>
 
-                                                            <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                                            <span class="is-pulled-right">Last Updated: {{ child.updated_at_diff }}</span>
                                                         </div>
 
                                                     </div>
@@ -626,7 +626,7 @@ export default {
                 });
             });
 
-        axios.get(route('tasks.index'))
+        axios.get(route('tasks.sortedIndex'))
             .then(response => {
 
                 var data = response.data;

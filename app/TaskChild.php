@@ -44,15 +44,6 @@ class TaskChild extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function types() {
-        /**
-        @param  string  $related
-         * @param  string  $name
-         * @param  string  $table
-         * @param  string  $foreignPivotKey
-         * @param  string  $relatedPivotKey
-         * @param  string  $parentKey
-         * @param  string  $relatedKey
-         */
         return $this->belongsToMany('App\TaskType', 'task_children_types_map');
     }
 

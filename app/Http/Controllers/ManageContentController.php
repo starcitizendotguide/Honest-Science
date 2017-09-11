@@ -6,6 +6,7 @@ use App\Task;
 use App\TaskChild;
 use App\TaskStatus;
 use App\TaskType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ManageContentController extends Controller
@@ -307,7 +308,6 @@ class ManageContentController extends Controller
                 //--- Child
                 $child = TaskChild::findOrFail($id);
 
-
                 $child->name = $request->input('name');
                 $child->description = $request->input('description');
                 $child->status = $request->input('status');
@@ -324,8 +324,11 @@ class ManageContentController extends Controller
                     $child->progress = $progress;
                 }
 
-
+                $child->touch();
                 $child->save();
+
+                //--- Notify Parent
+                $child->parent()->first()->touch();
 
                 \Session::flash('flash', ('Update successfully executed!'));
             } else {
@@ -358,14 +361,19 @@ class ManageContentController extends Controller
 
             $status = TaskStatus::find($request->input('status'));
 
+            $parent = Task::find($request->input('parent'));
+
             //--- Store
             $child = new TaskChild;
-            $child->task_id = $request->input('parent');
+            $child->task_id = $parent->id;
             $child->name = $request->input('name');
             $child->description = $request->input('description');
             $child->status = $request->input('status');
             $child->progress = $status->value_min;
             $child->save();
+
+            $parent->updated_at = Carbon::now()->getTimestamp();
+            $parent->save(['timestamps' => true]);
 
             $child->types()->sync(array_map('intval', $request->input('types')));
 

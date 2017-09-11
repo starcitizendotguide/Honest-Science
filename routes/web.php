@@ -180,8 +180,8 @@ Route::group(['prefix' => 'api/v1'], function() {
 
             Route::get('/', 'TasksController@index')
                     ->name('tasks.index');
-            Route::get('/p/{page}/{size}', 'TasksController@paginatedIndex')
-                    ->name('tasks.paginatedIndex');
+            Route::get('/sorted', 'TasksController@sortedIndex')
+                    ->name('tasks.sortedIndex');
             Route::get('/{id}', 'TasksController@show')
                     ->name('tasks.show');
 

@@ -25,16 +25,14 @@ class TasksController extends Controller
     }
 
     /**
-     * A specific page out of all items.
+     * A list of all tasks and their children the user can see sorted by (desc) their parents updated_at timestamp.
      *
-     * @param $page The page.
-     * @param $size The amount of Tasks you want.
      * @return TasksIndexResponse
      */
-    public function paginatedIndex($page, $size)
+    public function sortedIndex()
     {
 
-        return new TasksIndexResponse($page, $size, true);
+        return new TasksIndexResponse(-1, -1, true);
 
     }
 
