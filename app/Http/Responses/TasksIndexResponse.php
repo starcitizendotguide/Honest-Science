@@ -9,7 +9,9 @@
 namespace App\Http\Responses;
 
 use Carbon\Carbon;
+use DB;
 use Illuminate\Contracts\Support\Responsable;
+use Laratrust;
 
 class TasksIndexResponse implements Responsable
 {
@@ -26,8 +28,7 @@ class TasksIndexResponse implements Responsable
     }
 
     public function toResponse($request) {
-        $tasks = \DB::table('tasks')
-            ->leftJoin('task_types', 'tasks.type', '=', 'task_types.id')
+        $tasks = DB::table('tasks')
             ->leftJoin('visibility', 'tasks.visibility', '=', 'visibility.id')
             ->leftJoin('task_children', 'tasks.id', '=', 'task_children.task_id')
             ->select(
@@ -41,7 +42,6 @@ class TasksIndexResponse implements Responsable
                 'tasks.verified as taskVerified',
                 'tasks.status as taskStatus',
                 'tasks.progress as taskProgress',
-                'tasks.type as taskType',
                 'tasks.updated_at as taskUpdatedAt',
                 //--- Visibility
                 'visibility.id as visibilityId',
@@ -53,22 +53,21 @@ class TasksIndexResponse implements Responsable
                 'task_children.name as childName',
                 'task_children.description as childDescription',
                 'task_children.status as childStatus',
-                'task_children.type as childType',
                 'task_children.progress as childProgress',
                 'task_children.created_at as childCreatedAt',
                 'task_children.updated_at as childUpdatedAt'
-            );
+            )->get();
 
+        $task_types_map = DB::table('task_types_map')->select('*')->get();
+        $task_children_types_map = DB::table('task_children_types_map')->select('*')->get();
 
-        $tasks = $tasks->get();
-
-        $types = \DB::table('task_types')->select('*')->get();
-        $statuses = \DB::table('task_statuses')->select('*')->get();
-        $sources = \DB::table('task_sources')->select('*')->get();
+        $types = DB::table('task_types')->select('*')->get();
+        $statuses = DB::table('task_statuses')->select('*')->get();
+        $sources = DB::table('task_sources')->select('*')->get();
 
         $computed = [];
 
-        $canReadTask = \Laratrust::can('read-task');
+        $canReadTask = Laratrust::can('read-task');
 
         foreach($tasks as $entry) {
 
@@ -83,16 +82,27 @@ class TasksIndexResponse implements Responsable
             }
 
             $found = array_key_exists($entry->taskId, $computed);
+
             //--- Add a child
             if($found) {
+
+                //--- Status
                 $childStatus = $statuses->get($entry->childStatus);
+
+                //--- Types
+                $_types = $task_children_types_map->where('task_child_id', $entry->childId);
+                $_types_array = [];
+                foreach($_types as $_type) {
+                    $_types_array[] = $types->where('id', $_type->task_type_id)->first();
+                }
+
                 $computed[$entry->taskId]['children'][] = [
                     'id'            => $entry->childId,
                     'name'          => $entry->childName,
                     'description'   => $entry->childDescription,
                     'progress'      => $entry->childProgress,
                     'status'        => $childStatus,
-                    'type'          => $types->where('id', $entry->childType)->first(),
+                    'types'         => $_types_array,
                     'sources'       => $sources->where('parent_id', $entry->childId),
                     'created_at'    => $entry->childCreatedAt,
                     'updated_at'    => $entry->childUpdatedAt,
@@ -108,7 +118,16 @@ class TasksIndexResponse implements Responsable
 
                 //--- If it is not standalone it has children
                 if((bool) $entry->taskStandalone === false) {
+
+                    //--- Status
                     $childStatus = $statuses->get($entry->childStatus);
+
+                    //--- Types
+                    $_types = $task_children_types_map->where('task_child_id', $entry->childId);
+                    $_types_array = [];
+                    foreach($_types as $_type) {
+                        $_types_array[] = $types->where('id', $_type->task_type_id)->first();
+                    }
 
                     $_children[] = [
                         'id'            => $entry->childId,
@@ -116,7 +135,7 @@ class TasksIndexResponse implements Responsable
                         'description'   => $entry->childDescription,
                         'progress'      => $entry->childProgress,
                         'status'        => $childStatus,
-                        'type'          => $types->where('id', $entry->childType)->first(),
+                        'types'         => $_types_array,
                         'sources'       => $sources->where('parent_id', $entry->childId),
                         'created_at'    => $entry->childCreatedAt,
                         'updated_at'    => $entry->childUpdatedAt,
@@ -128,6 +147,13 @@ class TasksIndexResponse implements Responsable
                     $_sources = $sources->where('parent_id', $entry->taskId);
                 }
 
+                //--- Types
+                $_types = $task_types_map->where('task_id', $entry->taskId);
+                $_types_array = [];
+                foreach($_types as $_type) {
+                    $_types_array[] = $types->where('id', $_type->task_type_id)->first();
+                }
+
                 $model = [
                     'id'            => $entry->taskId,
                     'name'          => $entry->taskName,
@@ -135,7 +161,7 @@ class TasksIndexResponse implements Responsable
                     'standalone'    => (bool) $entry->taskStandalone,
                     'verified'      => (bool) $entry->taskVerified,
                     'status'        => $statuses->where('id', $entry->taskStatus)->first(),
-                    'type'          => $types->where('id', $entry->taskType)->first(),
+                    'types'         => $_types_array,
                     'progress'      => $entry->taskProgress,
                     'visibility'    => [
                         'id'            => $entry->visibilityId,

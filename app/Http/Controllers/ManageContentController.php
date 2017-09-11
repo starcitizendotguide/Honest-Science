@@ -188,7 +188,7 @@ class ManageContentController extends Controller
                 $task->description = $request->input('description');
                 $task->status = $request->input('status');
                 $task->visibility = $request->input('visibility');
-                $task->type = $request->input('type');
+                $task->types()->sync(array_map('intval', $request->input('types')));
 
                 $status = TaskStatus::find($request->input('status'));
                 $progress = ($request->input('progress') / 100);
@@ -209,10 +209,11 @@ class ManageContentController extends Controller
         }
 
         return view('manage.tasks.standalone.edit', [
-            'task'      => $task,
-            'statuses'  => TaskStatus::all(),
-            'types'     => TaskType::all(),
+            'task'          => $task,
+            'statuses'      => TaskStatus::all(),
+            'types'         => TaskType::all(),
             'visibilities'  => \App\Visibility::all(),
+            'selected_types'=> $task->types
         ]);
     }
 
@@ -236,7 +237,6 @@ class ManageContentController extends Controller
             $task->name = $request->input('name');
             $task->description = $request->input('description');
             $task->status = $request->input('status');
-            $task->type = $request->input('type');
             $task->progress = $status->value_min;
             $task->standalone = true;
 
@@ -246,6 +246,8 @@ class ManageContentController extends Controller
             }
 
             $task->save();
+
+            $task->types()->sync(array_map('intval', $request->input('types')));
 
             \Session::flash('flash', ('You successfully added a new standalone task.'));
 
@@ -302,14 +304,16 @@ class ManageContentController extends Controller
                 //--- Validate
                 $this->validateChildEdit($request);
 
+                //--- Child
                 $child = TaskChild::findOrFail($id);
 
 
                 $child->name = $request->input('name');
                 $child->description = $request->input('description');
                 $child->status = $request->input('status');
-                $child->type = $request->input('type');
+                $child->types()->sync(array_map('intval', $request->input('types')));
 
+                //--- Progress & Status
                 $progress = ($request->input('progress') / 100);
                 $status = TaskStatus::find($request->input('status'));
                 if ($progress < $status->value_min) {
@@ -331,10 +335,11 @@ class ManageContentController extends Controller
         }
 
         return view('manage.child.edit', [
-            'child'     => $child,
-            'parent'    => $child->parent()->first(),
-            'statuses'  => TaskStatus::all(),
-            'types'     => TaskType::all()
+            'child'         => $child,
+            'parent'        => $child->parent()->first(),
+            'statuses'      => TaskStatus::all(),
+            'types'         => TaskType::all(),
+            'selected_types' => $child->types
         ]);
 
     }
@@ -359,9 +364,10 @@ class ManageContentController extends Controller
             $child->name = $request->input('name');
             $child->description = $request->input('description');
             $child->status = $request->input('status');
-            $child->type = $request->input('type');
             $child->progress = $status->value_min;
             $child->save();
+
+            $child->types()->sync(array_map('intval', $request->input('types')));
 
             \Session::flash('flash', ('You successfully added a child.'));
             return redirect()->route('manage.content.child.edit', ['id' => $child->id]);
@@ -651,7 +657,7 @@ class ManageContentController extends Controller
      *
      * @param $request
      */
-    public function validateChildEdit($request) {
+    public function validateChildEdit(Request $request) {
 
         $status = null;
 
@@ -663,9 +669,9 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
-            'type'          => 'required',
-            'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
+            'types'         => 'required|array|min:1',
             'status'        => 'required',
+            'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
         ]);
     }
 
@@ -679,7 +685,7 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
-            'type'          => 'required',
+            'types'         => 'required|array|min:1',
         ]);
     }
 
@@ -693,7 +699,7 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
-            'type'          => 'required',
+            'types'         => 'required|array|min:1',
         ]);
     }
 
@@ -714,8 +720,8 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
-            'type'          => 'required',
             'status'        => 'required',
+            'types'         => 'required|array|min:1',
             'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
         ]);
     }

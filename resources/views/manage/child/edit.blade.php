@@ -36,7 +36,7 @@
 
                 <div class="field is-grouped is-grouped-centered">
                     <div class="field">
-                        <label class="label">Status<label>
+                        <label class="label">Status</label>
                         <p class="control">
                             <div class="select">
                                 <select name="status">
@@ -56,12 +56,12 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Type<label>
+                        <label class="label">Types</label>
                         <p class="control">
-                            <div class="select">
-                                <select name="type">
+                            <div class="select is-multiple">
+                                <select multiple name="types[]">
                                     @foreach ($types as $type)
-                                        @if (old('type', $child->type) == $type->id)
+                                        @if ($selected_types->where('id', $type->id)->isNotEmpty())
                                               <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
                                         @else
                                               <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -70,13 +70,13 @@
                                 </select>
                             </div>
                         </p>
-                        @if ($errors->has('type'))
-                            <p class="help is-danger">{{ $errors->first('type') }}</p>
+                        @if ($errors->has('types'))
+                            <p class="help is-danger">{{ $errors->first('types') }}</p>
                         @endif
                     </div>
 
                     <div class="field">
-                        <label class="label">Progress<label>
+                        <label class="label">Progress</label>
                         <p class="control">
                             <div>
                                 <input class="input" type="number" step=any name="progress" value="{{ old('progress', $child->progress * 100) }}">

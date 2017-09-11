@@ -116,7 +116,6 @@ class TasksSeeder extends Seeder
                     $tmp->description = $child['description'];
                     $tmp->status = $child['status'];
                     $tmp->progress = $child['progress'];
-                    $tmp->type = $child['type'];
                     $tmp->save();
 
                     if(isset($child['sources'])) {

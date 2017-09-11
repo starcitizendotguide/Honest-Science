@@ -23,7 +23,6 @@ class CreateTasksChildrenTable extends Migration
             $table->text('description');
 
             $table->integer('status');
-            $table->integer('type');
             $table->double('progress');
 
             $table->timestamps();

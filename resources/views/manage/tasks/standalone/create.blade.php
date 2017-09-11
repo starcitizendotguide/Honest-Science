@@ -48,16 +48,12 @@
             </div>
 
             <div class="field">
-                <label class="label">Type</label>
+                <label class="label">Types</label>
                 <p class="control">
-                    <div class="select">
-                        <select name="type">
+                    <div class="select is-multiple">
+                        <select multiple name="types[]">
                             @foreach ($types as $type)
-                                @if (old('type') == $type->id)
-                                      <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
-                                @else
-                                      <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                @endif
+                                <option value="{{ $type->id }}">{{ $type->name }}</option>
                             @endforeach
                         </select>
                     </div>

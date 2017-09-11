@@ -19,10 +19,6 @@
                 {{ props.row.status.name }}
             </b-table-column>
 
-            <b-table-column field="type.id" label="Type" sortable>
-                {{ props.row.type.name }}
-            </b-table-column>
-
             <b-table-column field="description" label="Description" width="400" >
                 {{ props.row.description | truncate(50) }}
             </b-table-column>
@@ -49,8 +45,7 @@
                     negative="Cancel"
                     :url="props.row.delete_url"
                     theme="is-danger"
-                    width=480
-                >
+                    width=480>
                     <span><i class="fa fa-trash"></i></span>
                 </confirm-item>
                 <span v-if="!permissions.canEdit && !permissions.canDelete">-</span>

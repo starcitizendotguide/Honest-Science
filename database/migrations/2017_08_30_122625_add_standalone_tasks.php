@@ -17,7 +17,6 @@ class AddStandaloneTasks extends Migration
 
             $table->boolean('standalone')->default(false);
             $table->integer('status')->nullable();
-            $table->integer('type')->nullable();
             $table->double('progress')->nullable();
 
         });
@@ -34,7 +33,6 @@ class AddStandaloneTasks extends Migration
 
             $table->dropColumn('standalone');
             $table->dropColumn('status');
-            $table->dropColumn('type');
             $table->dropColumn('progress');
 
         });

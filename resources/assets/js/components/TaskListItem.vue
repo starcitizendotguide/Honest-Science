@@ -58,8 +58,8 @@
                                         <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
                                             <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
                                         </b-tooltip>
-                                        <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
-                                            <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
+                                        <b-tooltip v-if="task.standalone" v-for="type in task.types" :key="type.id" :label="type.name" type="is-dark" square dashed animated>
+                                            <span class="icon is-small"><i :class="type.css_icon"></i></span>
                                         </b-tooltip>
 
                                         <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
@@ -82,8 +82,8 @@
                                                             <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
                                                                 <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
                                                             </b-tooltip>
-                                                            <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
-                                                                <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
+                                                            <b-tooltip v-for="type in child.types" :key="type.id" :label="type.name" type="is-dark" square dashed animated>
+                                                                <span class="icon is-small"><i :class="type.css_icon"></i></span>
                                                             </b-tooltip>
 
                                                             <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>

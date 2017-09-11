@@ -83,7 +83,7 @@ class TasksController extends Controller
         $data['visibility']     = $task->visibility()->first();
         $data['sources']        = $task->sources;
         $data['status']         = $task->status()->first();
-        $data['type']           = $task->type();
+        $data['types']           = $task->types;
         $data['progress']       = ($task->standalone === true ? $task->progress : 0);
 
         $data['created_at']     = $task->created_at;
@@ -109,7 +109,7 @@ class TasksController extends Controller
                     'description'   => $child->description,
                     'status'        => $child->status()->first(),
                     'progress'      => $child->progress,
-                    'type'          => $child->type()->first(),
+                    'types'          => $child->types,
 
                     'sources'       => $child->sources()->get(),
 

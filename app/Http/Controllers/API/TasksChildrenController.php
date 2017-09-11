@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
+use App\TaskChild;
 use Illuminate\Http\Request;
+use Laratrust;
 
 class TasksChildrenController extends Controller
 {
@@ -14,13 +17,13 @@ class TasksChildrenController extends Controller
      */
     public function index() {
 
-        $children = \App\TaskChild::all();
+        $children = TaskChild::all();
 
         $data = collect([]);
 
         foreach ($children as $child) {
 
-            if($child->parent->visibility < 0 && !\Laratrust::can('read-child')) {
+            if($child->parent->visibility < 0 && !Laratrust::can('read-child')) {
                 continue;
             }
 
@@ -28,7 +31,7 @@ class TasksChildrenController extends Controller
             $tmp['id']          = $child->id;
             $tmp['name']        = $child->name;
             $tmp['progress']    = $child->progress;
-            $tmp['type']        = $child->type;
+            $tmp['types']       = $child->types;
             $tmp['description'] = $child->description;
             $tmp['status']      = $child->status()->first();
             $tmp['parent']      = $child->parent();
@@ -56,23 +59,23 @@ class TasksChildrenController extends Controller
         $data['id']             = null;
         $data['name']           = null;
         $data['progress']       = 0;
-        $data['type']           = null;
+        $data['types']          = null;
         $data['description']    = null;
         $data['status']         = null;
         $data['parent']         = null;
         $data['created_at']     = null;
         $data['updated_at']     = null;
 
-        if(!\Laratrust::can('read-child')) {
+        if(!Laratrust::can('read-child')) {
             return [];
         }
 
-        $child = \App\TaskChild::find('id', '=', $id);
+        $child = TaskChild::find('id', '=', $id);
 
         $data['id']             = $child->id;
         $data['name']           = $child->name;
         $data['progress']       = $child->progress;
-        $data['type']           = $child->type()->first();
+        $data['types']           = $child->types;
         $data['description']    = $child->description;
         $data['status']         = $child->status()->first();
         $data['parent']         = $child->parent()->first();
@@ -90,7 +93,7 @@ class TasksChildrenController extends Controller
      */
     public function task($task_id) {
 
-        $children = \App\TaskChild::where('task_id', $task_id);
+        $children = TaskChild::where('task_id', $task_id);
 
         $children = $children->get();
         $data = collect([]);
@@ -101,7 +104,7 @@ class TasksChildrenController extends Controller
             $tmp['id']          = $child->id;
             $tmp['name']        = $child->name;
             $tmp['progress']    = $child->progress;
-            $tmp['type']        = $child->type()->first();
+            $tmp['types']        = $child->types;
             $tmp['description'] = $child->description;
             $tmp['status']      = $child->status()->first();
             $tmp['created_at']  = $child->created_at;
@@ -124,9 +127,9 @@ class TasksChildrenController extends Controller
      */
     public function sources($id, $standalone) {
         if(strtolower($standalone) == 'true') {
-            return \App\Task::find($id)->sources()->get();
+            return Task::find($id)->sources()->get();
         } else {
-            return \App\TaskChild::find($id)->sources()->get();
+            return TaskChild::find($id)->sources()->get();
         }
     }
 

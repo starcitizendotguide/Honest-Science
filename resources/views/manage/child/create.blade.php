@@ -50,22 +50,18 @@
             </div>
 
             <div class="field">
-                <label class="label">Type</label>
+                <label class="label">Types</label>
                 <p class="control">
-                    <div class="select">
-                        <select name="type">
-                            @foreach ($types as $type)
-                                @if (old('type') == $type->id)
-                                      <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
-                                @else
-                                      <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="select is-multiple">
+                    <select multiple name="types[]">
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 </p>
-                @if ($errors->has('type'))
-                    <p class="help is-danger">{{ $errors->first('type') }}</p>
+                @if ($errors->has('types'))
+                    <p class="help is-danger">{{ $errors->first('types') }}</p>
                 @endif
             </div>
 

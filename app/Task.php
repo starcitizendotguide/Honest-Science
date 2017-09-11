@@ -14,7 +14,6 @@ class Task extends Model
         'description',
         'visibility',
         'status',
-        'type',
         'progress',
         'standalone'
     ];
@@ -52,8 +51,17 @@ class Task extends Model
      *
      * @return mixed
      */
-    public function type() {
-        return $this->hasOne('App\TaskType', 'id', 'type')->first();
+    public function types() {
+        /**
+        @param  string  $related
+         * @param  string  $name
+         * @param  string  $table
+         * @param  string  $foreignPivotKey
+         * @param  string  $relatedPivotKey
+         * @param  string  $parentKey
+         * @param  string  $relatedKey
+         */
+        return $this->belongsToMany('App\TaskType', 'task_types_map');
     }
 
     /**

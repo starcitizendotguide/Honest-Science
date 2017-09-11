@@ -13,7 +13,6 @@ class TaskChild extends Model
         'description',
         'status',
         'progress',
-        'type'
     ];
 
     protected $dates = [
@@ -40,12 +39,21 @@ class TaskChild extends Model
     }
 
     /**
-     * The type of the child
+     * The types of the child
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function type() {
-        return $this->hasOne('App\TaskType', 'id', 'type');
+    public function types() {
+        /**
+        @param  string  $related
+         * @param  string  $name
+         * @param  string  $table
+         * @param  string  $foreignPivotKey
+         * @param  string  $relatedPivotKey
+         * @param  string  $parentKey
+         * @param  string  $relatedKey
+         */
+        return $this->belongsToMany('App\TaskType', 'task_children_types_map');
     }
 
     /**

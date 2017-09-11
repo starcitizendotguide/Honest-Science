@@ -68,15 +68,15 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Type</label>
+                        <label class="label">Types</label>
                         <p class="control">
-                            <div class="select">
-                                <select name="type">
+                            <div class="select is-multiple">
+                                <select multiple name="types[]">
                                     @foreach ($types as $type)
-                                        @if (old('type', $task->type) == $type->id)
-                                              <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
+                                        @if ($selected_types->where('id', $type->id)->isNotEmpty())
+                                            <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
                                         @else
-                                              <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
