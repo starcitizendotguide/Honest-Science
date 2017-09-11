@@ -69,7 +69,7 @@
                                 </div>
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
-                                        <div :id="child.id" @click="triggerChildCollapse($event, child)" class="box highlighted-element" v-for="child in task.children">
+                                        <div :id="child.id" @click="triggerChildCollapse($event, child)" class="box highlighted-element" :class="{'is-active': isChildSelected(child)}" v-for="child in task.children">
                                             <article class="media media-fix">
                                                 <div class="media-content">
                                                     <div class="content">
@@ -223,6 +223,14 @@ export default {
         };
     },
     methods: {
+        isChildSelected(child) {
+            var _t = this.meta.interactionBar.task;
+            return (
+                !(_t === null) &&
+                (typeof _t.standalone == 'undefined') &&
+                _t.id === child.id
+            );
+        },
         progressBarStyle: function(task) {
 
             var interpolate = function(p, colors) {
