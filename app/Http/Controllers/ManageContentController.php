@@ -192,8 +192,10 @@ class ManageContentController extends Controller
 
                 $status = TaskStatus::find($request->input('status'));
                 $progress = ($request->input('progress') / 100);
-                if($progress < $status->progress_value) {
-                    $task->progress = $status->progress_value;
+                if ($progress < $status->value_min) {
+                    $task->progress = $status->value_min;
+                } else if ($task->progress > $status->value_max) {
+                    $task->progress = $status->value_max;
                 } else {
                     $task->progress = $progress;
                 }
@@ -235,7 +237,7 @@ class ManageContentController extends Controller
             $task->description = $request->input('description');
             $task->status = $request->input('status');
             $task->type = $request->input('type');
-            $task->progress = $status->progress_value;
+            $task->progress = $status->value_min;
             $task->standalone = true;
 
 
@@ -310,8 +312,10 @@ class ManageContentController extends Controller
 
                 $progress = ($request->input('progress') / 100);
                 $status = TaskStatus::find($request->input('status'));
-                if($progress < $status->progress_value) {
-                    $child->progress = $status->progress_value;
+                if ($progress < $status->value_min) {
+                    $child->progress = $status->value_min;
+                } else if ($progress > $status->value_max) {
+                    $child->progress = $status->value_max;
                 } else {
                     $child->progress = $progress;
                 }
@@ -356,7 +360,7 @@ class ManageContentController extends Controller
             $child->description = $request->input('description');
             $child->status = $request->input('status');
             $child->type = $request->input('type');
-            $child->progress = $status->progress_value;
+            $child->progress = $status->value_min;
             $child->save();
 
             \Session::flash('flash', ('You successfully added a child.'));
@@ -648,12 +652,19 @@ class ManageContentController extends Controller
      * @param $request
      */
     public function validateChildEdit($request) {
+
+        $status = null;
+
+        if($request->has('status')) {
+            $status = TaskStatus::find($request->get('status'));
+        }
+
         //--- Validate
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
             'type'          => 'required',
-            'progress'      => 'required|numeric|between:0,100',
+            'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
             'status'        => 'required',
         ]);
     }
@@ -692,12 +703,20 @@ class ManageContentController extends Controller
      * @param $request
      */
     public function validateStandaloneTaskEdit($request) {
+
+        $status = null;
+
+        if($request->has('status')) {
+            $status = TaskStatus::find($request->get('status'));
+        }
+
         //--- Validate
         $this->validate($request, [
             'name'          => 'required|min:5',
             'description'   => 'required|min:30',
-            'progress'      => '|numeric|min:0|max:100',
             'type'          => 'required',
+            'status'        => 'required',
+            'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
         ]);
     }
 

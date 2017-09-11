@@ -54,14 +54,17 @@
                                         <div :style="progressBarStyle(task)"></div>
                                     </div>
 
-                                    <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
-                                    </b-tooltip>
-                                    <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
-                                        <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
-                                    </b-tooltip>
+                                    <div class="m-t-10">
+                                        <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
+                                            <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
+                                        </b-tooltip>
+                                        <b-tooltip v-if="task.standalone" :label="task.type.name" type="is-dark" square dashed animated>
+                                            <span class="icon is-small"><i :class="task.type.css_icon"></i></span>
+                                        </b-tooltip>
 
-                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                    </div>
+
 
                                 </div>
                                 <transition name="fade">
@@ -75,14 +78,16 @@
                                                         <span class="is-muted">{{ child.description }}</span>
                                                         <br />
 
-                                                        <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
-                                                        </b-tooltip>
-                                                        <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
-                                                            <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
-                                                        </b-tooltip>
+                                                        <div class="m-t-10">
+                                                            <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
+                                                                <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
+                                                            </b-tooltip>
+                                                            <b-tooltip :label="child.type.name" type="is-dark" square dashed animated>
+                                                                <span class="icon is-small"><i :class="child.type.css_icon"></i></span>
+                                                            </b-tooltip>
 
-                                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                                            <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -137,7 +142,9 @@
                                 </a>
                             </div>
 
-                            <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment"></div>
+                            <div v-if="meta.interactionBar.pages.isComment">
+                                <div id="disqus_thread"></div>
+                            </div>
 
                             <div v-if="meta.interactionBar.pages.isShare">
                                 <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
@@ -190,6 +197,9 @@ export default {
                 disabled: false,
                 page: 0,
                 size: 5,
+            },
+            disqus: {
+                loaded: false,
             },
             meta: {
                 search: '',
@@ -363,42 +373,51 @@ export default {
         //--- Loads the Disqus section for an task.
         interactionBarComments() {
 
+            // the "article"
             var task = this.meta.interactionBar.task;
 
             if(task === null || task === undefined) {
                 return;
             }
 
-            this.meta.interactionBar.content.comment = '<div class="disquscard-content" id="disqus_thread"></div>';
-
+            // irrelevant
             var IS_CHILD = (typeof task.standalone == 'undefined');
 
+            // Disqus Config
             var CONF_URL            = (location.protocol + '//' + window.location.hostname),
                 CONF_SHORTNAME      = 'star-citizen-honest-tracker',
                 CONF_IDENTIFIER     = (task.id + '-' + (IS_CHILD ? 'child' : 'parent')),
                 CONF_TITLE          = (task.name + ' - Discussion');
 
-            var id = CONF_IDENTIFIER,
-            disqus_shortname = CONF_SHORTNAME,
-            disqus_identifier = id,
-            disqus_title = CONF_TITLE,
-            disqus_url = (CONF_URL + "/#!" + id);
+            var disqus_developer    = true;
+            var disqus_shortname    = CONF_SHORTNAME;
+            var disqus_identifier   = CONF_IDENTIFIER;
+            var disqus_title        = CONF_TITLE;
+            var disqus_url          = (CONF_URL + "/#!" + CONF_IDENTIFIER);
 
-            if(typeof DISQUS === 'undefined') {
-                (function() {  // DON'T EDIT BELOW THIS LINE
+            // Resetting the area the comments are located in
+            if(this.disqus.loaded === false) {
+
+                // Loading Disqus for the first time
+
+                this.disqus.loaded = true;
+                (function () {  // DON'T EDIT BELOW THIS LINE
                     var d = document, s = d.createElement('script');
 
                     s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
-                    s.setAttribute('data-timestamp', + new Date());
-                    (d.head || d.body).appendChild(s);
 
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
                 })();
+
             } else {
+
+                // Trying to reset Disqus causes the error
                 DISQUS.reset({
                     reload: true,
                     config: function () {
-                        this.page.identifier = id;
-                        this.page.url = disqus_url;
+                        this.page.identifier = disqus_identifier.toString();
+                        this.page.url = url;
                     }
                 });
             }

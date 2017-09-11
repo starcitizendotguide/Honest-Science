@@ -16,7 +16,8 @@ class TaskStatus extends Model
         'rating',
         'css_class',
         'css_icon',
-        'progress_value'
+        'value_min',
+        'value_max'
     ];
 
     protected $dates = [
