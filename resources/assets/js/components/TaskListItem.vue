@@ -736,7 +736,6 @@ export default {
                             }
 
                             var _p = parseFloat((item.progress * 100).toFixed(2));
-                            console.log(_p + "=" + _value + ' -> ' + (_p == _value));
 
                             if(_operator === "=" && _p ===_value) {
                                 return item;
