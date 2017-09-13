@@ -1,9 +1,9 @@
 <nav class="nav nav-modified has-shadow">
     <div class="container">
         <div class="nav-left">
-            <a href="{{ route('home.index') }}" class="nav-item is-tab is-hidden-mobile m-l-10">Home</a>
-            <a href="#" class="nav-item is-tab is-hidden-mobile">About</a>
-            <a href="#" class="nav-item is-tab is-hidden-mobile">FAQ</a>
+            <a href="{{ route('home.index') }}" class="nav-item is-hidden-mobile m-l-10">Home</a>
+            <a href="#" class="nav-item is-hidden-mobile">About</a>
+            <a href="#" class="nav-item is-hidden-mobile">FAQ</a>
         </div>
 
         <div class="nav-right" style="overflow: visible;">

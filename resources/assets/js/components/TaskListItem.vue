@@ -2,7 +2,8 @@
     <div class="columns">
         <div class="column is-offset-1 is-7">
             <div id="task-list" class="task-list">
-                <div class="field is-grouped">
+
+                <div class="field is-grouped is-hidden-touch">
                     <b-tooltip
                             :label="meta.search_error"
                             :always="meta.search_error.length > 0"
@@ -29,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="field is-grouped">
+                <div class="field is-grouped is-hidden-touch">
                     <div class="field has-addons control">
                         <p class="control" v-for="type in meta.types">
                             <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" >
@@ -127,7 +128,7 @@
         </div>
 
         <!-- Interaction Bar -->
-        <div class="interaction-bar container">
+        <div class="interaction-bar container is-hidden-touch">
             <div id="interactionBar" class="bar-content">
 
                 <div class="column is-3 m-t-100">
@@ -137,7 +138,7 @@
 
                             <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
 
-                            <span @click="interactionBarSwitchPage('isOverview')" v-if="!meta.interactionBar.pages.isOverview" class="m-b-10 highlighted-text">
+                            <span @click="interactionBarSwitchPage('isOverview')" v-if="!meta.interactionBar.pages.isOverview" class="m-b-10 clickable">
                                 <span class="icon is-small"><i class="fa fa-chevron-left"></i></span>
                                 Go Back
                             </span>
