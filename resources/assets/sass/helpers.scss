@@ -1,4 +1,4 @@
-$spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 90, 100); // Adjust this to include the pixel amounts you need.
+$spaceamounts: (1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 90, 100); // Adjust this to include the pixel amounts you need.
 $sides: (top, bottom, left, right); // Leave this variable alone
 
 @each $space in $spaceamounts {
@@ -24,9 +24,9 @@ $sides: (top, bottom, left, right); // Leave this variable alone
 }
 
 .seperator {
-      margin: 2px 0;
-      width: 100%;
-      border-top: 1px solid #ccc;
+    margin: 2px 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
 }
 
 .is-muted {
@@ -36,4 +36,9 @@ $sides: (top, bottom, left, right); // Leave this variable alone
     a:hover {
         color: gray;
     }
+}
+
+.is-icon-size {
+  font-size: 15px !important;
+  width: 1rem;
 }

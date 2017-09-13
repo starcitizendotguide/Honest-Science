@@ -1,10 +1,16 @@
 <template>
     <div class="columns">
         <div class="column is-offset-1 is-7">
-            <div class="task-list">
+            <div id="task-list" class="task-list">
                 <div class="field is-grouped">
                     <p class="control">
-                        <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
+                        <b-tooltip
+                                :label="meta.search_error"
+                                :always="meta.search_error.length > 0"
+                                multilined
+                                type="is-danger">
+                            <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
+                        </b-tooltip>
                     </p>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
@@ -20,75 +26,75 @@
                     <div class="field has-addons control">
                         <p class="control" v-for="type in meta.types">
                             <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" >
-                               <span class="icon is-small"><i :class="type.css.icon"></i></span>
-                               <span>{{ type.name }}</span>
-                           </a>
+                                <span class="icon is-small"><i :class="type.css.icon"></i></span>
+                                <span>{{ type.name }}</span>
+                            </a>
                         </p>
                     </div>
 
-                    <p class="control is-pulled-right">
-                        <a v-on:click="resetMeta" class="button highlighted-element highlighted-text">
+                    <p v-on:click="resetMeta" class="control is-pulled-right">
+                        <a class="button highlighted-element highlighted-text">
                             <span class="icon is-small"><i class="fa fa-undo"></i></span>
                             <span>Reset</span>
                         </a>
                     </p>
                 </div>
 
-                <div :id="task.id" @click="triggerTaskCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
+                <div :id="'task-' + task.id" @click="triggerTaskCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media media-fix">
                         <div class="media-content">
                             <div class="content">
                                 <div class="m-b-10">
                                     <strong>{{ task.name }}</strong>
 
-                                    <span>
-                                        <i class="fa is-focused is-pulled-right" v-bind:class="{ 'fa-arrow-right': !task.collapsed, 'fa-arrow-down': task.collapsed }"></i>
-                                    </span>
-
-                                    <p class="is-muted" v-if="!task.collapsed">{{ task.description | truncate(120) }}</p>
+                                    <p class="description-color" v-if="!task.collapsed && task.description.length > 120">{{ task.description | truncate(120) }}</p>
                                     <transition name="fade">
-                                        <p class="is-muted" v-if="task.collapsed">{{ task.description }}</p>
+                                        <p class="description-color" v-if="task.collapsed || task.description.length <= 120">{{ task.description }}</p>
                                     </transition>
 
                                     <div class="progressbar">
                                         <div :style="progressBarStyle(task)"></div>
                                     </div>
 
-                                    <div class="m-t-10">
-                                        <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                            <span class="icon is-small"><i :class="task.status.css_icon"></i></span>
-                                        </b-tooltip>
-                                        <b-tooltip v-if="task.standalone" v-for="type in task.types" :key="type.id" :label="type.name" type="is-dark" square dashed animated>
-                                            <span class="icon is-small"><i :class="type.css_icon"></i></span>
-                                        </b-tooltip>
-
-                                        <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
-                                    </div>
-
-
                                 </div>
+                                <div class="m-t-10 meta-color" :class="{ 'm-b-10': task.collapsed && task.standalone == false }">
+                                    <span class="m-r-1">Status: </span>
+                                    <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square animated>
+                                        <i :class="task.status.css_icon" class="icon is-icon-size"></i>
+                                    </b-tooltip>
+
+                                    <span v-if="task.standalone" class="m-l-2 m-r-1">Type:</span>
+                                    <b-tooltip v-if="task.standalone" v-for="type in task.types" :key="type.id" :label="type.name" type="is-dark" square animated>
+                                        <i :class="type.css_icon" class="icon is-icon-size"></i>
+                                    </b-tooltip>
+
+                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                </div>
+
                                 <transition name="fade">
                                     <div v-if="task.collapsed" class="ignore-click">
-                                        <div :id="child.id" @click="triggerChildCollapse($event, child)" class="box highlighted-element" :class="{'is-active': isChildSelected(child)}" v-for="child in task.children">
+                                        <div :id="'task-child-' + child.id" @click="triggerChildCollapse($event, child)" class="box task-box highlighted-element" :class="{'is-active': isChildSelected(child)}" v-for="child in task.children">
                                             <article class="media media-fix">
                                                 <div class="media-content">
                                                     <div class="content">
-                                                        <strong class="">{{ child.name }}</strong>
+                                                        <strong>{{ child.name }}</strong>
                                                         <br />
-                                                        <span class="is-muted">{{ child.description }}</span>
+                                                        <span class="description-color m-t-10">{{ child.description }}</span>
                                                         <br />
 
-                                                        <div class="m-t-10">
-                                                            <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square dashed animated>
-                                                                <span class="icon is-small"><i :class="child.status.css_icon"></i></span>
+                                                        <div class="m-t-10 meta-color">
+                                                            <span class="m-r-1">Status: </span>
+                                                            <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square animated>
+                                                                <i :class="child.status.css_icon" class="icon is-icon-size"></i>
                                                             </b-tooltip>
-                                                            <b-tooltip v-for="type in child.types" :key="type.id" :label="type.name" type="is-dark" square dashed animated>
-                                                                <span class="icon is-small"><i :class="type.css_icon"></i></span>
+
+                                                            <span class="m-l-2 m-r-1">Type:</span>
+                                                            <b-tooltip v-for="type in child.types" :key="type.id" :label="type.name" type="is-dark" square animated>
+                                                                <i :class="type.css_icon" class="icon is-icon-size"></i>
                                                             </b-tooltip>
 
                                                             <span class="is-pulled-right">Last Updated: {{ child.updated_at_diff }}</span>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </article>
@@ -114,69 +120,67 @@
         </div>
 
         <!-- Interaction Bar -->
-        <div v-if="" class="interaction-bar container">
-                <div class="bar-content">
+        <div class="interaction-bar container">
+            <div id="interactionBar" class="bar-content">
 
-                    <div class="column is-3 m-t-100">
-                        <div class="card card-content highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
+                <div class="column is-3 m-t-100">
+                    <div class="card card-content highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
 
-                            <div v-if="!meta.interactionBar.pages.isDefault">
+                        <div v-if="!meta.interactionBar.pages.isDefault">
 
-                                <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
+                            <p class="has-text-centered m-b-10"><b>{{ meta.interactionBar.pageTitle }}</b></p>
 
-                                <span v-if="!meta.interactionBar.pages.isOverview" class="m-b-10 highlighted-text">
-                                    <span class="icon is-small" @click="interactionBarSwitchPage('isOverview')"><i class="fa fa-chevron-left"></i></span>
-                                    Go Back
-                                </span>
-                            </div>
+                            <span @click="interactionBarSwitchPage('isOverview')" v-if="!meta.interactionBar.pages.isOverview" class="m-b-10 highlighted-text">
+                                <span class="icon is-small"><i class="fa fa-chevron-left"></i></span>
+                                Go Back
+                            </span>
+                        </div>
 
-                            <div v-if="meta.interactionBar.pages.isDefault">
-                                <p>This is our interactive bar. You can open any task to test its behaviour.</p>
-                            </div>
+                        <div v-if="meta.interactionBar.pages.isDefault">
+                            <p>This is our interactive bar. You can open any task to test its behaviour.</p>
+                        </div>
 
-                            <div v-if="meta.interactionBar.pages.isOverview">
-                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
-                                <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
-                                <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
-                                    Sources
-                                </a>
-                            </div>
+                        <div v-if="meta.interactionBar.pages.isOverview">
+                            <!--<a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>-->
+                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
+                            <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
+                                Sources
+                            </a>
+                        </div>
 
-                            <div v-if="meta.interactionBar.pages.isComment">
-                                <div id="disqus_thread"></div>
-                            </div>
-
-                            <div v-if="meta.interactionBar.pages.isShare">
-                                <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
-                            </div>
-
-                            <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
-                                <ul>
-                                    <confirm-item
-                                            v-for="(source, index) in meta.interactionBar.task.sources"
-                                            :key="source.id"
-
-                                            title="You are leaving Star Citizen - Honest Science."
-                                            :message="source.link + ' is not an official Honest Science site.'"
-                                            positive="Continue to external site."
-                                            negative="Cancel"
-                                            :url="source.link"
-                                            theme="is-danger"
-                                            width=960>
-                                        <li>{{ source.link | truncate(50)  }}</li>
-                                    </confirm-item>
-                                </ul>
-                                <span v-if="meta.interactionBar.task.sources.length == 0">
-                                    No sources available.
-                                </span>
-                            </div>
+                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment">
 
                         </div>
+
+                        <div v-if="meta.interactionBar.pages.isShare">
+                            <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
+                        </div>
+
+                        <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
+                            <ul>
+                                <confirm-item
+                                        v-for="(source, index) in meta.interactionBar.task.sources"
+                                        :key="source.id"
+
+                                        title="You are leaving Star Citizen - Honest Science."
+                                        :message="source.link + ' is not an official Honest Science site.'"
+                                        positive="Continue to external site."
+                                        negative="Cancel"
+                                        :url="source.link"
+                                        theme="is-danger"
+                                        width=960>
+                                    <li>{{ source.link | truncate(50)  }}</li>
+                                </confirm-item>
+                            </ul>
+                            <span v-if="meta.interactionBar.task.sources.length == 0">
+                                No sources available.
+                            </span>
+                        </div>
+
                     </div>
-
-
-
                 </div>
+
+            </div>
         </div>
 
         <!-- Interaction Bar End -->
@@ -203,7 +207,9 @@ export default {
             },
             meta: {
                 search: '',
+                search_error: '',
                 interactionBar: {
+                    padding: 0,
                     task: null,
                     pageTitle: null,
                     pages: {
@@ -347,6 +353,7 @@ export default {
             if(task.collapsed === true) {
                 this.meta.interactionBar.task = task;
                 this.interactionBarSwitchPage('isOverview');
+                //this.interactionBarMove(true);
             } else {
                 this.resetInteractionBar();
             }
@@ -356,11 +363,31 @@ export default {
             this.meta.interactionBar.task = child;
             this.interactionBarSwitchPage('isOverview');
 
+            //this.interactionBarMove(false);
+
         },
+        /*interactionBarMove(parent) {
+            var self = this;
+            setTimeout(function () {
+                var _element = null;
+
+                if(parent === true) {
+                    _element    = document.getElementById("task-" + self.meta.interactionBar.task.id);
+                } else {
+                    _element    = document.getElementById("task-child-" + self.meta.interactionBar.task.id);
+                }
+                var _list       = document.getElementById("task-list");
+                var _reference  = document.getElementsByClassName("task-box").item(1).offsetTop;
+                var _ib         = document.getElementById('interactionBar').getBoundingClientRect();
+
+                self.meta.interactionBar.padding = _element.offsetTop - _reference + _ib.height;
+            }, 300);
+        },*/
         //--- Resets the interaction bar to its default status.
         resetInteractionBar() {
             this.interactionBarSwitchPage('isDefault');
             this.meta.interactionBar.task = null;
+            this.meta.interactionBar.padding = null;
             this.meta.interactionBar.content = null;
         },
         //--- Switch page
@@ -404,7 +431,7 @@ export default {
             var disqus_url          = (CONF_URL + "/#!" + CONF_IDENTIFIER);
 
             // Resetting the area the comments are located in
-            if(this.disqus.loaded === false) {
+            /*if(this.disqus.loaded === false) {
 
                 // Loading Disqus for the first time
 
@@ -428,7 +455,9 @@ export default {
                         this.page.url = url;
                     }
                 });
-            }
+            }*/
+
+            this.meta.interactionBar.content.comment = '<disqus shortname="' + disqus_shortname + '"></disqus>';
 
             this.interactionBarSwitchPage('isComment');
         },
@@ -527,9 +556,13 @@ export default {
     },
     computed: {
         filteredItems: function () {
+
+
+            this.meta.search_error = '';
+
             var _tmp        = this.container.all,
                 self        = this,
-                search      = this.meta.search,
+                search      = this.meta.search.toString(),
                 statuses    = this.meta.statuses,
                 types       = this.meta.types;
 
@@ -552,31 +585,135 @@ export default {
                 }
             }
 
-            //---
+            //--- No Search
             if(!search && !statusMode && !typeMode){
                 this.loading.disabled = false;
                 return this.container.paginated;
             }
 
             this.loading.disabled = true;
-            search = search.trim().toLowerCase();
 
-            _tmp = _tmp.filter(function(item){
+            if(search.startsWith(':') && search.includes(' ') && search.length >= 3) {
 
-                //@HACK: Why do we have strings as keys? The Rest API is passing ints
-                //       and casting it doesn't help for some reason, weird...
-                if(
-                    (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
-                    (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
-                    (
-                        item.name.toLowerCase().indexOf(search) !== -1 ||
-                        item.description.toLowerCase().indexOf(search) !== -1 ||
-                        self.hasChildKeyword(item) === true
-                    )
-                ){
-                    return item;
+                var explode = search.split(' ');
+                var command = explode[0].substr(1).toLocaleLowerCase();
+                var args    = explode.slice(1);
+
+                var enoughArguments = function(amount) {
+
+                    if(args.length < amount) {
+                        return false;
+                    }
+
+                    var c = 0;
+                    for(var i in args) {
+                        if(!((args[i].length === 0 || !args[i].trim()))) {
+                            c++;
+                        }
+                    }
+
+                    return (c >= amount);
+
                 }
-            });
+
+                switch(command) {
+
+                    case 'task': {
+
+                        if(!enoughArguments(1)) {
+                            this.meta.search_error = ':task [id]';
+                            return false;
+                        }
+
+                        _tmp = _tmp.filter(function(item) {
+
+                            if(item.id == args[0]) {
+                                return item;
+                            }
+
+                        });
+                    }; break;
+
+                    case 'child': {
+
+                        if(!enoughArguments(1)) {
+                            this.meta.search_error = ':child [id]';
+                            return false;
+                        }
+
+                        _tmp = _tmp.filter(function(item) {
+
+                            if(item.standalone === true) {
+                                return;
+                            }
+
+                            for(var i in item.children) {
+                                if(item.children[i].id == args[0]) {
+                                    return item;
+                                }
+                            }
+
+                        });
+                    }; break;
+
+                    case 'progress': {
+
+                        if(!enoughArguments(2)) {
+                            this.meta.search_error = ':progress [operator] [value]';
+                            return;
+                        }
+
+                        var _value      = parseFloat(args[1]);
+                        var _operator   = args[0];
+
+                        _tmp = _tmp.filter(function(item) {
+
+                            if(item.standalone === true) {
+                                return;
+                            }
+
+                            var _p = parseFloat((item.progress * 100).toFixed(2));
+                            console.log(_p + "=" + _value + ' -> ' + (_p == _value));
+
+                            if(_operator === "=" && _p ===_value) {
+                                return item;
+                            } else if(_operator === "!=" && _p !==_value) {
+                                return item;
+                            } else if(_operator === ">" && _p >_value) {
+                                return item;
+                            } else if(_operator === ">=" && _p >= _value) {
+                                return item;
+                            } else if(_operator === "<" && _p <_value) {
+                                return item;
+                            } else if(_operator === "<=" && _p <=_value) {
+                                return item;
+                            }
+
+                        });
+                    }
+
+                }
+
+            } else {
+                search = search.trim().toLowerCase();
+
+                _tmp = _tmp.filter(function (item) {
+
+                    //@HACK: Why do we have strings as keys? The Rest API is passing ints
+                    //       and casting it doesn't help for some reason, weird...
+                    if (
+                        (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
+                        (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
+                        (
+                            item.name.toLowerCase().indexOf(search) !== -1 ||
+                            item.description.toLowerCase().indexOf(search) !== -1 ||
+                            self.hasChildKeyword(item) === true
+                        )
+                    ) {
+                        return item;
+                    }
+                });
+            }
 
             return _tmp;
         },

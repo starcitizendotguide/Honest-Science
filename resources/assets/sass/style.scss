@@ -172,6 +172,12 @@ nav {
 
 }
 
+//--- Task Box
+.task-box {
+    padding: 0.75rem 1rem 0.5rem 1rem;
+    margin-bottom: 0.5rem !important;
+}
+
 //--- Utitilies
 .is-dashed {
 	border-bottom: 1px dashed #b5b5b5;
@@ -180,14 +186,19 @@ nav {
 
 
 .progressbar {
-  background-color: slategrey;
-  border-radius: 290486px;
-  display: blocK;
-  height: 1rem;
-  overflow: hidden;
-  width: 100%;
+    background-color: #172230;
+    border-radius: 2px;
+    display: blocK;
+    height: 0.75rem;
+    overflow: hidden;
+    width: 100%;
 
-  >div {
-    height: 100%;
-  }
+    >div {
+        height: 100%;
+    }
+}
+
+.meta-color {
+    color: #008290;
+    font-size: 0.9em;
 }
