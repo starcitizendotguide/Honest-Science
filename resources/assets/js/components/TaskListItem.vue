@@ -3,15 +3,22 @@
         <div class="column is-offset-1 is-7">
             <div id="task-list" class="task-list">
                 <div class="field is-grouped">
-                    <p class="control">
-                        <b-tooltip
-                                :label="meta.search_error"
-                                :always="meta.search_error.length > 0"
-                                multilined
-                                type="is-danger">
-                            <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
-                        </b-tooltip>
-                    </p>
+                    <b-tooltip
+                            :label="meta.search_error"
+                            :always="meta.search_error.length > 0"
+                            multilined
+                            type="is-danger">
+                        <div class="m-r-10 control field has-addons">
+                            <p class="control">
+                                <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
+                            </p>
+                            <p class="control">
+                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text">
+                                    <span class="icon is-right"><i class="fa fa-question"></i></span>
+                                </a>
+                            </p>
+                        </div>
+                    </b-tooltip>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
                             <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" >
@@ -229,6 +236,25 @@ export default {
         };
     },
     methods: {
+        openSearchHelp() {
+            this.$dialog.confirm({
+                canCancel: false,
+                message: "<div class=\"content\">" +
+                "<h5>Search</h5>" +
+                "<p>The search bar allows you to search all tasks and their children. You can also " +
+                "utilize commands to query certain properties.</p>" +
+                "<ul>" +
+                    "<li><code>:task [id]</code> - Find a specific task by its id.</li>" +
+                        "<ul><li><code>[id]: integer</code></li></ul>" +
+                    "<li><code>:child [id]</code> - Find a specific child by its id.</li>" +
+                        "<ul><li><code>[id]: integer</code></li></ul>" +
+                    "<li><code>:progress [operator] [value]</code> - Filter tasks by their progress value.</li>" +
+                        "<ul><li><code>[operator]: =, !=, >, <, >=, <=</code></li></ul>" +
+                        "<ul><li><code>[value]: float</code></li></ul>" +
+                "</ul>" +
+                "<div>"
+            });
+        },
         isChildSelected(child) {
             var _t = this.meta.interactionBar.task;
             return (
@@ -593,7 +619,21 @@ export default {
 
             this.loading.disabled = true;
 
+            //--- Commands
             if(search.startsWith(':') && search.includes(' ') && search.length >= 3) {
+
+                //--- Pre Filter
+                _tmp = _tmp.filter(function (item) {
+
+                    //@HACK: Why do we have strings as keys? The Rest API is passing ints
+                    //       and casting it doesn't help for some reason, weird...
+                    if (
+                        (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
+                        (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode)
+                    ) {
+                        return item;
+                    }
+                });
 
                 var explode = search.split(' ');
                 var command = explode[0].substr(1).toLocaleLowerCase();
@@ -695,8 +735,7 @@ export default {
                 }
 
             } else {
-                search = search.trim().toLowerCase();
-
+                //--- Normal Search
                 _tmp = _tmp.filter(function (item) {
 
                     //@HACK: Why do we have strings as keys? The Rest API is passing ints
@@ -705,8 +744,8 @@ export default {
                         (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
                         (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
                         (
-                            item.name.toLowerCase().indexOf(search) !== -1 ||
-                            item.description.toLowerCase().indexOf(search) !== -1 ||
+                            item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+                            item.description.toLowerCase().indexOf(search.toLocaleLowerCase()) !== -1 ||
                             self.hasChildKeyword(item) === true
                         )
                     ) {

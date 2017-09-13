@@ -108,6 +108,13 @@ nav {
     background-color: transparent;
 }
 
+//--- Clickable
+.clickable {
+    color: $font-color;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 //--- Boxes
 .highlighted-element {
     background: rgba(6, 70, 102, 0.4);
@@ -123,6 +130,7 @@ nav {
     box-shadow: 0 0 6px rgba(76, 33, 4, 0.79), 0 0 18px rgba(255, 187, 24, 0.6);
 }
 
+.clickable:hover,
 .highlighted-element:hover.highlighted-text,
 .highlighted-element:active.highlighted-text,
 .highlighted-element:focus.highlighted-text,

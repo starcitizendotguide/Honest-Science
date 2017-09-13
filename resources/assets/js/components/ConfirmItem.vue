@@ -1,6 +1,6 @@
 <template>
     <span>
-        <a href="#" @click="meta.isActive = true"><slot></slot></a>
+        <span class="clickable" @click="meta.isActive = true"><slot></slot></span>
         <b-modal :active.sync="meta.isActive" :width="width">
             <div class="modal-card">
                 <header class="modal-card-head">
