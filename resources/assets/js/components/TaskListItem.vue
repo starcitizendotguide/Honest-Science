@@ -160,7 +160,8 @@
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isShare">
-                            <input type="text" class="input highlighted-element highlighted-text" value="https://honest-science.starcitizen.guide/#share12123">
+                            <input type="text" class="input highlighted-element highlighted-text"
+                                   :value="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id">
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
@@ -236,6 +237,28 @@ export default {
         };
     },
     methods: {
+        checkForShare() {
+
+            var value = window.location.hash.toString();
+
+            if(value.startsWith('#share')) {
+
+                var parts = value.split('-');
+
+                if(parts.length === 3) {
+                    var id = parseInt(parts[2]);
+                    switch(parts[1].toLocaleLowerCase()) {
+
+                        case 't': this.meta.search = (':task ' + id); break;
+                        case 'c': this.meta.search = (':child ' + id); break;
+
+                    }
+                }
+
+            }
+
+
+        },
         openSearchHelp() {
             this.$dialog.confirm({
                 canCancel: false,
@@ -758,6 +781,7 @@ export default {
         },
     },
     mounted: function() {
+
         axios.get(route('statuses.index'))
             .then(response => {
 
@@ -823,6 +847,8 @@ export default {
                 //--- Load initial
                 this.loadTasksPaginated();
                 this.interactionBarSwitchPage('isDefault');
+
+                this.checkForShare();
             });
 
     },
