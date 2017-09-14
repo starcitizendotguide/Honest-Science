@@ -83,8 +83,8 @@ class Task extends Model
 
         $tasks = [];
 
-        $entries = \App\Task::where([
-            ['updated_at', '<', \Carbon\Carbon::now()->subMinutes(1)->toDateTimeString()],
+        $entries = Task::where([
+            ['updated_at', '<', \Carbon\Carbon::now()->subMonths(3)->toDateTimeString()],
             ['verified', '=', true],
         ])->get();
 
