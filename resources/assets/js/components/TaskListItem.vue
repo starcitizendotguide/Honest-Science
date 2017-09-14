@@ -8,7 +8,7 @@
                             :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
                             :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
                             multilined
-                            :type="meta.search.error.length > 0 ? 'is-danger' : 'is-info'">
+                            type="is-info">
                         <div class="m-r-10 control field has-addons">
                             <p class="control">
                                 <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
@@ -850,7 +850,7 @@ export default {
                         case 'task': {
 
                             if (!enoughArguments(1)) {
-                                this.meta.search.error = _commands[':task'].usage;
+                                this.meta.search.error = _commands[':task'].usage + ' - Missing Arguments';
                                 return;
                             }
 
@@ -861,14 +861,12 @@ export default {
                                 }
 
                             });
-                        }
-                            ;
-                            break;
+                        } break;
 
                         case 'child': {
 
                             if (!enoughArguments(1)) {
-                                this.meta.search.error = _commands[':child'].usage;
+                                this.meta.search.error = _commands[':child'].usage + ' - Missing Arguments';
                                 return;
                             }
 
@@ -885,14 +883,12 @@ export default {
                                 }
 
                             });
-                        }
-                            ;
-                            break;
+                        } break;
 
                         case 'progress': {
 
                             if (!enoughArguments(2)) {
-                                this.meta.search.error = _commands[':progress'].usage;
+                                this.meta.search.error = _commands[':progress'].usage + ' - Missing Arguments';
                                 return;
                             }
 
@@ -900,10 +896,6 @@ export default {
                             var _operator = args[0];
 
                             _tmp = _tmp.filter(function (item) {
-
-                                if (item.standalone === true) {
-                                    return;
-                                }
 
                                 var _p = parseFloat((item.progress * 100).toFixed(2));
 
@@ -923,13 +915,12 @@ export default {
 
                             });
 
-                        }
-                            break;
+                        } break;
 
                         case 'sort': {
 
                             if (!enoughArguments(1)) {
-                                this.meta.search.error = _commands[':sort'].usage;
+                                this.meta.search.error = _commands[':sort'].usage + ' - Missing Arguments';
                                 return;
                             }
 
@@ -958,7 +949,7 @@ export default {
 
                         default: {
 
-                            this.meta.search.error = ('Invalid command: ' + command);
+                            this.meta.search.error = ('Unkown command: ' + command);
 
                         } break;
 
