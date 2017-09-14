@@ -312,7 +312,11 @@ export default {
 
                             if(!(task === null)) {
                                 this.triggerTaskCollapse(null, task);
+                                
                                 this.container.shared = [ task ];
+                                this.tasks = this.container.shared;
+
+                                this.meta.shared.active = true;
                             }
 
                         } break;
@@ -335,7 +339,11 @@ export default {
                             if(!(task === null)) {
                                 this.triggerTaskCollapse(null, task);
                                 this.triggerChildCollapse(null, child);
+
                                 this.container.shared = [ task ];
+                                this.tasks = this.container.shared;
+
+                                this.meta.shared.active = true;
                             }
                         } break;
 
