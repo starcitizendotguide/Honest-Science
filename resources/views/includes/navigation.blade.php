@@ -1,12 +1,12 @@
 <nav class="nav nav-modified has-shadow">
     <div class="container">
         <div class="nav-left">
-            <a href="{{ route('home.index') }}" class="nav-item is-hidden-mobile m-l-10">Home</a>
+            <a href="{{ route('home.index') }}" class="nav-item m-l-10">Home</a>
             <a href="#" class="nav-item is-hidden-mobile">About</a>
             <a href="#" class="nav-item is-hidden-mobile">FAQ</a>
         </div>
 
-        <div class="nav-right" style="overflow: visible;">
+        <div class="nav-right is-hidden-mobile" style="overflow: visible;">
             @if (Auth::guest())
                 @if(\Config::get('custom.auth.login') === true)
                 <a href="{{ route('login') }}" class="nav-item is-tab">Login</a>
