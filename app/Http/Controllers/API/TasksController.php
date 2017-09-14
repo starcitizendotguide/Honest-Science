@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Task;
 use App\TaskChild;
 use App\TaskStatus;
+use Laratrust;
 
 class TasksController extends Controller
 {
@@ -65,7 +66,7 @@ class TasksController extends Controller
 
         if(
             $task === null ||
-            !\Laratrust::can('read-task') &&
+            !Laratrust::can('read-task') &&
             (
                 $task->visibility < 0 ||
                 $task->verified === false
@@ -136,11 +137,11 @@ class TasksController extends Controller
      */
     public function deprecatedQueue() {
 
-        if(!\Laratrust::can('mark-as-updated-task')) {
+        if(!Laratrust::can('mark-as-updated-task')) {
             return [];
         }
 
-        return \App\Task::deprecatedQueue();
+        return Task::deprecatedQueue();
     }
 
     /**
@@ -150,11 +151,11 @@ class TasksController extends Controller
      */
     public function verifyQueue() {
 
-        if(!\Laratrust::can('mark-as-verified-task')) {
+        if(!Laratrust::can('mark-as-verified-task')) {
             return [];
         }
 
-        return \App\Task::verifyQueue();
+        return Task::verifyQueue();
     }
 
 }

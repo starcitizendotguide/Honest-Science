@@ -59,7 +59,7 @@
                 this.isActive = true;
             },
             loadData: function() {
-                axios.get(route('tasks.show', { task: this.taskid }))
+                axios.get(route('tasks.show', { id: this.taskid }))
                     .then(response => {
                         this.task = response.data;
                         this.loadedData = true;

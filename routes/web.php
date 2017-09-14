@@ -185,11 +185,14 @@ Route::group(['prefix' => 'api/v1'], function() {
             Route::get('/{id}', 'TasksController@show')
                     ->name('tasks.show');
 
+        });
+
+        Route::group(['prefix' => 'queues'], function() {
             Route::get('deprecatedQueue', 'TasksController@deprecatedQueue')
                 ->name('tasks.deprecatedQueue');
+
             Route::get('verifyQueue', 'TasksController@verifyQueue')
                 ->name('tasks.verifyQueue');
-
         });
 
         Route::get('children/task/{id}', 'TasksChildrenController@task')->name('children.task.show');

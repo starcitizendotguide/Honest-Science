@@ -250,8 +250,53 @@ export default {
                     var id = parseInt(parts[2]);
                     switch(parts[1].toLocaleLowerCase()) {
 
-                        case 't': this.meta.search = (':task ' + id); break;
-                        case 'c': this.meta.search = (':child ' + id); break;
+                        case 't': {
+                            this.meta.search = (':task ' + id);
+
+
+                            //--- Task By Id
+                            /*var task = null;
+                            for(var i in this.container.all) {
+                                if(this.container.all[i].id === id) {
+                                    task = this.container.all[i];
+                                    break;
+                                }
+                            }
+
+                            if(child === null) {
+                                return;
+                            }
+
+                            this.triggerTaskCollapse(null, task);*/
+
+                        } break;
+
+                        case 'c': {
+
+                            this.meta.search = (':child ' + id);
+
+                            /*var task = null;
+                            var child = null;
+                            for(var t in this.container.all) {
+                                for(var c in this.container.all[t].children) {
+
+                                    if(this.container.all[t].children[c].id === id) {
+                                        task = this.container.all[t];
+                                        child = this.container.all[t].children[c];
+                                        break;
+                                    }
+
+                                }
+                            }
+
+                            if(task === null) {
+                                return;
+                            }
+
+                            this.triggerTaskCollapse(null, task);
+                            this.triggerChildCollapse(null, child)*/
+
+                        } break;
 
                     }
                 }
@@ -262,7 +307,7 @@ export default {
         },
         openSearchHelp() {
             this.$dialog.confirm({
-                canCancel: false,
+                canCancel: "false",
                 message: "<div class=\"content\">" +
                 "<h5>Search</h5>" +
                 "<p>The search bar allows you to search all tasks and their children. You can also " +
@@ -377,7 +422,7 @@ export default {
                 return isIgnoringTriggerEvent(element.parentElement);
             };
 
-            if(isIgnoringTriggerEvent(evt.target) === true) {
+            if(!(evt === null) && isIgnoringTriggerEvent(evt.target) === true) {
                 return;
             }
 
@@ -401,6 +446,7 @@ export default {
 
             //--- Trigger
             if(task.collapsed === true) {
+                console.log('lmao?');
                 this.meta.interactionBar.task = task;
                 this.interactionBarSwitchPage('isOverview');
                 //this.interactionBarMove(true);
@@ -692,6 +738,7 @@ export default {
                         _tmp = _tmp.filter(function(item) {
 
                             if(item.id == args[0]) {
+                                self.triggerTaskCollapse(null, item);
                                 return item;
                             }
 
@@ -705,6 +752,7 @@ export default {
                             return false;
                         }
 
+                        var self = this;
                         _tmp = _tmp.filter(function(item) {
 
                             if(item.standalone === true) {
@@ -713,6 +761,10 @@ export default {
 
                             for(var i in item.children) {
                                 if(item.children[i].id == args[0]) {
+
+                                    self.triggerTaskCollapse(null, item);
+                                    self.triggerChildCollapse(null, item.children[i]);
+
                                     return item;
                                 }
                             }

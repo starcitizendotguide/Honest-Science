@@ -120,7 +120,7 @@ class Task extends Model
 
         $tasks = [];
 
-        $entries = \App\Task::where([
+        $entries = Task::where([
             ['verified', '=', false],
         ])->get();
 
