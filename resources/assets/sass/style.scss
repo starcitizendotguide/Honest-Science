@@ -116,6 +116,14 @@ nav {
 }
 
 //--- Boxes
+.button[disabled]:hover,
+.input[disabled]:hover {
+    box-shadow: none;
+    border: 1px solid rgba(0, 237, 255, 0.3);
+}
+
+.button[disabled],
+.input[disabled],
 .highlighted-element {
     background: rgba(6, 70, 102, 0.4);
     border: 1px solid rgba(0, 237, 255, 0.3);

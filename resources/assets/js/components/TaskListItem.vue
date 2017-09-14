@@ -5,16 +5,16 @@
 
                 <div class="field is-grouped is-hidden-touch">
                     <b-tooltip
-                            :label="meta.search_error"
-                            :always="meta.search_error.length > 0"
+                            :label="meta.search.error"
+                            :always="meta.search.error.length > 0"
                             multilined
                             type="is-danger">
                         <div class="m-r-10 control field has-addons">
                             <p class="control">
-                                <input v-model="meta.search" class="input highlighted-element highlighted-text" placeholder="Search...">
+                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="container.shared.length > 0">
                             </p>
                             <p class="control">
-                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text">
+                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="container.shared.length > 0">
                                     <span class="icon is-right"><i class="fa fa-question"></i></span>
                                 </a>
                             </p>
@@ -22,30 +22,40 @@
                     </b-tooltip>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
-                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" >
+                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="container.shared.length > 0">
                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
                                <span>{{ status.name }}</span>
                            </a>
                         </p>
+                    </div>
+
+                    <div class="field">
+                        <b-tooltip
+                                label="Click me to see all tasks!"
+                                :always="container.shared.length > 0"
+                                multilined
+                                type="is-info">
+                            <div class="m-r-10 control field has-addons">
+                                <p v-on:click="resetMeta" class="control is-pulled-right">
+                                    <a class="button highlighted-element highlighted-text" :class="{'is-active': container.shared.length > 0 }">
+                                        <span class="icon is-small"><i class="fa fa-undo"></i></span>
+                                        <span>Reset</span>
+                                    </a>
+                                </p>
+                            </div>
+                        </b-tooltip>
                     </div>
                 </div>
 
                 <div class="field is-grouped is-hidden-touch">
                     <div class="field has-addons control">
                         <p class="control" v-for="type in meta.types">
-                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" >
+                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" :disabled="container.shared.length > 0">
                                 <span class="icon is-small"><i :class="type.css.icon"></i></span>
                                 <span>{{ type.name }}</span>
                             </a>
                         </p>
                     </div>
-
-                    <p v-on:click="resetMeta" class="control is-pulled-right">
-                        <a class="button highlighted-element highlighted-text">
-                            <span class="icon is-small"><i class="fa fa-undo"></i></span>
-                            <span>Reset</span>
-                        </a>
-                    </p>
                 </div>
 
                 <div :id="'task-' + task.id" @click="triggerTaskCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
@@ -119,7 +129,7 @@
                     <div v-if="loading.available">
                         <a class="button is-fullwidth highlighted-element highlighted-text" @click="loadTasksPaginated()">Expand the universe.</a>
                     </div>
-                    <div v-if="!loading.available">
+                    <div v-if="!loading.available && container.shared.length == 0">
                          <span>You have reached the end of the universe.</span>
                     </div>
                 </div>
@@ -150,10 +160,10 @@
 
                         <div v-if="meta.interactionBar.pages.isOverview">
                             <!--<a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>-->
-                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
                             <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
                                 Sources
                             </a>
+                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment">
@@ -191,8 +201,8 @@
 
             </div>
         </div>
-
         <!-- Interaction Bar End -->
+
     </div>
 </template>
 
@@ -204,6 +214,7 @@ export default {
             container: {
                 all: [],
                 paginated: [],
+                shared: [],
             },
             loading: {
                 available: true,
@@ -215,8 +226,10 @@ export default {
                 loaded: false,
             },
             meta: {
-                search: '',
-                search_error: '',
+                search: {
+                    query: '',
+                    error: '',
+                },
                 interactionBar: {
                     padding: 0,
                     task: null,
@@ -251,51 +264,43 @@ export default {
                     switch(parts[1].toLocaleLowerCase()) {
 
                         case 't': {
-                            this.meta.search = (':task ' + id);
 
+                            var task = null;
 
-                            //--- Task By Id
-                            /*var task = null;
-                            for(var i in this.container.all) {
-                                if(this.container.all[i].id === id) {
-                                    task = this.container.all[i];
+                            for(var t in this.container.all) {
+                                if(this.container.all[t].id === id) {
+                                    task = this.container.all[t];
                                     break;
                                 }
                             }
 
-                            if(child === null) {
-                                return;
+                            if(!(task === null)) {
+                                this.triggerTaskCollapse(null, task);
+                                this.container.shared = [ task ];
                             }
-
-                            this.triggerTaskCollapse(null, task);*/
 
                         } break;
 
                         case 'c': {
 
-                            this.meta.search = (':child ' + id);
-
-                            /*var task = null;
+                            var task = null;
                             var child = null;
+
                             for(var t in this.container.all) {
                                 for(var c in this.container.all[t].children) {
-
                                     if(this.container.all[t].children[c].id === id) {
                                         task = this.container.all[t];
                                         child = this.container.all[t].children[c];
                                         break;
                                     }
-
                                 }
                             }
 
-                            if(task === null) {
-                                return;
+                            if(!(task === null)) {
+                                this.triggerTaskCollapse(null, task);
+                                this.triggerChildCollapse(null, child);
+                                this.container.shared = [ task ];
                             }
-
-                            this.triggerTaskCollapse(null, task);
-                            this.triggerChildCollapse(null, child)*/
-
                         } break;
 
                     }
@@ -303,11 +308,15 @@ export default {
 
             }
 
-
         },
         openSearchHelp() {
+
+            if(this.container.shared.length > 0) {
+                return;
+            }
+
             this.$dialog.confirm({
-                canCancel: "false",
+                canCancel: false,
                 message: "<div class=\"content\">" +
                 "<h5>Search</h5>" +
                 "<p>The search bar allows you to search all tasks and their children. You can also " +
@@ -383,7 +392,8 @@ export default {
             this.tasks.map(v => { v.collapsed = false;  });
 
             //--- Reset search value
-            this.meta.search = '';
+            this.meta.search.query = '';
+            this.container.shared = [];
 
             //--- Reset statuses & types
             for(var i = 0; i < this.meta.statuses.length; i++) {
@@ -399,11 +409,19 @@ export default {
         //--- Called when the user clicks on the "status" button to enable or disable
         //    it.
         statusOnClick(id) {
+            if(this.container.shared.length > 0) {
+                return;
+            }
+
             this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
         },
         //--- Called when the user clicks on the "type" button to enable or disable
         //    it.
         typeOnClick(id) {
+            if(this.container.shared.length > 0) {
+                return;
+            }
+
             this.meta.types[id].css.button_classes['is-active'] = !this.meta.types[id].css.button_classes['is-active'];
         },
         //--- Called when the user clicks on the arrow next to a task to collapse it.
@@ -446,7 +464,6 @@ export default {
 
             //--- Trigger
             if(task.collapsed === true) {
-                console.log('lmao?');
                 this.meta.interactionBar.task = task;
                 this.interactionBarSwitchPage('isOverview');
                 //this.interactionBarMove(true);
@@ -482,6 +499,7 @@ export default {
         //--- Resets the interaction bar to its default status.
         resetInteractionBar() {
             this.interactionBarSwitchPage('isDefault');
+
             this.meta.interactionBar.task = null;
             this.meta.interactionBar.padding = null;
             this.meta.interactionBar.content = null;
@@ -634,7 +652,7 @@ export default {
         hasChildKeyword(item) {
 
             var children = item.children;
-            var _search = this.meta.search.toLowerCase();
+            var _search = this.meta.search.query.toLowerCase();
 
             for(var i = 0; i < children.length; i++) {
                 var child = children[i];
@@ -653,12 +671,11 @@ export default {
     computed: {
         filteredItems: function () {
 
-
-            this.meta.search_error = '';
+            this.meta.search.error = '';
 
             var _tmp        = this.container.all,
                 self        = this,
-                search      = this.meta.search.toString(),
+                search      = this.meta.search.query.toString(),
                 statuses    = this.meta.statuses,
                 types       = this.meta.types;
 
@@ -683,6 +700,11 @@ export default {
 
             //--- No Search
             if(!search && !statusMode && !typeMode){
+
+                if(this.container.shared.length > 0) {
+                    return this.container.shared;
+                }
+
                 this.loading.disabled = false;
                 return this.container.paginated;
             }
@@ -698,7 +720,8 @@ export default {
                     //@HACK: Why do we have strings as keys? The Rest API is passing ints
                     //       and casting it doesn't help for some reason, weird...
                     if (
-                        (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
+                        statuses.length &&
+                        (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
                         (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode)
                     ) {
                         return item;
@@ -731,14 +754,13 @@ export default {
                     case 'task': {
 
                         if(!enoughArguments(1)) {
-                            this.meta.search_error = ':task [id]';
+                            this.meta.search.error = ':task [id]';
                             return false;
                         }
 
                         _tmp = _tmp.filter(function(item) {
 
                             if(item.id == args[0]) {
-                                self.triggerTaskCollapse(null, item);
                                 return item;
                             }
 
@@ -748,7 +770,7 @@ export default {
                     case 'child': {
 
                         if(!enoughArguments(1)) {
-                            this.meta.search_error = ':child [id]';
+                            this.meta.search.error = ':child [id]';
                             return false;
                         }
 
@@ -761,10 +783,6 @@ export default {
 
                             for(var i in item.children) {
                                 if(item.children[i].id == args[0]) {
-
-                                    self.triggerTaskCollapse(null, item);
-                                    self.triggerChildCollapse(null, item.children[i]);
-
                                     return item;
                                 }
                             }
@@ -775,7 +793,7 @@ export default {
                     case 'progress': {
 
                         if(!enoughArguments(2)) {
-                            this.meta.search_error = ':progress [operator] [value]';
+                            this.meta.search.error = ':progress [operator] [value]';
                             return;
                         }
 
@@ -816,7 +834,7 @@ export default {
                     //@HACK: Why do we have strings as keys? The Rest API is passing ints
                     //       and casting it doesn't help for some reason, weird...
                     if (
-                        (statuses[String(item.status.id)].css.button_classes['is-active'] === true || !statusMode) &&
+                        (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
                         (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
                         (
                             item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
