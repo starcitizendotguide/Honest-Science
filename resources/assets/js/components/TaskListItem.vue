@@ -33,6 +33,7 @@
                         <b-tooltip
                                 label="Click me to see all tasks!"
                                 :always="meta.shared.active"
+                                :active="meta.shared.active"
                                 multilined
                                 type="is-info">
                             <div class="m-r-10 control field has-addons">
