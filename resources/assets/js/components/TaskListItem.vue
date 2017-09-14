@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-clipboard="http://www.w3.org/1999/xhtml">
     <div class="columns">
         <div class="column is-offset-1 is-7">
             <div id="task-list" class="task-list">
@@ -11,10 +11,10 @@
                             type="is-danger">
                         <div class="m-r-10 control field has-addons">
                             <p class="control">
-                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="container.shared.length > 0">
+                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
                             </p>
                             <p class="control">
-                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="container.shared.length > 0">
+                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="meta.shared.active">
                                     <span class="icon is-right"><i class="fa fa-question"></i></span>
                                 </a>
                             </p>
@@ -22,7 +22,7 @@
                     </b-tooltip>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
-                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="container.shared.length > 0">
+                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="meta.shared.active">
                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
                                <span>{{ status.name }}</span>
                            </a>
@@ -32,12 +32,12 @@
                     <div class="field">
                         <b-tooltip
                                 label="Click me to see all tasks!"
-                                :always="container.shared.length > 0"
+                                :always="meta.shared.active"
                                 multilined
                                 type="is-info">
                             <div class="m-r-10 control field has-addons">
                                 <p v-on:click="resetMeta" class="control is-pulled-right">
-                                    <a class="button highlighted-element highlighted-text" :class="{'is-active': container.shared.length > 0 }">
+                                    <a class="button highlighted-element highlighted-text" :class="{'is-active': meta.shared.active }">
                                         <span class="icon is-small"><i class="fa fa-undo"></i></span>
                                         <span>Reset</span>
                                     </a>
@@ -50,7 +50,7 @@
                 <div class="field is-grouped is-hidden-touch">
                     <div class="field has-addons control">
                         <p class="control" v-for="type in meta.types">
-                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" :disabled="container.shared.length > 0">
+                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" :disabled="meta.shared.active">
                                 <span class="icon is-small"><i :class="type.css.icon"></i></span>
                                 <span>{{ type.name }}</span>
                             </a>
@@ -166,13 +166,33 @@
                             <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
                         </div>
 
-                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment">
-
-                        </div>
+                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment"></div>
 
                         <div v-if="meta.interactionBar.pages.isShare">
-                            <input type="text" class="input highlighted-element highlighted-text"
-                                   :value="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id">
+
+                            <div class="field has-addons">
+                                <p class="control is-expanded">
+                                    <input type="text" class="input highlighted-element highlighted-text"
+                                           :value="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
+                                    >
+                                </p>
+                                <p class="control">
+                                    <b-tooltip
+                                            :label="'Copied to clipboard!'"
+                                            :always="meta.shared.copy.active"
+                                            :active="meta.shared.copy.active"
+                                            animated
+                                            type="is-success">
+                                        <button class="button highlighted-element highlighted-text"
+                                                v-clipboard:copy="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
+                                                v-clipboard:success="clipboardSuccess">
+                                            <span class="icon is-right"><i class="fa fa-clipboard"></i></span>
+                                        </button>
+                                    </b-tooltip>
+                                </p>
+                            </div>
+
+
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isSources" class="has-text-centered">
@@ -230,6 +250,12 @@ export default {
                     query: '',
                     error: '',
                 },
+                shared: {
+                    active: false,
+                    copy: {
+                        active: false,
+                    }
+                },
                 interactionBar: {
                     padding: 0,
                     task: null,
@@ -251,6 +277,16 @@ export default {
         };
     },
     methods: {
+        clipboardSuccess() {
+            this.meta.shared.copy.active = true;
+
+            var self = this;
+            setTimeout(function() {
+                self.meta.shared.copy.active = false;
+            }, 650);
+        },
+        //--- Checks whether or not the user is accessing the page
+        // via a share link.
         checkForShare() {
 
             var value = window.location.hash.toString();
@@ -309,9 +345,12 @@ export default {
             }
 
         },
+        //--- Opens the help for the search bar
         openSearchHelp() {
 
-            if(this.container.shared.length > 0) {
+            //--- If the user is currently in shared mode he cannot
+            // interact with anything search related
+            if(this.meta.shared.active === true) {
                 return;
             }
 
@@ -394,6 +433,7 @@ export default {
             //--- Reset search value
             this.meta.search.query = '';
             this.container.shared = [];
+            this.meta.shared.active = false;
 
             //--- Reset statuses & types
             for(var i = 0; i < this.meta.statuses.length; i++) {
@@ -409,7 +449,9 @@ export default {
         //--- Called when the user clicks on the "status" button to enable or disable
         //    it.
         statusOnClick(id) {
-            if(this.container.shared.length > 0) {
+            //--- If the user is in shared mode he cannot
+            // interact with anything search related
+            if(this.meta.shared.active === true) {
                 return;
             }
 
@@ -418,7 +460,9 @@ export default {
         //--- Called when the user clicks on the "type" button to enable or disable
         //    it.
         typeOnClick(id) {
-            if(this.container.shared.length > 0) {
+            //--- If the user is in shared mode he cannot
+            // interact with anything search related
+            if(this.meta.shared.active === true) {
                 return;
             }
 
@@ -701,7 +745,7 @@ export default {
             //--- No Search
             if(!search && !statusMode && !typeMode){
 
-                if(this.container.shared.length > 0) {
+                if(this.meta.shared.active === true) {
                     return this.container.shared;
                 }
 
