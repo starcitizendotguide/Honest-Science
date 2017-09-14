@@ -2,8 +2,6 @@
     <div class="container">
         <div class="nav-left">
             <a href="{{ route('home.index') }}" class="nav-item m-l-10">Home</a>
-            <a href="#" class="nav-item is-hidden-mobile">About</a>
-            <a href="#" class="nav-item is-hidden-mobile">FAQ</a>
         </div>
 
         <div class="nav-right is-hidden-mobile" style="overflow: visible;">
