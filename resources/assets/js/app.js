@@ -2,10 +2,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import VueClipboard from 'vue-clipboard2'
 
 import Buefy from 'buefy';
-import Vue2Filters from 'vue2-filters'
+import Vue2Filters from 'vue2-filters';
+import VueClipboard from 'vue-clipboard2';
 
 import ConfirmItem from './components/ConfirmItem.vue';
 import FlashItem from './components/FlashItem.vue';

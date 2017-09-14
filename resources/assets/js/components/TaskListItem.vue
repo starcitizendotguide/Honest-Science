@@ -5,8 +5,8 @@
 
                 <div class="field is-grouped is-hidden-touch">
                     <b-tooltip
-                            :label="meta.search.error"
-                            :always="meta.search.error.length > 0"
+                            :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
+                            :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
                             multilined
                             type="is-danger">
                         <div class="m-r-10 control field has-addons">
@@ -249,6 +249,7 @@ export default {
                 search: {
                     query: '',
                     error: '',
+                    suggestion: ''
                 },
                 shared: {
                     active: false,
@@ -374,11 +375,19 @@ export default {
                     "<li><code>:child [id]</code> - Find a specific child by its id.</li>" +
                         "<ul><li><code>[id]: integer</code></li></ul>" +
                     "<li><code>:progress [operator] [value]</code> - Filter tasks by their progress value.</li>" +
-                        "<ul><li><code>[operator]: =, !=, >, <, >=, <=</code></li></ul>" +
-                        "<ul><li><code>[value]: float</code></li></ul>" +
+                        "<ul>" +
+                            "<li><code>[operator]: =, !=, >, <, >=, <=</code></li>" +
+                            "<li><code>[value]</code>: float</li>" +
+                        "</ul>" +
+                    "<li><code>:sort [field] [mode?]</code></li>" +
+                        "<ul>" +
+                            "<li><code>[field]: id, progress, children, created, updated</code></li>" +
+                            "<li><code>[mode?]</code>: asc (ascending, <i>default</i>) or desc (descending)</li>" +
+                        "</ul>" +
                 "</ul>" +
                 "<div>"
             });
+
         },
         isChildSelected(child) {
             var _t = this.meta.interactionBar.task;
@@ -724,6 +733,7 @@ export default {
         filteredItems: function () {
 
             this.meta.search.error = '';
+            this.meta.search.suggestion = '';
 
             var _tmp        = this.container.all,
                 self        = this,
@@ -764,119 +774,193 @@ export default {
             this.loading.disabled = true;
 
             //--- Commands
-            if(search.startsWith(':') && search.includes(' ') && search.length >= 3) {
-
-                //--- Pre Filter
-                _tmp = _tmp.filter(function (item) {
-
-                    //@HACK: Why do we have strings as keys? The Rest API is passing ints
-                    //       and casting it doesn't help for some reason, weird...
-                    if (
-                        statuses.length &&
-                        (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
-                        (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode)
-                    ) {
-                        return item;
-                    }
-                });
+            if(search.startsWith(':')) {
 
                 var explode = search.split(' ');
                 var command = explode[0].substr(1).toLocaleLowerCase();
-                var args    = explode.slice(1);
 
-                var enoughArguments = function(amount) {
+                var _commands = {
+                    ':task': {
+                        usage: ':task [id]'
+                    },
+                    ':child': {
+                        usage: ':child [id]'
+                    },
+                    ':progress': {
+                        usage: ':progress [operator] [value]'
+                    },
+                    ':sort': {
+                        usage: ':sort [field] [mode?]'
+                    }
+                };
 
-                    if(args.length < amount) {
-                        return false;
+                if(!search.includes(' ') || search.length < 3) {
+
+                    var suggestions = Object.keys(_commands)
+                        .filter(key => {
+                            return key.indexOf(command) >= 0;
+                        })
+                        .reduce( (res, key) => (res[key] = _commands[key], res), {} );
+
+                    var c = Object.keys(suggestions).length;
+                    if(c > 0 && c <= 2) {
+                        this.meta.search.suggestion = Object.values(suggestions)[0].usage ;
                     }
 
-                    var c = 0;
-                    for(var i in args) {
-                        if(!((args[i].length === 0 || !args[i].trim()))) {
-                            c++;
+                } else {
+
+                    //--- Pre Filter
+                    _tmp = _tmp.filter(function (item) {
+
+                        //@HACK: Why do we have strings as keys? The Rest API is passing ints
+                        //       and casting it doesn't help for some reason, weird...
+                        if (
+                            statuses.length &&
+                            (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
+                            (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode)
+                        ) {
+                            return item;
                         }
-                    }
+                    });
 
-                    return (c >= amount);
+                    var args = explode.slice(1);
 
-                }
+                    var enoughArguments = function (amount) {
 
-                switch(command) {
-
-                    case 'task': {
-
-                        if(!enoughArguments(1)) {
-                            this.meta.search.error = ':task [id]';
+                        if (args.length < amount) {
                             return false;
                         }
 
-                        _tmp = _tmp.filter(function(item) {
-
-                            if(item.id == args[0]) {
-                                return item;
+                        var c = 0;
+                        for (var i in args) {
+                            if (!((args[i].length === 0 || !args[i].trim()))) {
+                                c++;
                             }
-
-                        });
-                    }; break;
-
-                    case 'child': {
-
-                        if(!enoughArguments(1)) {
-                            this.meta.search.error = ':child [id]';
-                            return false;
                         }
 
-                        var self = this;
-                        _tmp = _tmp.filter(function(item) {
+                        return (c >= amount);
 
-                            if(item.standalone === true) {
-                                return;
+                    }
+
+                    switch (command) {
+
+                        case 'task': {
+
+                            if (!enoughArguments(1)) {
+                                this.meta.search.error = _commands[':task'].usage;
+                                return false;
                             }
 
-                            for(var i in item.children) {
-                                if(item.children[i].id == args[0]) {
+                            _tmp = _tmp.filter(function (item) {
+
+                                if (item.id == args[0]) {
                                     return item;
                                 }
+
+                            });
+                        }
+                            ;
+                            break;
+
+                        case 'child': {
+
+                            if (!enoughArguments(1)) {
+                                this.meta.search.error = _commands[':child'].usage;
+                                return false;
                             }
 
-                        });
-                    }; break;
+                            var self = this;
+                            _tmp = _tmp.filter(function (item) {
 
-                    case 'progress': {
+                                if (item.standalone === true) {
+                                    return;
+                                }
 
-                        if(!enoughArguments(2)) {
-                            this.meta.search.error = ':progress [operator] [value]';
-                            return;
+                                for (var i in item.children) {
+                                    if (item.children[i].id == args[0]) {
+                                        return item;
+                                    }
+                                }
+
+                            });
                         }
+                            ;
+                            break;
 
-                        var _value      = parseFloat(args[1]);
-                        var _operator   = args[0];
+                        case 'progress': {
 
-                        _tmp = _tmp.filter(function(item) {
-
-                            if(item.standalone === true) {
+                            if (!enoughArguments(2)) {
+                                this.meta.search.error = _commands[':progress'].usage;
                                 return;
                             }
 
-                            var _p = parseFloat((item.progress * 100).toFixed(2));
+                            var _value = parseFloat(args[1]);
+                            var _operator = args[0];
 
-                            if(_operator === "=" && _p ===_value) {
-                                return item;
-                            } else if(_operator === "!=" && _p !==_value) {
-                                return item;
-                            } else if(_operator === ">" && _p >_value) {
-                                return item;
-                            } else if(_operator === ">=" && _p >= _value) {
-                                return item;
-                            } else if(_operator === "<" && _p <_value) {
-                                return item;
-                            } else if(_operator === "<=" && _p <=_value) {
-                                return item;
+                            _tmp = _tmp.filter(function (item) {
+
+                                if (item.standalone === true) {
+                                    return;
+                                }
+
+                                var _p = parseFloat((item.progress * 100).toFixed(2));
+
+                                if (_operator === "=" && _p === _value) {
+                                    return item;
+                                } else if (_operator === "!=" && _p !== _value) {
+                                    return item;
+                                } else if (_operator === ">" && _p > _value) {
+                                    return item;
+                                } else if (_operator === ">=" && _p >= _value) {
+                                    return item;
+                                } else if (_operator === "<" && _p < _value) {
+                                    return item;
+                                } else if (_operator === "<=" && _p <= _value) {
+                                    return item;
+                                }
+
+                            });
+
+                        }
+                            break;
+
+                        case 'sort': {
+
+                            if (!enoughArguments(1)) {
+                                this.meta.search.error = _commands[':sort'].usage;
+                                return;
                             }
 
-                        });
-                    }
+                            var field   = args[0].toLowerCase();
+                            var desc    = (args.length > 1 ? args[1].toLowerCase() === 'desc' : false);
 
+                            _tmp.sort(function(a, b) {
+
+                                switch(field) {
+
+                                    case 'id': return (a.id - b.id);
+                                    case 'progress': return (a.progress - b.progress);
+                                    case 'children': return (a.children.length - b.children.length);
+                                    case 'created': return (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+                                    case 'updated': return (new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime());
+
+                                }
+
+                            });
+
+                            if(desc) {
+                                _tmp = _tmp.reverse();
+                            }
+
+                        } break;
+
+                        default: {
+
+                            this.meta.search.error = ('Invalid command: ' + command);
+
+                        } break;
+
+                    }
                 }
 
             } else {
