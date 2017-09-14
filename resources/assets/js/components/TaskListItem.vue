@@ -312,7 +312,7 @@ export default {
 
                             if(!(task === null)) {
                                 this.triggerTaskCollapse(null, task);
-                                
+
                                 this.container.shared = [ task ];
                                 this.tasks = this.container.shared;
 
