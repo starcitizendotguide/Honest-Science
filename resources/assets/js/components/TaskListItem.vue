@@ -8,7 +8,7 @@
                             :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
                             :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
                             multilined
-                            type="is-danger">
+                            :type="meta.search.error.length > 0 ? 'is-danger' : 'is-info'">
                         <div class="m-r-10 control field has-addons">
                             <p class="control">
                                 <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
@@ -371,18 +371,18 @@ export default {
                 "utilize commands to query certain properties.</p>" +
                 "<ul>" +
                     "<li><code>:task [id]</code> - Find a specific task by its id.</li>" +
-                        "<ul><li><code>[id]: integer</code></li></ul>" +
+                        "<ul><li><code>[id]</code> integer</li></ul>" +
                     "<li><code>:child [id]</code> - Find a specific child by its id.</li>" +
-                        "<ul><li><code>[id]: integer</code></li></ul>" +
+                        "<ul><li><code>[id]</code> integer</li></ul>" +
                     "<li><code>:progress [operator] [value]</code> - Filter tasks by their progress value.</li>" +
                         "<ul>" +
-                            "<li><code>[operator]: =, !=, >, <, >=, <=</code></li>" +
-                            "<li><code>[value]</code>: float</li>" +
+                            "<li><code>[operator]</code> <b>=</b>, <b>!=</b>, <b>></b>, <b><</b>, <b>>=</b>, <b><=</b></li>" +
+                            "<li><code>[value]</code> float [0..100]</li>" +
                         "</ul>" +
                     "<li><code>:sort [field] [mode?]</code></li>" +
                         "<ul>" +
-                            "<li><code>[field]: id, progress, children, created, updated</code></li>" +
-                            "<li><code>[mode?]</code>: asc (ascending, <i>default</i>) or desc (descending)</li>" +
+                            "<li><code>[field]</code> <b>id</b>, <b>progress</b>, <b>children</b>, <b>created</b>, <b>updated</b></li>" +
+                            "<li><code>[mode?]</code> <b>asc</b> (ascending, <i>default</i>) or <b>desc</b> (descending)</li>" +
                         "</ul>" +
                 "</ul>" +
                 "<div>"
@@ -776,6 +776,7 @@ export default {
             //--- Commands
             if(search.startsWith(':')) {
 
+
                 var explode = search.split(' ');
                 var command = explode[0].substr(1).toLocaleLowerCase();
 
@@ -809,6 +810,8 @@ export default {
 
                 } else {
 
+                    this.meta.search.suggestion = '';
+
                     //--- Pre Filter
                     _tmp = _tmp.filter(function (item) {
 
@@ -828,7 +831,7 @@ export default {
                     var enoughArguments = function (amount) {
 
                         if (args.length < amount) {
-                            return false;
+                            return;
                         }
 
                         var c = 0;
@@ -848,7 +851,7 @@ export default {
 
                             if (!enoughArguments(1)) {
                                 this.meta.search.error = _commands[':task'].usage;
-                                return false;
+                                return;
                             }
 
                             _tmp = _tmp.filter(function (item) {
@@ -866,10 +869,9 @@ export default {
 
                             if (!enoughArguments(1)) {
                                 this.meta.search.error = _commands[':child'].usage;
-                                return false;
+                                return;
                             }
 
-                            var self = this;
                             _tmp = _tmp.filter(function (item) {
 
                                 if (item.standalone === true) {
