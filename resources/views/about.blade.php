@@ -12,7 +12,7 @@
                     Honest Science is a dedicated Star Citizen project and is solely driven by its community.
                     We are an independent group which is interested in providing a proper overview of the project and its individual tasks.
                     <br>
-                    The main task of the project is to track as many pieces of information as possible, providing easy-to-read descriptions, detailed sources and a queryable database.
+                    The main task of the project is to track as many pieces of information as possible, providing easy-to-read descriptions, detailed sources and a searchable database.
 
                 </p>
             </div>
