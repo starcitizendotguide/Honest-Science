@@ -202,7 +202,7 @@
                                         v-for="(source, index) in meta.interactionBar.task.sources"
                                         :key="source.id"
 
-                                        title="You are leaving Star Citizen - Honest Science."
+                                        title="You are leaving Honest Science."
                                         :message="source.link + ' is not an official Honest Science site.'"
                                         positive="Continue to external site."
                                         negative="Cancel"

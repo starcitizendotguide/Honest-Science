@@ -2,15 +2,13 @@
     <div class="container">
         <div class="nav-left">
             <a href="{{ route('home.index') }}" class="nav-item m-l-10">Home</a>
+            <a href="{{ route('about.index') }}" class="nav-item m-l-10">About</a>
         </div>
 
         <div class="nav-right is-hidden-mobile" style="overflow: visible;">
             @if (Auth::guest())
                 @if(\Config::get('custom.auth.login') === true)
                 <a href="{{ route('login') }}" class="nav-item is-tab">Login</a>
-                @endif
-                @if(\Config::get('custom.auth.register') === true)
-                <a href="{{ route('register') }}" class="nav-item is-tab">Sign Up</a>
                 @endif
             @else
                 <b-dropdown name="navigation.top" v-model="navigation" position="is-bottom-left" class="dropdown nav-item is-tab">

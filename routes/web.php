@@ -34,7 +34,8 @@ if(\Config::get('custom.auth.reset') === true ) {
 
 //---
 Route::get('/', 'HomeController@index')->name('home.index');
-Route::get('settings', 'SettingsController@index')->name('settings.index');
+Route::get('/about', 'AboutController@index')->name('about.index');
+//Route::get('settings', 'SettingsController@index')->name('settings.index');
 
 Route::prefix('manage')
     ->middleware('auth', 'permission:read-managment')

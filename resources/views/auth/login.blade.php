@@ -34,6 +34,15 @@
                             @endif
                         </div>
 
+                        <div class="field">
+                            <p class="control">
+                                <div class="g-recaptcha" data-sitekey="{{ config('app.recaptcha.public')  }}"></div>
+                            </p>
+                            @if ($errors->has('g-recaptcha-response'))
+                                <p class="help is-danger">{{ $errors->first('g-recaptcha-response') }}</p>
+                            @endif
+                        </div>
+
                         <b-checkbox name="remember" class="m-t-2">Remember Me</b-checkbox>
                         <button class="button is-primary is-outlined is-fullwidth m-t-5">Log In</button>
                     </form>
@@ -51,4 +60,8 @@
 
         </div>
     </div>
+@endsection
+
+@section('external')
+    <script src="https://www.google.com/recaptcha/api.js" type="application/javascript"></script>
 @endsection

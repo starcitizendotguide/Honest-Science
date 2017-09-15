@@ -29,12 +29,19 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function validateLogin(\Illuminate\Http\Request $request)
+    {
+        $this->validate($request, [
+            $this->username()       => 'required|string',
+            'password'              => 'required|string',
+            'g-recaptcha-response'  => 'recaptcha'
+        ]);
     }
 
 }

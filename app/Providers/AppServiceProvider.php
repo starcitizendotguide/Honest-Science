@@ -26,6 +26,31 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
+        Validator::extend('recaptcha', function($attribute, $value, $parameters, $validator) {
+
+            $client = new \GuzzleHttp\Client(['http_errors' => false]);
+
+            $request = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+                'query' => [
+                    'secret' => config('app.recaptcha.private'),
+                    'response' => $value,
+                ]
+            ]);
+
+            if($request->getStatusCode() === 200) {
+
+                $data = json_decode($request->getBody()->getContents(), true);
+
+                if(!($data === false)) {
+                    return $data['success'];
+                }
+
+            }
+
+            return false;
+
+        });
+
 
     }
 

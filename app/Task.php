@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use App\TaskStatus;
@@ -84,7 +85,7 @@ class Task extends Model
         $tasks = [];
 
         $entries = Task::where([
-            ['updated_at', '<', \Carbon\Carbon::now()->subMonths(3)->toDateTimeString()],
+            ['updated_at', '<', Carbon::now()->subMonths(3)->toDateTimeString()],
             ['verified', '=', true],
         ])->get();
 

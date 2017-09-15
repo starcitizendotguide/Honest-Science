@@ -15,7 +15,6 @@
 
         <template slot="detail" scope="props">
             <article class="media">
-                </figure>
                 <div class="media-content">
                     <div class="content">
                         <p>{{ props.row.description }}</p>
