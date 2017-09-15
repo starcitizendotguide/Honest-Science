@@ -33,7 +33,7 @@
                     We are looking for reliable writers who are able to contribute on a regular basis and are also willing to maintain their own as well as other people's content.
                     <br><br>
 
-                    You have to accept and follow or Code of Conduct. Please read it before applying.
+                    You have to accept our Code of Conduct. Please read it before applying.
 
                     <br><br/>
 
