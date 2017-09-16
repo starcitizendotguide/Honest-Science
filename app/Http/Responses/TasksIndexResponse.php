@@ -32,7 +32,7 @@ class TasksIndexResponse implements Responsable
             ->leftJoin('visibility', 'tasks.visibility', '=', 'visibility.id')
             ->leftJoin('task_children', 'tasks.id', '=', 'task_children.task_id')
             ->select(
-            //--- Task
+                //--- Task
                 'tasks.id as taskId',
                 'tasks.name as taskName',
                 'tasks.description as taskDescription',

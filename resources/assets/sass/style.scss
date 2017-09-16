@@ -125,7 +125,7 @@ nav {
 .button[disabled],
 .input[disabled],
 .highlighted-element {
-    background: rgba(6, 70, 102, 0.4);
+    background: $background-color;
     border: 1px solid rgba(0, 237, 255, 0.3);
     color: $font-color;
 }
@@ -148,13 +148,13 @@ nav {
 
 .search-box {
     color: $font-color;
-    background: rgba(6, 70, 102, 0.4);
+    background: $background-color;
     border: 1px solid rgba(0, 237, 255, 0.3);
 }
 
 //--- Table
 .dark-table table {
-    background: rgba(6, 70, 102, 0.4);
+    background: $background-color;
     border: 1px solid rgba(0, 237, 255, 0.3);
     color: $font-color;
 
@@ -170,7 +170,7 @@ nav {
     }
 
     .detail {
-        background-color: rgba(6, 70, 102, 0.4) !important;
+        background-color: $background-color !important;
     }
 
 }
@@ -182,7 +182,7 @@ nav {
 //--- Custom Tables
 .studio-table .detail {
 
-    background: rgba(6, 70, 102, 0.4);
+    background: $background-color;
     border: 1px solid rgba(0, 237, 255, 0.3);
     color: $font-color;
 
@@ -222,7 +222,7 @@ nav {
 //--- Content Box
 .content-box {
 
-    background: rgba(6, 70, 102, 0.4);
+    background: $background-color;
     border: 1px solid rgba(0, 237, 255, 0.3);
     text-align: justify;
     color: #00E7FF;

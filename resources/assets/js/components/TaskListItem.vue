@@ -1,50 +1,48 @@
 <template xmlns:v-clipboard="http://www.w3.org/1999/xhtml">
     <div class="columns">
         <div class="column is-offset-1 is-7">
-            <div id="task-list" class="task-list">
+            <div class="task-list">
+
+                <div class="field is-grouped">
+                    <div class="field has-addons control">
+                          <p class="control">
+                              <b-tooltip
+                                      :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
+                                      :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
+                                      multilined
+                                      type="is-info">
+                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
+                              </b-tooltip>
+                        </p>
+                        <p class="control">
+                            <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="meta.shared.active">
+                                <span class="icon is-right"><i class="fa fa-question"></i></span>
+                            </a>
+                        </p>
+                        <p v-on:click="resetMeta" class="control">
+                            <b-tooltip
+                                    label="Click me to see all tasks!"
+                                    :always="meta.shared.active"
+                                    :active="meta.shared.active"
+                                    multilined
+                                    type="is-info">
+                                <a class="button highlighted-element highlighted-text" :class="{'is-active': meta.shared.active }">
+                                    <span class="icon is-small"><i class="fa fa-undo"></i></span>
+                                    <span>Reset</span>
+                                </a>
+                            </b-tooltip>
+                        </p>
+                    </div>
+                </div>
 
                 <div class="field is-grouped is-hidden-touch">
-                    <b-tooltip
-                            :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
-                            :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
-                            multilined
-                            type="is-info">
-                        <div class="m-r-10 control field has-addons">
-                            <p class="control">
-                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
-                            </p>
-                            <p class="control">
-                                <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="meta.shared.active">
-                                    <span class="icon is-right"><i class="fa fa-question"></i></span>
-                                </a>
-                            </p>
-                        </div>
-                    </b-tooltip>
                     <div class="field has-addons control">
                         <p class="control" v-for="status in meta.statuses">
                             <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="meta.shared.active">
-                               <span class="icon is-small"><i :class="status.css.icon"></i></span>
-                               <span>{{ status.name }}</span>
-                           </a>
+                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
+                                <span>{{ status.name }}</span>
+                            </a>
                         </p>
-                    </div>
-
-                    <div class="field">
-                        <b-tooltip
-                                label="Click me to see all tasks!"
-                                :always="meta.shared.active"
-                                :active="meta.shared.active"
-                                multilined
-                                type="is-info">
-                            <div class="m-r-10 control field has-addons">
-                                <p v-on:click="resetMeta" class="control is-pulled-right">
-                                    <a class="button highlighted-element highlighted-text" :class="{'is-active': meta.shared.active }">
-                                        <span class="icon is-small"><i class="fa fa-undo"></i></span>
-                                        <span>Reset</span>
-                                    </a>
-                                </p>
-                            </div>
-                        </b-tooltip>
                     </div>
                 </div>
 

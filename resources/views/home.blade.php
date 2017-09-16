@@ -11,7 +11,9 @@
                 </div>
                 <p class="content">
                     Honest Science is a dedicated Star Citizen project and is solely driven by its community.
-                    We are an independent group which is interested in providing a proper overview of the project and its individual tasks...
+                    We are an independent group which is interested in providing a proper overview of the project and its individual features...
+                    <br><br>
+                    Are you interested in joining us? Awesome. We are always looking for new contributors...
                     <br><br>
                     <a href="{{ route('about.index')  }}">Read More</a>
                 </p>
