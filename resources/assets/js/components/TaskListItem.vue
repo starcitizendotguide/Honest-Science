@@ -172,7 +172,7 @@
                             <div class="field has-addons">
                                 <p class="control is-expanded">
                                     <input type="text" class="input highlighted-element highlighted-text"
-                                           :value="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
+                                           :value="'https://starcitizentracker.info/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
                                     >
                                 </p>
                                 <p class="control">
@@ -183,7 +183,7 @@
                                             animated
                                             type="is-success">
                                         <button class="button highlighted-element highlighted-text"
-                                                v-clipboard:copy="'https://honest-science.starcitizen.guide/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
+                                                v-clipboard:copy="'https://starcitizentracker.info/#share-' + (typeof meta.interactionBar.task.standalone === 'undefined' ? 'c-' : 't-') + meta.interactionBar.task.id"
                                                 v-clipboard:success="clipboardSuccess">
                                             <span class="icon is-right"><i class="fa fa-clipboard"></i></span>
                                         </button>
