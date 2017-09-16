@@ -158,7 +158,7 @@
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isOverview">
-                            <!--<a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>-->
+                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
                             <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
                                 Sources
                             </a>
@@ -605,7 +605,7 @@ export default {
             var disqus_url          = (CONF_URL + "/#!" + CONF_IDENTIFIER);
 
             // Resetting the area the comments are located in
-            /*if(this.disqus.loaded === false) {
+            if(this.disqus.loaded === false) {
 
                 // Loading Disqus for the first time
 
@@ -629,9 +629,7 @@ export default {
                         this.page.url = url;
                     }
                 });
-            }*/
-
-            this.meta.interactionBar.content.comment = '<disqus shortname="' + disqus_shortname + '"></disqus>';
+            }
 
             this.interactionBarSwitchPage('isComment');
         },
