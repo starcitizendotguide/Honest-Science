@@ -165,8 +165,7 @@
                             <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
                         </div>
 
-                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment">
-                            <div id="disqus_thread"></div>
+                        <div v-if="meta.interactionBar.pages.isComment" v-html="a">
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isShare">
@@ -231,6 +230,7 @@
 export default {
     data: function() {
         return {
+            a: '<div id="disqus_thread"></div>',
             tasks: [],
             container: {
                 all: [],
@@ -268,9 +268,6 @@ export default {
                         isComment: false,
                         isShare: false,
                         isSources: false,
-                    },
-                    content: {
-                        comment: null,
                     }
                 },
                 statuses: [],
@@ -613,17 +610,15 @@ export default {
                 // Loading Disqus for the first time
 
                 this.disqus.loaded = true;
-                (function () {  // DON'T EDIT BELOW THIS LINE
-                    var d = document, s = d.createElement('script');
+                var d = document, s = d.createElement('script');
 
-                    s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
+                s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
 
-                    s.setAttribute('data-timestamp', +new Date());
-                    (d.head || d.body).appendChild(s);
-                })();
-
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
             } else {
 
+                this.a = '<div id="disqus_thread"></div>';
                 // Trying to reset Disqus causes the error
                 DISQUS.reset({
                     reload: true,
