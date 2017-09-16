@@ -165,7 +165,9 @@
                             <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarShare">Share</a>
                         </div>
 
-                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment"></div>
+                        <div v-if="meta.interactionBar.pages.isComment" v-html="meta.interactionBar.content.comment">
+                            <div id="disqus_thread"></div>
+                        </div>
 
                         <div v-if="meta.interactionBar.pages.isShare">
 
@@ -431,6 +433,7 @@ export default {
                 [216,226,165],
                 [182,226,165]
             ];
+
 
             var color = interpolate(task.progress, colors);
             return {
