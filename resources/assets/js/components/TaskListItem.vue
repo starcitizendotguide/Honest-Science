@@ -137,10 +137,10 @@
         </div>
 
         <!-- Interaction Bar -->
-        <div class="interaction-bar container is-hidden-touch">
-            <div id="interactionBar" class="bar-content">
+        <div class="column is-3">
+            <div class="interaction-bar is-hidden-touch">
+                <div class="bar-content is-expanded">
 
-                <div class="column is-3 m-t-100">
                     <div class="card card-content highlighted-element" :class="{'is-active': (meta.interactionBar.task !== null)}">
 
                         <div v-if="!meta.interactionBar.pages.isDefault">
@@ -217,8 +217,8 @@
                         </div>
 
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
         <!-- Interaction Bar End -->
@@ -433,9 +433,16 @@ export default {
 
 
             var color = interpolate(task.progress, colors);
+            var hex = (
+                '#' +
+                ("0" + parseInt(color[0], 10).toString(16)).slice(-2) +
+                ("0" + parseInt(color[1], 10).toString(16)).slice(-2) +
+                ("0" + parseInt(color[2], 10).toString(16)).slice(-2)
+            );
+
             return {
-                'background-color': 'rgba(' + color[0] + ', ' + color[1] + ', ' + color[2] + ', 1)',
-                'width': ((task.progress * 100) + '%'),
+                'background-color': hex,
+                'width': ((task.progress * 100) + '%')
             };
 
         },
