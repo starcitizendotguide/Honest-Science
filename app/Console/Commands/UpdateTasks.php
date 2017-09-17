@@ -69,7 +69,7 @@ class UpdateTasks extends Command
 
             $children->each(function($item, $key) use (&$table, &$_average, $statuses) {
                 $status = $statuses->get($item->status);
-                $_average += $item->progress / $status->rating;
+                $_average += $item->progress;
                 if(array_key_exists($status->id, $table)) {
                     $table[$status->id] += ($item->progress * $status->rating);
                 } else {

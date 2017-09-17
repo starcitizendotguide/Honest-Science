@@ -84,7 +84,7 @@ export default {
             isAcceptAvailable: false,
             countdown: null,
             buttonAcceptText: 'Accept',
-            accceptLink: '#',
+            acceptLink: '#',
             countdownId: null,
         };
     },
