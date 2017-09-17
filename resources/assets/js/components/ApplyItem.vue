@@ -85,27 +85,33 @@ export default {
             countdown: null,
             buttonAcceptText: 'Accept',
             accceptLink: '#',
+            countdownId: null,
         };
     },
     methods: {
         activateCountdown() {
             var self = this;
-            var id = window.setInterval(() => {
+
+            if(!(this.countdownId === null)) {
+                clearInterval(this.countdownId);
+            }
+
+            this.countdownId = setInterval(() => {
                 self.buttonAcceptText = ('Accept & Apply (' + self.countdown + 's)');
                 self.countdown--;
 
                 if(self.countdown <= 0) {
                     self.buttonAcceptText = ('Accept & Apply');
                     self.acceptLink = 'https://docs.google.com/forms/d/e/1FAIpQLSdqL3CZrA6CIWeX_fIwWfRfAo0zENx-5ceiqFFoXoeowqEXUA/viewform?usp=sf_link';
-                    clearInterval(id);
+                    clearInterval(self.countdownId);
                 }
-            },1000);
+            }, 1000);
         },
         toggle(value) {
             if(value === true) {
-                this.isActive = true;
                 this.countdown = 120;
                 this.activateCountdown();
+                this.isActive = true;
             } else {
                 this.isActive = false;
             }
