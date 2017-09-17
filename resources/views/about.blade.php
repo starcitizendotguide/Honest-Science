@@ -37,8 +37,7 @@
 
                     <br><br/>
 
-                    <a class="button highlighted-element highlighted-text" target="_blank" href="https://github.com/starcitizendotguide/Honest-Science/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a>
-                    <a class="button highlighted-element highlighted-text" href="https://docs.google.com/forms/d/e/1FAIpQLSdqL3CZrA6CIWeX_fIwWfRfAo0zENx-5ceiqFFoXoeowqEXUA/viewform?usp=sf_link">Apply</a>
+                    <apply-item></apply-item>
 
                 </p>
             </div>
