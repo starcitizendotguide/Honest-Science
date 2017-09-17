@@ -158,7 +158,7 @@
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isOverview">
-                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
+                            <!--<a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>-->
                             <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
                                 Sources
                             </a>
@@ -589,6 +589,9 @@ export default {
                 return;
             }
 
+            this.a = '<div id="disqus_thread"></div>';
+            this.interactionBarSwitchPage('isComment');
+
             // irrelevant
             var IS_CHILD = (typeof task.standalone == 'undefined');
 
@@ -598,7 +601,6 @@ export default {
                 CONF_IDENTIFIER     = (task.id + '-' + (IS_CHILD ? 'child' : 'parent')),
                 CONF_TITLE          = (task.name + ' - Discussion');
 
-            var disqus_developer    = true;
             var disqus_shortname    = CONF_SHORTNAME;
             var disqus_identifier   = CONF_IDENTIFIER;
             var disqus_title        = CONF_TITLE;
@@ -607,18 +609,30 @@ export default {
             // Resetting the area the comments are located in
             if(this.disqus.loaded === false) {
 
+                var disqus_config = function () {
+                    this.page.url = disqus_url;
+                    this.page.identifier = disqus_identifier;
+
+                    console.log(this.page.url);
+                    console.log(this.page.identifier);
+                };
+
                 // Loading Disqus for the first time
-
                 this.disqus.loaded = true;
-                var d = document, s = d.createElement('script');
+                (function() {
+                    var d = document, s = d.createElement('script');
 
-                s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js';
+                    s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js?date-timestamp=' + new Date();
 
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+
+                    console.log('[LOADING EMBED.JS]');
+
+                }());
+
             } else {
-
-                this.a = '<div id="disqus_thread"></div>';
+                console.log('[ALREADY GOT EMBED.JS - TRYING TO RESET DISQUS]');
                 // Trying to reset Disqus causes the error
                 DISQUS.reset({
                     reload: true,
@@ -629,7 +643,6 @@ export default {
                 });
             }
 
-            this.interactionBarSwitchPage('isComment');
         },
         interactionBarShare() {
             this.interactionBarSwitchPage('isShare');

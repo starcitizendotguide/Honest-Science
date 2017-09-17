@@ -25,3 +25,7 @@
     </div>
 
 @endsection
+
+@section('external')
+    <!--<script src="https://star-citizen-honest-tracker.disqus.com/embed.js?date-timestamp={{ \Carbon\Carbon::now()->getTimestamp() }}"></script>-->
+@endsection
