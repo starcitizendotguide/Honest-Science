@@ -1,61 +1,60 @@
 <template xmlns:v-clipboard="http://www.w3.org/1999/xhtml">
     <div class="columns">
         <div class="column is-offset-1 is-7">
+
+            <div class="field is-grouped">
+                <div class="field has-addons control">
+                    <p class="control">
+                        <b-tooltip
+                                :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
+                                :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
+                                multilined
+                                type="is-info">
+                            <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
+                        </b-tooltip>
+                    </p>
+                    <p class="control">
+                        <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="meta.shared.active">
+                            <span class="icon is-right"><i class="fa fa-question"></i></span>
+                        </a>
+                    </p>
+                    <p v-on:click="resetMeta" class="control">
+                        <b-tooltip
+                                label="Click me to see all tasks!"
+                                :always="meta.shared.active"
+                                :active="meta.shared.active"
+                                multilined
+                                type="is-info">
+                            <a class="button highlighted-element highlighted-text" :class="{'is-active': meta.shared.active }">
+                                <span class="icon is-small"><i class="fa fa-undo"></i></span>
+                                <span>Reset</span>
+                            </a>
+                        </b-tooltip>
+                    </p>
+                </div>
+            </div>
+            <div class="field is-grouped is-hidden-touch">
+                <div class="field has-addons control">
+                    <p class="control" v-for="status in meta.statuses">
+                        <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="meta.shared.active">
+                            <span class="icon is-small"><i :class="status.css.icon"></i></span>
+                            <span>{{ status.name }}</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="field is-grouped is-hidden-touch">
+                <div class="field has-addons control">
+                    <p class="control" v-for="type in meta.types">
+                        <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" :disabled="meta.shared.active">
+                            <span class="icon is-small"><i :class="type.css.icon"></i></span>
+                            <span>{{ type.name }}</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+
             <div class="task-list">
-
-                <div class="field is-grouped">
-                    <div class="field has-addons control">
-                          <p class="control">
-                              <b-tooltip
-                                      :label="meta.search.error.length > 0 ? meta.search.error : meta.search.suggestion"
-                                      :always="meta.search.error.length > 0 || meta.search.suggestion.length > 0"
-                                      multilined
-                                      type="is-info">
-                                <input v-model="meta.search.query" class="input highlighted-element highlighted-text" placeholder="Search..." :disabled="meta.shared.active">
-                              </b-tooltip>
-                        </p>
-                        <p class="control">
-                            <a @click="openSearchHelp" class="button highlighted-element highlighted-text" :disabled="meta.shared.active">
-                                <span class="icon is-right"><i class="fa fa-question"></i></span>
-                            </a>
-                        </p>
-                        <p v-on:click="resetMeta" class="control">
-                            <b-tooltip
-                                    label="Click me to see all tasks!"
-                                    :always="meta.shared.active"
-                                    :active="meta.shared.active"
-                                    multilined
-                                    type="is-info">
-                                <a class="button highlighted-element highlighted-text" :class="{'is-active': meta.shared.active }">
-                                    <span class="icon is-small"><i class="fa fa-undo"></i></span>
-                                    <span>Reset</span>
-                                </a>
-                            </b-tooltip>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="field is-grouped is-hidden-touch">
-                    <div class="field has-addons control">
-                        <p class="control" v-for="status in meta.statuses">
-                            <a v-on:click="statusOnClick(status.id)" class="button highlighted-element highlighted-text" v-bind:class="status.css.button_classes" :disabled="meta.shared.active">
-                                <span class="icon is-small"><i :class="status.css.icon"></i></span>
-                                <span>{{ status.name }}</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="field is-grouped is-hidden-touch">
-                    <div class="field has-addons control">
-                        <p class="control" v-for="type in meta.types">
-                            <a v-on:click="typeOnClick(type.id)" class="button highlighted-element highlighted-text" v-bind:class="type.css.button_classes" :disabled="meta.shared.active">
-                                <span class="icon is-small"><i :class="type.css.icon"></i></span>
-                                <span>{{ type.name }}</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
 
                 <div :id="'task-' + task.id" @click="triggerTaskCollapse($event, task)" class="box task-box highlighted-element" :class="{'is-active': task.collapsed}" v-for="task in filteredItems">
                     <article class="media media-fix">
@@ -75,17 +74,17 @@
 
                                 </div>
                                 <div class="m-t-10 meta-color" :class="{ 'm-b-10': task.collapsed && task.standalone == false }">
-                                    <span class="m-r-1">Status: </span>
+                                    <span class="m-r-1 ignore-click">Status: </span>
                                     <b-tooltip :label="task.status.name + ' - ' + toFixed(task.progress * 100, 2) + '%'" type="is-dark" square animated>
-                                        <i :class="task.status.css_icon" class="icon is-icon-size"></i>
+                                        <i :class="task.status.css_icon" class="icon is-icon-size ignore-click"></i>
                                     </b-tooltip>
 
-                                    <span v-if="task.standalone" class="m-l-2 m-r-1">Type:</span>
+                                    <span v-if="task.standalone" class="m-l-2 m-r-1 ignore-click">Type:</span>
                                     <b-tooltip v-if="task.standalone" v-for="type in task.types" :key="type.id" :label="type.name" type="is-dark" square animated>
-                                        <i :class="type.css_icon" class="icon is-icon-size"></i>
+                                        <i :class="type.css_icon" class="icon is-icon-size ignore-click"></i>
                                     </b-tooltip>
 
-                                    <span class="is-pulled-right">Last Updated: {{ task.updated_at_diff }}</span>
+                                    <span class="is-pulled-right ignore-click">Last Updated: {{ task.updated_at_diff }}</span>
                                 </div>
 
                                 <transition name="fade">
@@ -100,14 +99,14 @@
                                                         <br />
 
                                                         <div class="m-t-10 meta-color">
-                                                            <span class="m-r-1">Status: </span>
+                                                            <span class="m-r-1 ignore-click-child">Status: </span>
                                                             <b-tooltip :label="child.status.name + ' - ' + toFixed(child.progress * 100, 2) + '%'" type="is-dark" square animated>
-                                                                <i :class="child.status.css_icon" class="icon is-icon-size"></i>
+                                                                <i :class="child.status.css_icon" class="icon is-icon-size ignore-click-child"></i>
                                                             </b-tooltip>
 
-                                                            <span class="m-l-2 m-r-1">Type:</span>
+                                                            <span class="m-l-2 m-r-1 ignore-click-child">Type:</span>
                                                             <b-tooltip v-for="type in child.types" :key="type.id" :label="type.name" type="is-dark" square animated>
-                                                                <i :class="type.css_icon" class="icon is-icon-size"></i>
+                                                                <i :class="type.css_icon" class="icon is-icon-size ignore-click-child"></i>
                                                             </b-tooltip>
 
                                                             <span class="is-pulled-right">Last Updated: {{ child.updated_at_diff }}</span>
@@ -137,7 +136,7 @@
         </div>
 
         <!-- Interaction Bar -->
-        <div class="column is-3">
+        <div class="column is-3 m-t-150">
             <div class="interaction-bar is-hidden-touch">
                 <div class="bar-content is-expanded">
 
@@ -539,6 +538,24 @@ export default {
             }
         },
         triggerChildCollapse(evt, child) {
+
+            var current_task = this.meta.interactionBar.task;
+
+            var current_task = this.meta.interactionBar.task;
+
+            var isIgnoringTriggerEvent = function(element) {
+                if(typeof element === 'undefined' || element === null) {
+                    return false;
+                } else if(element.classList.contains('ignore-click-child')) {
+                    return true;
+                }
+
+                return isIgnoringTriggerEvent(element.parentElement);
+            };
+
+            if(!(evt === null) && isIgnoringTriggerEvent(evt.target) === true) {
+                return;
+            }
 
             this.meta.interactionBar.task = child;
             this.interactionBarSwitchPage('isOverview');
