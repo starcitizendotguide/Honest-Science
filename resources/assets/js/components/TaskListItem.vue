@@ -207,7 +207,7 @@
                                         :url="source.link"
                                         theme="is-danger"
                                         width=960>
-                                    <li>{{ source.link | truncate(50)  }}</li>
+                                    <li>{{ source.link | truncate(100)  }}</li>
                                 </confirm-item>
                             </ul>
                             <span v-if="meta.interactionBar.task.sources.length == 0">
