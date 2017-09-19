@@ -655,7 +655,7 @@ class ManageContentController extends Controller
     public function validateTask($request) {
         //--- Validate
         $this->validate($request, [
-            'name'          => 'required|min:5',
+            'name'          => 'required|min:3',
             'description'   => 'required|min:30',
         ]);
     }
@@ -675,7 +675,7 @@ class ManageContentController extends Controller
 
         //--- Validate
         $this->validate($request, [
-            'name'          => 'required|min:5',
+            'name'          => 'required|min:3',
             'description'   => 'required|min:30',
             'types'         => 'required|array|min:1',
             'status'        => 'required',
@@ -691,7 +691,7 @@ class ManageContentController extends Controller
     public function validateChildStore($request) {
         //--- Validate
         $this->validate($request, [
-            'name'          => 'required|min:5',
+            'name'          => 'required|min:3',
             'description'   => 'required|min:30',
             'types'         => 'required|array|min:1',
         ]);
@@ -705,7 +705,7 @@ class ManageContentController extends Controller
     public function validateStandaloneTaskStore($request) {
         //--- Validate
         $this->validate($request, [
-            'name'          => 'required|min:5',
+            'name'          => 'required|min:3',
             'description'   => 'required|min:30',
             'types'         => 'required|array|min:1',
         ]);
@@ -726,7 +726,7 @@ class ManageContentController extends Controller
 
         //--- Validate
         $this->validate($request, [
-            'name'          => 'required|min:5',
+            'name'          => 'required|min:3',
             'description'   => 'required|min:30',
             'status'        => 'required',
             'types'         => 'required|array|min:1',
