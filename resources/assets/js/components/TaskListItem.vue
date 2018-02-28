@@ -390,7 +390,7 @@ export default {
             var _t = this.meta.interactionBar.task;
             return (
                 !(_t === null) &&
-                (typeof _t.standalone == 'undefined') &&
+                (_t.standalone === undefined) &&
                 _t.id === child.id
             );
         },
@@ -477,7 +477,13 @@ export default {
                 return;
             }
 
-            this.meta.statuses[id].css.button_classes['is-active'] = !this.meta.statuses[id].css.button_classes['is-active'];
+            for(var i = 0; i < this.meta.statuses.length; i++) {
+                if(this.meta.statuses[i].id === id) {
+                    this.meta.statuses[i].css.button_classes['is-active'] = !this.meta.statuses[i].css.button_classes['is-active'];
+                    break;
+                }
+            }
+
         },
         //--- Called when the user clicks on the "type" button to enable or disable
         //    it.
@@ -488,7 +494,13 @@ export default {
                 return;
             }
 
-            this.meta.types[id].css.button_classes['is-active'] = !this.meta.types[id].css.button_classes['is-active'];
+            for(var i = 0; i < this.meta.types.length; i++) {
+                if(this.meta.types[i].id === id) {
+                    this.meta.types[i].css.button_classes['is-active'] = !this.meta.types[i].css.button_classes['is-active'];
+                    break;
+                }
+            }
+
         },
         //--- Called when the user clicks on the arrow next to a task to collapse it.
         //    It collapse all other tasks and resets or loads the interaction bar.
@@ -497,7 +509,7 @@ export default {
             var current_task = this.meta.interactionBar.task;
 
             var isIgnoringTriggerEvent = function(element) {
-                if(typeof element === 'undefined' || element === null) {
+                if(element === undefined || element === null) {
                     return false;
                 } else if(element.classList.contains('ignore-click')) {
                      return true;
@@ -513,10 +525,10 @@ export default {
             //--- Reset Collapse & Reset Interaction Bar
             if(
                 (current_task === null) ||
-                !(typeof current_task.standalone == 'undefined') ||
+                !(current_task.standalone === undefined) ||
                 (
-                    (typeof current_task.standalone == 'undefined') &&
-                    (typeof task.standalone == 'undefined')
+                    (current_task.standalone === undefined) &&
+                    (task.standalone === undefined)
                 )
             ) {
                 this.tasks.map(v => {
@@ -541,10 +553,8 @@ export default {
 
             var current_task = this.meta.interactionBar.task;
 
-            var current_task = this.meta.interactionBar.task;
-
             var isIgnoringTriggerEvent = function(element) {
-                if(typeof element === 'undefined' || element === null) {
+                if(element === undefined || element === null) {
                     return false;
                 } else if(element.classList.contains('ignore-click-child')) {
                     return true;
@@ -617,7 +627,7 @@ export default {
             this.interactionBarSwitchPage('isComment');
 
             // irrelevant
-            var IS_CHILD = (typeof task.standalone == 'undefined');
+            var IS_CHILD = (task.standalone === undefined);
 
             // Disqus Config
             var CONF_URL            = (location.protocol + '//' + window.location.hostname),
