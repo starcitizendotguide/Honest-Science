@@ -494,7 +494,6 @@ export default {
                 return;
             }
 
-            console.log("ID: " + id);
             for(var i = 0; i < this.meta.types.length; i++) {
                 if(this.meta.types[i].id === id) {
                     this.meta.types[i].css.button_classes['is-active'] = !this.meta.types[i].css.button_classes['is-active'];
