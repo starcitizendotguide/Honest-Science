@@ -88,7 +88,7 @@ class TasksController extends Controller
         $data['created_at']     = $task->created_at;
         $data['updated_at']     = $task->updated_at;
 
-        if($task->standalone !== true) {
+        if($task->standalone === false) {
             //--- Append Children
             $children = $task->children();
 

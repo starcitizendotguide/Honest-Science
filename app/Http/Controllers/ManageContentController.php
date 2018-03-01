@@ -98,6 +98,7 @@ class ManageContentController extends Controller
                 $task->name = $request->input('name');
                 $task->description = $request->input('description');
                 $task->visibility = $request->input('visibility');
+                $task->count_progress_as_one = $request->input('count_progress_as_one');
 
                 $task->save();
 
@@ -131,7 +132,7 @@ class ManageContentController extends Controller
             $task = new Task;
             $task->name = $request->input('name');
             $task->description = $request->input('description');
-
+            $task->count_progress_as_one = $request->input('count_progress_as_one');
             if(\Laratrust::can('mark-as-verified-task')) {
                 $task->verified = true;
             }
@@ -657,6 +658,7 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:3',
             'description'   => 'required|min:30',
+            'count_progress_as_one' => 'required'
         ]);
     }
 

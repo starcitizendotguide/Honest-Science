@@ -44,6 +44,14 @@
                             </select>
                         </p>
                     </div>
+                    <div class="field">
+                        <p class="control select">
+                            <select name="count_progress_as_one">
+                                <option value="1" {{ $task->count_progress_as_one == 1 ? 'selected' : '' }}>Count Task As Single</option>
+                                <option value="0" {{ $task->count_progress_as_one == 0 ? 'selected' : '' }}>Count Children</option>
+                            </select>
+                        </p>
+                    </div>
                 </div>
                 @if(\Laratrust::can('update-task'))
                     <div class="field">

@@ -25,6 +25,16 @@
                 <p class="help is-danger">{{ $errors->first('description') }}</p>
             @endif
         </div>
+
+        <div class="field">
+            <p class="control select">
+                <select name="count_progress_as_one">
+                    <option value="1">Count Task As Single</option>
+                    <option value="0" selected>Count Children</option>
+                </select>
+            </p>
+        </div>
+
         <button class="button is-primary is-outlined is-fullwidth m-t-5">Create</button>
     </form>
 @endsection

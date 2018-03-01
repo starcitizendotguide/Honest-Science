@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Task;
 use App\TaskChild;
+use Illuminate\Support\Facades\DB;
 
 class TaskStatus extends Model
 {
@@ -41,20 +42,24 @@ class TaskStatus extends Model
             return 0;
         }
 
-        $childTotal = TaskChild::where([
-            ['status', '=', $this->id],
-        ])->count();
-        $childCount = TaskChild::count();
+        $childCount = DB::select('SELECT COUNT(task_children.id) AS `childCount`
+                FROM task_children
+                  LEFT JOIN tasks ON tasks.id = task_children.id
+                WHERE tasks.count_progress_as_one = FALSE AND task_children.status = ' . $this->id)[0]->childCount;
+        $childTotal = DB::select('SELECT COUNT(task_children.id) AS `childTotal`
+                FROM task_children
+                  LEFT JOIN tasks ON tasks.id = task_children.id
+                WHERE tasks.count_progress_as_one = FALSE')[0]->childTotal;
 
-        $standaloneTotal = Task::where([
-            ['status', '=', $this->id],
-            ['standalone', '=', true],
-            ['verified', '=', true],
-            ['visibility', '>', -1]
-        ])->count();
-        $standaloneCount = Task::where('standalone', '=', true)->count();
-
-        return (($childTotal + $standaloneTotal) / ($childCount + $standaloneCount));
+        $taskCount = DB::select('SELECT COUNT(tasks.id) AS `taskCount` 
+                      FROM tasks
+                    WHERE tasks.verified = TRUE AND tasks.visibility > -1 AND (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE)
+                      AND tasks.status = ' . $this->id)[0]->taskCount;
+        $taskTotal = DB::select('SELECT COUNT(tasks.id) AS `taskTotal`
+                  FROM tasks
+                WHERE (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE)  AND tasks.visibility > -1;')[0]->taskTotal;
+        $result = (($childCount + $taskCount) / ($childTotal + $taskTotal));
+        return $result;
     }
 
 }
