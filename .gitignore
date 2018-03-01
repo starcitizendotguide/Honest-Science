@@ -10,3 +10,5 @@ Homestead.yaml
 npm-debug.log
 .env
 .idea
+composer.lock
+package-lock.json
