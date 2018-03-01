@@ -38,6 +38,14 @@
                 {{ props.row.visibility.name }}
             </b-table-column>
 
+            <b-table-column field="count_progress_as_one" label="CTP" sortable>
+                {{ props.row.count_progress_as_one == 0 ? 'Children' : 'Single' }}
+            </b-table-column>
+
+            <b-table-column field="post_launch" label="Planned" sortable>
+                {{ props.row.post_launch == 0 ? 'Pre-/At-Launch' : 'Post-Launch' }}
+            </b-table-column>
+
             <b-table-column field="created_at" label="Created At" sortable>
                 {{ props.row.created_at }}
             </b-table-column>

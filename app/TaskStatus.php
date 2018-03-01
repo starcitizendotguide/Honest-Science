@@ -46,19 +46,26 @@ class TaskStatus extends Model
         $childCount = DB::select('SELECT COUNT(task_children.id) AS `childCount`
                 FROM task_children
                   LEFT JOIN tasks ON tasks.id = task_children.task_id
-                WHERE tasks.count_progress_as_one = FALSE AND task_children.status = ' . $this->id)[0]->childCount;
+                WHERE tasks.count_progress_as_one = FALSE  
+                  AND (task_children.post_launch = FALSE OR tasks.post_launch = FALSE)
+                  AND task_children.status = ' . $this->id)[0]->childCount;
         $childTotal = DB::select('SELECT COUNT(task_children.id) AS `childTotal`
                 FROM task_children
                   LEFT JOIN tasks ON tasks.id = task_children.task_id
-                WHERE tasks.count_progress_as_one = FALSE')[0]->childTotal;
+                WHERE tasks.count_progress_as_one = FALSE 
+                  AND (task_children.post_launch = FALSE OR tasks.post_launch = FALSE)')[0]->childTotal;
 
         $taskCount = DB::select('SELECT COUNT(tasks.id) AS `taskCount` 
                       FROM tasks
-                    WHERE tasks.verified = TRUE AND tasks.visibility > -1 AND (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false))
+                    WHERE tasks.verified = TRUE AND tasks.visibility > -1 
+                      AND (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false))
+                      AND tasks.post_launch = FALSE
                       AND tasks.status = ' . $this->id)[0]->taskCount;
         $taskTotal = DB::select('SELECT COUNT(tasks.id) AS `taskTotal`
                   FROM tasks
-                WHERE (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false)) AND tasks.visibility > -1 AND tasks.verified = TRUE;')[0]->taskTotal;
+                WHERE (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false))
+                 AND tasks.visibility > -1 AND tasks.verified = TRUE
+                 AND tasks.post_launch = FALSE;')[0]->taskTotal;
         $result = (($childCount + $taskCount) / ($childTotal + $taskTotal));
         return $result;
     }

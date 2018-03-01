@@ -97,6 +97,19 @@
                             <p class="help is-danger">{{ $errors->first('progress') }}</p>
                         @endif
                     </div>
+
+                    <div class="field">
+                        <label class="label">Planned for</label>
+                        <p class="control select">
+                            <select name="post_launch">
+                                <option value="1" {{ $task->post_launch == 1 ? 'selected' : '' }}>Post Launch</option>
+                                <option value="0" {{ $task->post_launch == 0 ? 'selected' : '' }}>Pre-/At-Launch</option>
+                            </select>
+                        </p>
+                        @if ($errors->has('post_launch'))
+                            <p class="help is-danger">{{ $errors->first('post_launch') }}</p>
+                        @endif
+                    </div>
                 </div>
                 @if(\Laratrust::can('update-task'))
                     <button class="button is-primary is-outlined is-fullwidth m-t-5">Update</button>

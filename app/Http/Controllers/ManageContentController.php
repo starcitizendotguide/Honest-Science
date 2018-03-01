@@ -69,7 +69,9 @@ class ManageContentController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function tasksCreate() {
-        return view('manage.tasks.create');
+        return view('manage.tasks.create', [
+            'visibilities'  => \App\Visibility::all(),
+        ]);
     }
 
 
@@ -99,6 +101,7 @@ class ManageContentController extends Controller
                 $task->description = $request->input('description');
                 $task->visibility = $request->input('visibility');
                 $task->count_progress_as_one = $request->input('count_progress_as_one');
+                $task->post_launch = $request->input('post_launch');
 
                 $task->save();
 
@@ -132,7 +135,9 @@ class ManageContentController extends Controller
             $task = new Task;
             $task->name = $request->input('name');
             $task->description = $request->input('description');
+            $task->visibility = $request->input('visibility');
             $task->count_progress_as_one = $request->input('count_progress_as_one');
+            $task->post_launch = $request->input('post_launch');
             if(\Laratrust::can('mark-as-verified-task')) {
                 $task->verified = true;
             }
@@ -190,6 +195,7 @@ class ManageContentController extends Controller
                 $task->description = $request->input('description');
                 $task->status = $request->input('status');
                 $task->visibility = $request->input('visibility');
+                $task->post_launch = $request->input('post_launch');
                 $task->types()->sync(array_map('intval', $request->input('types')));
 
                 $status = TaskStatus::find($request->input('status'));
@@ -239,9 +245,9 @@ class ManageContentController extends Controller
             $task->name = $request->input('name');
             $task->description = $request->input('description');
             $task->status = $request->input('status');
+            $task->post_launch = $request->input('post_launch');
             $task->progress = $status->value_min;
             $task->standalone = true;
-
 
             if(\Laratrust::can('mark-as-verified-task')) {
                 $task->verified = true;
@@ -312,6 +318,7 @@ class ManageContentController extends Controller
                 $child->name = $request->input('name');
                 $child->description = $request->input('description');
                 $child->status = $request->input('status');
+                $child->post_launch = $request->input('post_launch');
                 $child->types()->sync(array_map('intval', $request->input('types')));
 
                 //--- Progress & Status
@@ -370,6 +377,7 @@ class ManageContentController extends Controller
             $child->name = $request->input('name');
             $child->description = $request->input('description');
             $child->status = $request->input('status');
+            $child->post_launch = $request->input('post_launch');
             $child->progress = $status->value_min;
             $child->save();
 
@@ -658,7 +666,8 @@ class ManageContentController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:3',
             'description'   => 'required|min:30',
-            'count_progress_as_one' => 'required'
+            'count_progress_as_one' => 'required',
+            'post_launch'   => 'required'
         ]);
     }
 
@@ -682,6 +691,7 @@ class ManageContentController extends Controller
             'types'         => 'required|array|min:1',
             'status'        => 'required',
             'progress'      => ('required|numeric|between:' . ($status === null ? '0,100' : ($status->value_min * 100 . ',' . $status->value_max * 100)) . ''),
+            'post_launch'   => 'required',
         ]);
     }
 
@@ -696,6 +706,7 @@ class ManageContentController extends Controller
             'name'          => 'required|min:3',
             'description'   => 'required|min:30',
             'types'         => 'required|array|min:1',
+            'post_launch'   => 'required'
         ]);
     }
 

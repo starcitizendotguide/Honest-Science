@@ -36,6 +36,7 @@
                 </div>
                 <div class="field is-grouped is-grouped-centered">
                     <div class="field">
+                        <label class="label">Visbility</label>
                         <p class="control select">
                             <select name="visibility">
                                 @foreach($visibilities as $entry)
@@ -45,10 +46,20 @@
                         </p>
                     </div>
                     <div class="field">
+                        <label class="label">Counts Towards Progress</label>
                         <p class="control select">
                             <select name="count_progress_as_one">
                                 <option value="1" {{ $task->count_progress_as_one == 1 ? 'selected' : '' }}>Count Task As Single</option>
                                 <option value="0" {{ $task->count_progress_as_one == 0 ? 'selected' : '' }}>Count Children</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Planned for</label>
+                        <p class="control select">
+                            <select name="post_launch">
+                                <option value="1" {{ $task->post_launch == 1 ? 'selected' : '' }}>Post Launch</option>
+                                <option value="0" {{ $task->post_launch == 0 ? 'selected' : '' }}>Pre-/At-Launch</option>
                             </select>
                         </p>
                     </div>
