@@ -45,11 +45,11 @@ class TaskStatus extends Model
 
         $childCount = DB::select('SELECT COUNT(task_children.id) AS `childCount`
                 FROM task_children
-                  LEFT JOIN tasks ON tasks.id = task_children.id
+                  LEFT JOIN tasks ON tasks.id = task_children.task_id
                 WHERE tasks.count_progress_as_one = FALSE AND task_children.status = ' . $this->id)[0]->childCount;
         $childTotal = DB::select('SELECT COUNT(task_children.id) AS `childTotal`
                 FROM task_children
-                  LEFT JOIN tasks ON tasks.id = task_children.id
+                  LEFT JOIN tasks ON tasks.id = task_children.task_id
                 WHERE tasks.count_progress_as_one = FALSE')[0]->childTotal;
 
         $taskCount = DB::select('SELECT COUNT(tasks.id) AS `taskCount` 
