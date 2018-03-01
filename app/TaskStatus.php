@@ -34,6 +34,7 @@ class TaskStatus extends Model
      */
     public function countRelative() {
 
+        //@TODO Move to Command so it can be scheduled and wont cause 4 queries every time its called (happens often).
         //@TODO Fix -> Only count Task and TaskChilds the user can see!
 
         $count = TaskChild::count();
@@ -53,11 +54,11 @@ class TaskStatus extends Model
 
         $taskCount = DB::select('SELECT COUNT(tasks.id) AS `taskCount` 
                       FROM tasks
-                    WHERE tasks.verified = TRUE AND tasks.visibility > -1 AND (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE)
+                    WHERE tasks.verified = TRUE AND tasks.visibility > -1 AND (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false))
                       AND tasks.status = ' . $this->id)[0]->taskCount;
         $taskTotal = DB::select('SELECT COUNT(tasks.id) AS `taskTotal`
                   FROM tasks
-                WHERE (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE) AND tasks.visibility > -1 AND tasks.verified = TRUE;')[0]->taskTotal;
+                WHERE (tasks.standalone = TRUE OR (tasks.count_progress_as_one = TRUE AND tasks.standalone = false)) AND tasks.visibility > -1 AND tasks.verified = TRUE;')[0]->taskTotal;
         $result = (($childCount + $taskCount) / ($childTotal + $taskTotal));
         return $result;
     }
