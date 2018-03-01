@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\LogEntry;
 use App\TaskChild;
 use App\TaskStatus;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -82,14 +83,14 @@ class UpdateStatusesValue extends Command
             $status->value = (($childCount + $taskCount) / ($childTotal + $taskTotal));
             $status->save();
 
-            $count++;
+            $_count++;
         }
 
         //--- Log
         $logEntry = new LogEntry;
         $logEntry->entry    = 'update_statues_value';
-        $logEntry->name     = 'Update Statues Value';
-        $logEntry->message  = sprintf('Updated %d statuses\' value.', $_count);
+        $logEntry->name     = 'Update Statues\' Values';
+        $logEntry->message  = sprintf('Updated %d statuses\' values.', $_count);
         $logEntry->logged   = Carbon::now();
         $logEntry->save();
 
