@@ -97,7 +97,7 @@ class UpdateStatusesValue extends Command
         //@TODO Hack - Delete old log entries
         LogEntry::where([
             ['entry', '=', 'update_statues_value'],
-            ['logged', '<=', Carbon::now()->subMinutes(10)]
+            ['logged', '<=', Carbon::now()->subMinutes(10 * 10)]
         ])->delete();
 
     }

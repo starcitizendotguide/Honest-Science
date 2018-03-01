@@ -104,7 +104,7 @@ class UpdateTasks extends Command
         //@TODO Hack - Delete old log entries
         LogEntry::where([
             ['entry', '=', 'update_tasks'],
-            ['logged', '<=', Carbon::now()->subMinutes(10)]
+            ['logged', '<=', Carbon::now()->subMinutes(10 * 10)]
         ])->delete();
 
     }
