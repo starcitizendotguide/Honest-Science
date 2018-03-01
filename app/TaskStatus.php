@@ -57,7 +57,7 @@ class TaskStatus extends Model
                       AND tasks.status = ' . $this->id)[0]->taskCount;
         $taskTotal = DB::select('SELECT COUNT(tasks.id) AS `taskTotal`
                   FROM tasks
-                WHERE (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE)  AND tasks.visibility > -1;')[0]->taskTotal;
+                WHERE (tasks.standalone = TRUE OR tasks.count_progress_as_one = TRUE) AND tasks.visibility > -1 AND tasks.verified = TRUE;')[0]->taskTotal;
         $result = (($childCount + $taskCount) / ($childTotal + $taskTotal));
         return $result;
     }
