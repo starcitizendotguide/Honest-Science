@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UpdateTasks::class,
+        Commands\UpdateStatusesValue::class,
     ];
 
     /**
@@ -25,6 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('tasks:update')
+            ->everyTenMinutes();
+        $schedule->command('statuses:update')
             ->everyTenMinutes();
     }
 
