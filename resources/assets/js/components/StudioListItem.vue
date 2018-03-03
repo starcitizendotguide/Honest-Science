@@ -89,6 +89,10 @@ export default {
                     {
                         year: 2016,
                         amount: 54
+                    },
+                    {
+                        year: 2018,
+                        amount: 71
                     }
                 ],
             },
@@ -116,6 +120,10 @@ export default {
                     {
                         year: 2016,
                         amount: 64
+                    },
+                    {
+                        year: 2018,
+                        amount: 75
                     }
                 ],
             },
@@ -139,6 +147,10 @@ export default {
                     {
                         year: 2016,
                         amount: 191
+                    },
+                    {
+                        year: 2018,
+                        amount: 234
                     }
                 ],
             },
@@ -162,6 +174,10 @@ export default {
                     {
                         year: 2017,
                         amount: 75
+                    },
+                    {
+                        year: 2018,
+                        amount: 80
                     }
                 ],
             },
@@ -174,6 +190,10 @@ export default {
                     {
                         year: 2016,
                         amount: 0
+                    },
+                    {
+                        year: 2018,
+                        amount: 15
                     }
                 ]
             },
