@@ -52,6 +52,22 @@
                         </a>
                     </p>
                 </div>
+
+                <!--<div class="field has-addons control">
+                    <p class="control">
+                        <a v-on:click="releaseTimeOnClick(true, null)" href="#" class="button highlighted-element highlighted-text" v-bind:class="{'is-active': meta.timeOfRelease.preAtLaunch}" :disabled="meta.shared.active">
+                            <span class="icon is-small"><i class="fa"></i></span>
+                            <span>Pre-/At-Launch</span>
+                        </a>
+                    </p>
+
+                    <p class="control">
+                        <a v-on:click="releaseTimeOnClick(null, true)" href="#" class="button highlighted-element highlighted-text" v-bind:class="{'is-active': meta.timeOfRelease.postLaunch}" :disabled="meta.shared.active">
+                            <span class="icon is-small"><i class="fa"></i></span>
+                            <span>Post-Launch</span>
+                        </a>
+                    </p>
+                </div>-->
             </div>
 
             <div class="task-list">
@@ -257,6 +273,10 @@ export default {
                         active: false,
                     }
                 },
+                timeOfRelease: {
+                    preAtLaunch: false,
+                    postLaunch: false,
+                },
                 interactionBar: {
                     padding: 0,
                     task: null,
@@ -457,6 +477,10 @@ export default {
             this.container.shared = [];
             this.meta.shared.active = false;
 
+            //--- Reset time of release
+            this.meta.timeOfRelease.preAtLaunch = false;
+            this.meta.timeOfRelease.postLaunch = false;
+
             //--- Reset statuses & types
             for(var i = 0; i < this.meta.statuses.length; i++) {
                 this.meta.statuses[i].css.button_classes['is-active'] = false;
@@ -499,6 +523,23 @@ export default {
                     this.meta.types[i].css.button_classes['is-active'] = !this.meta.types[i].css.button_classes['is-active'];
                     break;
                 }
+            }
+
+        },
+        //--- Called when the user clicks on the "pre-at-launch" or "post-launch" button to
+        //    enable filtering of it.
+        releaseTimeOnClick(preAtLaunch, postLaunch) {
+
+            if(this.meta.shared.active === true) {
+                return;
+            }
+
+            if(preAtLaunch !== null) {
+                this.meta.timeOfRelease.preAtLaunch = !this.meta.timeOfRelease.preAtLaunch;
+            }
+
+            if(postLaunch !== null) {
+                this.meta.timeOfRelease.postLaunch = !this.meta.timeOfRelease.postLaunch;
             }
 
         },
@@ -1008,11 +1049,16 @@ export default {
                         (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
                         (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
                         (
+                            (self.meta.timeOfRelease.preAtLaunch === true && item.postLaunch === 0) ||
+                            (self.meta.timeOfRelease.postLaunch === true && item.postLaunch === 1)
+                        ) &&
+                        (
                             item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
                             item.description.toLowerCase().indexOf(search.toLocaleLowerCase()) !== -1 ||
                             self.hasChildKeyword(item) === true
                         )
                     ) {
+                        console.log(item.postLaunch);
                         return item;
                     }
                 });
