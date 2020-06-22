@@ -2,7 +2,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
 import Buefy from 'buefy';
 import Vue2Filters from 'vue2-filters';
 import VueClipboard from 'vue-clipboard2';

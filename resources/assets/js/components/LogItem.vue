@@ -6,7 +6,7 @@
         detailed
     >
 
-        <template scope="props">
+        <template slot-scope="props">
             <b-table-column field="id" label="ID" centered>
                 {{ props.row.id }}
             </b-table-column>
@@ -21,7 +21,7 @@
 
         </template>
 
-        <template slot="detail" scope="props">
+        <template slot-scope="detail">
             <article class="media">
                 <div class="media-content">
                     <div class="content">

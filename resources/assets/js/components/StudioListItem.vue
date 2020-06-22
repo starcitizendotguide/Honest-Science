@@ -7,7 +7,7 @@
         detailed
     >
 
-        <template scope="props">
+        <template slot-scope="props">
             <b-table-column field="location" label="Location">
                 {{ props.row.location }}
             </b-table-column>
@@ -31,7 +31,7 @@
 
         </template>
 
-        <template slot="detail" scope="props">
+        <template slot="detail" slot-scope="props">
             <article class="media">
                 <div class="media-content">
                     <div class="content">
@@ -50,10 +50,11 @@
                 </b-modal>
             </article>
         </template>
+
     </b-table>
 </template>
 
-<script type="text-javascript">
+<script>
 export default {
     data: function() {
         return {

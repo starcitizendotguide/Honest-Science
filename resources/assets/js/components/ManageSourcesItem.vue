@@ -8,7 +8,7 @@
         :per-page="settings.perPage"
         :loading="settings.isLoading"
     >
-        <template scope="props">
+        <template slot-scope="props">
             <b-table-column field="id" label="#" sortable numeric>
                 {{ props.row.id }}
             </b-table-column>
@@ -41,7 +41,7 @@
             </b-table-column>
 
         </template>
-        <div slot="empty" class="has-text-centered">
+        <div slot-scope="empty" class="has-text-centered">
             This task has no sources.
         </div>
     </b-table>

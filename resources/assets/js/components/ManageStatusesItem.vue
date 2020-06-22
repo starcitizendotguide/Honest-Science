@@ -7,7 +7,7 @@
         :pagination-simple="settings.isPaginatedSimple"
         :per-page="settings.perPage"
     >
-        <template scope="props">
+        <template slot-scope="props">
             <b-table-column field="id" label="#" sortable numeric>
                 {{ props.row.id }}
             </b-table-column>

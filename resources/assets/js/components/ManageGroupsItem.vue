@@ -10,7 +10,7 @@
         detailed
     >
 
-        <template scope="props">
+        <template slot-scope="props">
             <b-table-column field="id" label="id">
                 {{ props.row.name }}
             </b-table-column>
@@ -34,7 +34,7 @@
 
         </template>
 
-        <template slot="detail" scope="props">
+        <template slot-scope="detail">
             <table class="table">
                 <thead>
                     <tr>
