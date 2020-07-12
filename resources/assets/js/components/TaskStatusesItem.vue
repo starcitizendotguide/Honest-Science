@@ -4,10 +4,9 @@
             :loading="settings.isLoading"
             :row-class="(row, index) => 'row'"
             class="dark-table highlighted-element"
-            caption-top
     >
         <template slot-scope="props">
-            <b-table-column field="statuses" label="Status Report">
+            <b-table-column field="name" label="Status Report">
                 <i :class="props.row.css_icon"></i>
                 <span>{{ props.row.name }}</span>
                 <span class="is-pulled-right is-dashed">{{ props.row.countRelative * 100 | toFixed(2) }}%</span>

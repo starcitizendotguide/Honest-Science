@@ -102,6 +102,7 @@ export default {
 
                 if(self.countdown <= 0) {
                     self.buttonAcceptText = ('Accept & Apply');
+                    //TODO replace link
                     self.acceptLink = 'https://docs.google.com/forms/d/e/1FAIpQLSdqL3CZrA6CIWeX_fIwWfRfAo0zENx-5ceiqFFoXoeowqEXUA/viewform?usp=sf_link';
                     clearInterval(self.countdownId);
                 }
@@ -109,7 +110,7 @@ export default {
         },
         toggle(value) {
             if(value === true) {
-                this.countdown = 120;
+                this.countdown = 30;
                 this.activateCountdown();
                 this.isActive = true;
             } else {

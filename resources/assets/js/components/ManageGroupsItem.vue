@@ -34,7 +34,7 @@
 
         </template>
 
-        <template slot-scope="detail">
+        <template slot="detail">
             <table class="table">
                 <thead>
                     <tr>

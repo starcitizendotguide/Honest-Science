@@ -173,7 +173,7 @@
                         </div>
 
                         <div v-if="meta.interactionBar.pages.isOverview">
-                            <!--<a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>-->
+                            <a class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarComments">Comment</a>
                             <a v-if="typeof meta.interactionBar.task.standalone == 'undefined' || meta.interactionBar.task.standalone == true" class="button highlighted-element highlighted-text is-fullwidth m-b-5" @click="interactionBarSources">
                                 Sources
                             </a>
@@ -380,7 +380,7 @@ export default {
                 return;
             }
 
-            this.$dialog.confirm({
+            this.$buefy.dialog.confirm({
                 canCancel: false,
                 message: "<div class=\"content\">" +
                 "<h5>Search</h5>" +
@@ -416,42 +416,43 @@ export default {
         },
         progressBarStyle: function(task) {
 
-            var interpolate = function(p, colors) {
+            const interpolate = function (p, colors) {
 
-                var _w = (1 / colors.length);
-                var x_1 = Math.min(parseInt(p / _w), colors.length - 2);
-                var x_2 = parseInt(x_1 + 1);
+                const _w = (1 / colors.length);
+                const x_1 = Math.min(Math.floor(p / _w), colors.length - 2);
+                const x_2 = x_1 + 1;
 
-                var r_y_1 = colors[x_1][0];
-                var r_y_2 = colors[x_2][0];
+                const r_y_1 = colors[x_1][0];
+                const r_y_2 = colors[x_2][0];
 
-                var g_y_1 = colors[x_1][1];
-                var g_y_2 = colors[x_2][1];
+                const g_y_1 = colors[x_1][1];
+                const g_y_2 = colors[x_2][1];
 
-                var b_y_1 = colors[x_1][2];
-                var b_y_2 = colors[x_2][2];
+                const b_y_1 = colors[x_1][2];
+                const b_y_2 = colors[x_2][2];
 
-                var _p = (p / _w) % Math.max(1, parseInt(p / _w));
+                let p1 = (p % _w) / _w;
 
-                var x = [
-                    ((r_y_2 * _p) + (r_y_1 * (1 - _p))),
-                    ((g_y_2 * _p) + (g_y_1 * (1 - _p))),
-                    ((b_y_2 * _p) + (b_y_1 * (1 - _p))),
+                const x = [
+                    ((r_y_2 * p1) + (r_y_1 * (1 - p1))),
+                    ((g_y_2 * p1) + (g_y_1 * (1 - p1))),
+                    ((b_y_2 * p1) + (b_y_1 * (1 - p1))),
                 ];
 
                 return x;
             };
 
-            var colors = [
-                [226,172,165],
-                [132,131,131],
-                [226,207,165],
-                [216,226,165],
-                [182,226,165]
+            const colors = [
+                [230, 124, 115],
+                [243, 169, 109],
+                [255, 214, 102],
+                [171, 201, 120],
+                [87, 187, 138]
             ];
 
 
             var color = interpolate(task.progress, colors);
+            console.log(color);
             var hex = (
                 '#' +
                 ("0" + parseInt(color[0], 10).toString(16)).slice(-2) +
@@ -614,7 +615,7 @@ export default {
             //this.interactionBarMove(false);
 
         },
-        /*interactionBarMove(parent) {
+        interactionBarMove(parent) {
             var self = this;
             setTimeout(function () {
                 var _element = null;
@@ -630,7 +631,7 @@ export default {
 
                 self.meta.interactionBar.padding = _element.offsetTop - _reference + _ib.height;
             }, 300);
-        },*/
+        },
         //--- Resets the interaction bar to its default status.
         resetInteractionBar() {
             this.interactionBarSwitchPage('isDefault');
@@ -696,14 +697,10 @@ export default {
                 this.disqus.loaded = true;
                 (function() {
                     var d = document, s = d.createElement('script');
-
-                    s.src = 'https://star-citizen-honest-tracker.disqus.com/embed.js?date-timestamp=' + new Date();
-
+                    s.src = 'https://dev-1zqni7su0b.disqus.com/embed.js';
                     s.setAttribute('data-timestamp', +new Date());
                     (d.head || d.body).appendChild(s);
-
                     console.log('[LOADING EMBED.JS]');
-
                 }());
 
             } else {
@@ -815,6 +812,7 @@ export default {
     computed: {
         filteredItems: function () {
 
+            let key;
             this.meta.search.error = '';
             this.meta.search.suggestion = '';
 
@@ -827,16 +825,16 @@ export default {
 
             //--- Going through all "status buttons" to decide whether or not, we
             // have to include this in our search.
-            var statusMode = false;
-            for (var key in statuses) {
+            let statusMode = false;
+            for (key in statuses) {
                 if(statuses[key].css.button_classes['is-active'] === true) {
                     statusMode = true;
                     break;
                 }
             }
 
-            var typeMode = false;
-            for (var key in types) {
+            let typeMode = false;
+            for (key in types) {
                 if(types[key].css.button_classes['is-active'] === true) {
                     typeMode = true;
                     break;
@@ -860,10 +858,10 @@ export default {
             if(search.startsWith(':')) {
 
 
-                var explode = search.split(' ');
-                var command = explode[0].substr(1).toLocaleLowerCase();
+                const explode = search.split(' ');
+                const command = explode[0].substr(1).toLocaleLowerCase();
 
-                var _commands = {
+                const _commands = {
                     ':task': {
                         usage: ':task [id]'
                     },
@@ -880,13 +878,13 @@ export default {
 
                 if(!search.includes(' ') || search.length < 3) {
 
-                    var suggestions = Object.keys(_commands)
+                    const suggestions = Object.keys(_commands)
                         .filter(key => {
                             return key.indexOf(command) >= 0;
                         })
-                        .reduce( (res, key) => (res[key] = _commands[key], res), {} );
+                        .reduce((res, key) => (res[key] = _commands[key], res), {});
 
-                    var c = Object.keys(suggestions).length;
+                    const c = Object.keys(suggestions).length;
                     if(c > 0 && c <= 2) {
                         this.meta.search.suggestion = Object.values(suggestions)[0].usage ;
                     }
@@ -911,13 +909,13 @@ export default {
 
                     var args = explode.slice(1);
 
-                    var enoughArguments = function (amount) {
+                    const enoughArguments = function (amount) {
 
                         if (args.length < amount) {
                             return;
                         }
 
-                        var c = 0;
+                        let c = 0;
                         for (var i in args) {
                             if (!((args[i].length === 0 || !args[i].trim()))) {
                                 c++;
@@ -926,7 +924,7 @@ export default {
 
                         return (c >= amount);
 
-                    }
+                    };
 
                     switch (command) {
 
@@ -1041,18 +1039,20 @@ export default {
 
             } else {
                 //--- Normal Search
+                console.log(_tmp);
                 _tmp = _tmp.filter(function (item) {
 
                     //@HACK: Why do we have strings as keys? The Rest API is passing ints
                     //       and casting it doesn't help for some reason, weird...
                     if (
-                        (statuses[item.status.id.toString()].css.button_classes['is-active'] === true || !statusMode) &&
+                        (statuses[item.status.id].css.button_classes['is-active'] === true || !statusMode) &&
                         (self.hasChildTypesActive(item) || self.hasTaskTypesActive(item) || !typeMode) &&
-                        (
+                        /*(
                             (self.meta.timeOfRelease.preAtLaunch === true && item.postLaunch === 0) ||
                             (self.meta.timeOfRelease.postLaunch === true && item.postLaunch === 1)
-                        ) &&
+                        ) && TODO what is this supposed to do?*/
                         (
+                            search.trim().length === 0 ||
                             item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
                             item.description.toLowerCase().indexOf(search.toLocaleLowerCase()) !== -1 ||
                             self.hasChildKeyword(item) === true

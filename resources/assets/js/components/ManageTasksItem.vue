@@ -84,13 +84,13 @@
             </b-table-column>
         </template>
 
-        <div slot-scope="empty" class="has-text-centered">
+        <div slot="empty" class="has-text-centered">
             No tasks available.
         </div>
     </b-table>
 </template>
 
-<script type="text-javascript">
+<script>
 export default {
     props: {
         'candelete': {

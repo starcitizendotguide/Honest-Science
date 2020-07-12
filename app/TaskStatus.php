@@ -18,7 +18,8 @@ class TaskStatus extends Model
         'css_class',
         'css_icon',
         'value_min',
-        'value_max'
+        'value_max',
+        'value'
     ];
 
     protected $dates = [

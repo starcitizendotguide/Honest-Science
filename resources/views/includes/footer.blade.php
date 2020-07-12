@@ -12,7 +12,7 @@
                 <a href="https://github.com/starcitizendotguide/Honest-Science"><i class="fa fa-github is-small"></i> GitHub</a>
                 <a href="https://github.com/sweetcode"><i class="fa fa-code is-small"></i> yonasismad</a>
             </p>
-            <p>This website is not affiliated with robertsspaceindustries.com and/or cloudimperiumgames.com.</p>
+            <p>This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners.</p>
         </div>
     </div>
 </footer>

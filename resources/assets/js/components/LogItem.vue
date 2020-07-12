@@ -21,7 +21,7 @@
 
         </template>
 
-        <template slot-scope="detail">
+        <template slot="detail" slot-scope="props">
             <article class="media">
                 <div class="media-content">
                     <div class="content">

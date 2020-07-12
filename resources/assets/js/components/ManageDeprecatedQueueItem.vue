@@ -45,7 +45,7 @@
             </b-table-column>
         </template>
 
-        <div slot-scope="empty" class="has-text-centered">
+        <div slot="empty" class="has-text-centered">
             No tasks in the queue. Awesome!
         </div>
     </b-table>

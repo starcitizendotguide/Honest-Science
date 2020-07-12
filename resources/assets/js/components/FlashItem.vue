@@ -1,6 +1,6 @@
 <template></template>
 
-<script type="text-javascript">
+<script>
 export default {
     props: {
         notifier: {
@@ -31,11 +31,11 @@ export default {
         switch(this.notifier) {
 
             case 'toast':
-                this.$toast.open(config);
+                this.$buefy.toast.open(config);
                 break;
 
             case 'snackbar': {
-                this.$snackbar.open(config);
+                this.$buefy.snackbar.open(config);
             }
             break;
 

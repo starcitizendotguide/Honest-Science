@@ -30,7 +30,7 @@
     </span>
 </template>
 
-<script type="text-javascript">
+<script>
     export default {
         props: {
             taskid: {

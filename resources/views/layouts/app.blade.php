@@ -10,8 +10,6 @@
 
         <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
 
-        <!-- <script src="http:// \Config::get('custom.disqus.shortname') .disqus.com/embed.js" charset="utf-8"></script> -->
-
     </head>
     <body class="grid">
         <div >

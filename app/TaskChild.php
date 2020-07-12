@@ -41,7 +41,7 @@ class TaskChild extends Model
     /**
      * The types of the child
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function types() {
         return $this->belongsToMany('App\TaskType', 'task_children_types_map');
